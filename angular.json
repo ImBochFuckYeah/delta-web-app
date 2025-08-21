@@ -27,10 +27,23 @@
               {
                 "glob": "**/*",
                 "input": "public"
-              }
+              },
+              "src/favicon.ico",
+              "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "src/assets/vendors/simplebar/simplebar.min.css",
+              "src/assets/vendors/leaflet/leaflet.css",
+              "src/assets/vendors/leaflet.markercluster/MarkerCluster.css",
+              "src/assets/vendors/leaflet.markercluster/MarkerCluster.Default.css",
+              "src/assets/css/theme.min.css",
+              "src/assets/css/user.min.css"
+            ],
+            "scripts": [
+              "src/assets/vendors/imagesloaded/imagesloaded.pkgd.min.js",
+              "src/assets/vendors/simplebar/simplebar.min.js",
+              "src/assets/js/config.js"
             ]
           },
           "configurations": {
