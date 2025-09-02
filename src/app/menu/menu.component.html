@@ -1,0 +1,40 @@
+<div class="container-fluid">
+  <div class="row">
+    <!-- Sidebar -->
+    <div class="col-md-3 col-lg-2 bg-dark text-white vh-100">
+      <div class="sidebar-sticky pt-3">
+        <h4 class="text-center mb-4">Sistema Delta</h4>
+
+        <!-- Información del usuario -->
+        <div class="text-center mb-4 p-3 bg-secondary rounded">
+          <i class="bi bi-person-circle fs-1"></i>
+          <h6 class="mt-2">{{currentUser?.Nombre}} {{currentUser?.Apellido}}</h6>
+          <small>{{currentUser?.IdUsuario}}</small>
+        </div>
+
+        <ul class="nav flex-column">
+          <li class="nav-item mb-2" *ngFor="let item of menuItems">
+            <a class="nav-link text-white d-flex align-items-center"
+               [routerLink]="item.path"
+               routerLinkActive="active">
+              <i class="bi {{item.icon}} me-2"></i>
+              {{item.label}}
+            </a>
+          </li>
+          <li class="nav-item mb-2">
+            <a class="nav-link text-white d-flex align-items-center"
+               href="#" (click)="logout(); $event.preventDefault()">
+              <i class="bi bi-box-arrow-right me-2"></i>
+              Cerrar Sesión
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="col-md-9 col-lg-10 p-4">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

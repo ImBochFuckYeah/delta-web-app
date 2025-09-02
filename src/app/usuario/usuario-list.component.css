@@ -1,0 +1,31 @@
+/* usuario-list.component.css */
+.table-responsive {
+  margin: 1rem 0;
+}
+
+.table th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+}
+
+.btn-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+}
+
+.pagination {
+  margin: 1rem 0;
+}
+
+.page-link {
+  cursor: pointer;
+}
+
+.spinner-border {
+  width: 2rem;
+  height: 2rem;
+}
+
+.text-center {
+  text-align: center;
+}

@@ -1,5 +1,11 @@
-{
+ {
   "/Login": {
+    "target": "http://localhost:54409",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  },
+  "/Usuario": {
     "target": "http://localhost:54409",
     "secure": false,
     "changeOrigin": true,

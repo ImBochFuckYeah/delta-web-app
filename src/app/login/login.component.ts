@@ -22,35 +22,37 @@ export class LoginComponent {
     private router: Router
   ) { }
 
-  onLogin() {
-    this.cargando = true;
-    this.mensaje = '';
+onLogin() {
+  this.cargando = true;
+  this.mensaje = '';
 
-    const req: LoginRequest = {
-      Usuario: this.usuario,
-      Password: this.password
-    };
+  const req: LoginRequest = {
+    Usuario: this.usuario,
+    Password: this.password
+  };
 
-    this.loginService.login(req).subscribe({
-      next: (resp: ApiResponse<LoginDatos>) => {
-        console.log('Respuesta completa:', resp); // Para debugging
+  this.loginService.login(req).subscribe({
+    next: (resp: any) => {
+      if (resp.Exito) {
+        this.mensaje = `✅ Bienvenido ${resp.Datos?.Nombre} ${resp.Datos?.Apellido}`;
 
-        if (resp.Exito) {  // ← Cambiado a mayúscula
-          this.mensaje = `✅ Bienvenido ${resp.Datos?.Nombre} ${resp.Datos?.Apellido}`;
+        // Guardar datos de sesión
+        localStorage.setItem('currentUser', JSON.stringify(resp.Datos));
+        localStorage.setItem('token', resp.Datos.Sesion);
 
-          setTimeout(() => {
-            this.router.navigate(['/dashboard']);
-          }, 1500);
-        } else {
-          this.mensaje = `❌ ${resp.Mensaje}`;  // ← Cambiado a mayúscula
-        }
-        this.cargando = false;
-      },
-      error: (error: any) => {
-        console.error('Error en login:', error);
-        this.mensaje = '⚠️ Error de conexión con el servidor';
-        this.cargando = false;
+        setTimeout(() => {
+          this.router.navigate(['/']); // Redirigir al menú principal
+        }, 1500);
+      } else {
+        this.mensaje = `❌ ${resp.Mensaje}`;
       }
-    });
-  }
+      this.cargando = false;
+    },
+    error: (error: any) => {
+      console.error('Error en login:', error);
+      this.mensaje = '⚠️ Error de conexión con el servidor';
+      this.cargando = false;
+    }
+  });
+}
 }
