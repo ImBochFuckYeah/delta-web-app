@@ -77,7 +77,8 @@
               "buildTarget": "delta-web-app:build:production"
             },
             "development": {
-              "buildTarget": "delta-web-app:build:development"
+              "buildTarget": "delta-web-app:build:development",
+                "proxyConfig": "proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { LoginService, LoginRequest, LoginDatos } from '../services/login.service';
+import { LoginService, LoginRequest, LoginDatos, ApiResponse } from '../services/login.service';
 
 @Component({
   selector: 'app-login',
@@ -27,20 +27,22 @@ export class LoginComponent {
     this.mensaje = '';
 
     const req: LoginRequest = {
-      usuario: this.usuario,
-      password: this.password
+      Usuario: this.usuario,
+      Password: this.password
     };
 
     this.loginService.login(req).subscribe({
-      next: (resp: any) => {
-        if (resp.exito) {
-          this.mensaje = `✅ Bienvenido ${resp.datos?.nombre} ${resp.datos?.apellido}`;
+      next: (resp: ApiResponse<LoginDatos>) => {
+        console.log('Respuesta completa:', resp); // Para debugging
+
+        if (resp.Exito) {  // ← Cambiado a mayúscula
+          this.mensaje = `✅ Bienvenido ${resp.Datos?.Nombre} ${resp.Datos?.Apellido}`;
 
           setTimeout(() => {
             this.router.navigate(['/dashboard']);
           }, 1500);
         } else {
-          this.mensaje = `❌ ${resp.mensaje}`;
+          this.mensaje = `❌ ${resp.Mensaje}`;  // ← Cambiado a mayúscula
         }
         this.cargando = false;
       },

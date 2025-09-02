@@ -3,31 +3,32 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface LoginRequest {
-  usuario: string;
-  password: string;
+  Usuario: string;
+  Password: string;
 }
 
 export interface LoginDatos {
-  idUsuario: string;
-  nombre: string;
-  apellido: string;
-  correoElectronico: string;
-  sesion: string;
-  idSucursal: string;
+  IdUsuario: string;
+  Nombre: string;
+  Apellido: string;
+  CorreoElectronico: string;
+  Sesion: string;
+  IdSucursal: string;
 }
 
 export interface ApiResponse<T> {
-  exito: boolean;
-  mensaje: string;
-  datos: T | null;
-  debug?: any;
+  Exito: boolean;
+  Mensaje: string;
+  Datos: T | null;
+  Debug?: any;
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
-  private apiUrl = 'https://localhost:44301/Login/ValidarCredenciales';
+  private apiUrl = '/Login/ValidarCredenciales';
+  //http://localhost:54409/Login/ValidarCredenciales
 
   constructor(private http: HttpClient) { }
 
