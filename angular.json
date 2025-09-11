@@ -38,12 +38,14 @@
               "src/assets/vendors/leaflet.markercluster/MarkerCluster.css",
               "src/assets/vendors/leaflet.markercluster/MarkerCluster.Default.css",
               "src/assets/css/theme.min.css",
-              "src/assets/css/user.min.css"
+              "src/assets/css/user.min.css",
+              "node_modules/@fortawesome/fontawesome-free/css/all.min.css"
             ],
             "scripts": [
               "src/assets/vendors/imagesloaded/imagesloaded.pkgd.min.js",
               "src/assets/vendors/simplebar/simplebar.min.js",
-              "src/assets/js/config.js"
+              "src/assets/js/config.js",
+              "node_modules/@fortawesome/fontawesome-free/js/all.min.js"
             ]
           },
           "configurations": {

@@ -5,9 +5,16 @@ import { UsuarioListComponent } from './usuario/usuario-list.component';
 import { MenuComponent } from './menu/menu.component'; // Asegúrate de crear este componente
 //import { AuthGuard } from './services/auth.guard.ts'; // Asegúrate de crear este guard
 import { AuthGuard } from './services/auth.guard';
+import { LoginGuard } from './services/login-guard';
+import { Forbidden } from './errors/forbidden/forbidden';
+import { ForgotPassword } from './forgot-password/forgot-password';
+import { ResetPassword } from './reset-password/reset-password';
 
 export const routes: Routes = [
-  { path: 'login', component: LoginComponent },
+  { path: 'login', component: LoginComponent, canActivate: [LoginGuard] },
+  { path: 'forbidden', component: Forbidden },
+  { path: 'forgot-password', component: ForgotPassword },
+  { path: 'reset-password/:usuario', component: ResetPassword },
   {
     path: '',
     component: MenuComponent,
@@ -20,5 +27,5 @@ export const routes: Routes = [
     ]
   },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
-  { path: '**', redirectTo: '/login' }
+  { path: '**', redirectTo: '/forbidden' }
 ];
