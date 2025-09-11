@@ -1,7 +1,7 @@
 <div class="container mt-4">
   <h2>Gestión de Usuarios</h2>
 
-  <!-- Buscador -->
+  <!-- Buscador y botón nuevo -->
   <div class="row mb-3">
     <div class="col-md-6">
       <div class="input-group">
@@ -31,6 +31,8 @@
           <th>Email</th>
           <th>Teléfono</th>
           <th>Sucursal</th>
+          <th>Estado</th>
+          <th>Rol</th>
           <th>Acciones</th>
         </tr>
       </thead>
@@ -42,17 +44,20 @@
           <td>{{ usuario.CorreoElectronico }}</td>
           <td>{{ usuario.TelefonoMovil }}</td>
           <td>{{ usuario.IdSucursal }}</td>
+          <td>{{ usuario.IdStatusUsuario }}</td>
+          <td>{{ usuario.IdRole }}</td>
           <td>
-           <a class="btn btn-success" routerLink="/usuarios/crear">
-  <i class="bi bi-plus-circle"></i> Nuevo Usuario
-</a>
+            <button class="btn btn-sm btn-primary me-2"
+                    [routerLink]="['/usuarios/editar', usuario.IdUsuario]">
+              Editar
+            </button>
             <button class="btn btn-sm btn-danger" (click)="eliminarUsuario(usuario.IdUsuario)">
               Eliminar
             </button>
           </td>
         </tr>
         <tr *ngIf="usuarios.length === 0 && !loading">
-          <td colspan="7" class="text-center">No se encontraron usuarios</td>
+          <td colspan="9" class="text-center">No se encontraron usuarios</td>
         </tr>
       </tbody>
     </table>
