@@ -11,7 +11,7 @@ export class LoginGuard implements CanActivate {
 
   canActivate(): boolean {
     if (this.authService.isLoggedIn()) {
-      // Si ya está logueado, lo mandamos al menú (o la ruta que quieras)
+      // Si ya está logueado, lo mandamos al menú
       this.router.navigate(['/usuarios']);
       return false;
     } else {

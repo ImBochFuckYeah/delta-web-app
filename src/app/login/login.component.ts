@@ -1,6 +1,6 @@
+import { FormsModule } from '@angular/forms';
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoginService, LoginRequest, LoginDatos, ApiResponse } from '../services/login.service';
 
@@ -34,7 +34,7 @@ export class LoginComponent {
     this.loginService.login(req).subscribe({
       next: (resp: any) => {
         if (resp.Exito) {
-          this.mensaje = `✅ Bienvenido ${resp.Datos?.Nombre} ${resp.Datos?.Apellido}`;
+          this.mensaje = `✅ Bienvenido ${resp.Datos?.IdUsuario}`;
 
           // Guardar datos de sesión
           localStorage.setItem('currentUser', JSON.stringify(resp.Datos));
