@@ -16,7 +16,8 @@ export class UsuarioListComponent implements OnInit {
   totalItems = 0;
   currentPage = 1;
   pageSize = 10;
-  searchTerm = 'admin';
+ // searchTerm = 'admin';
+searchTerm = '';
   loading = false;
 
   constructor(private usuarioService: UsuarioService) { }
