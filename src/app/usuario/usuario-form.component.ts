@@ -87,7 +87,7 @@ export class UsuarioFormComponent implements OnInit {
 
 
     onCancel(): void {
-    this.router.navigate(['/usuarios']);
+    this.router.navigate(['app/usuarios']);
   }
 
 
@@ -222,7 +222,7 @@ export class UsuarioFormComponent implements OnInit {
 
     if (exito) {
       alert('Operación realizada con éxito');
-      this.router.navigate(['/usuarios']);
+      this.router.navigate(['/app/usuarios']);
     } else {
       alert('Error: ' + mensaje);
     }

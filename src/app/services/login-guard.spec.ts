@@ -40,6 +40,6 @@ describe('LoginGuard', () => {
     authService.isLoggedIn.and.returnValue(true);
     const result = guard.canActivate();
     expect(result).toBeFalse();
-    expect(router.navigate).toHaveBeenCalledWith(['/usuarios']);
+    expect(router.navigate).toHaveBeenCalledWith(['/app/usuarios']);
   });
 });

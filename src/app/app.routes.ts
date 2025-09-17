@@ -20,7 +20,7 @@ export const routes: Routes = [
   { path: 'forgot-password', component: ForgotPassword },
   { path: 'reset-password/:usuario', component: ResetPassword },
   {
-    path: '',
+    path: 'app',
     component: MenuComponent,
     canActivate: [AuthGuard],
     children: [

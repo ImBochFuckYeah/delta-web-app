@@ -41,7 +41,7 @@ export class LoginComponent {
           localStorage.setItem('token', resp.Datos.Sesion);
 
           setTimeout(() => {
-            this.router.navigate(['/']); // Redirigir al menú principal
+            this.router.navigate(['/app']); // Redirigir al menú principal
           }, 1500);
         } else {
           this.mensaje = `❌ ${resp.Mensaje}`;

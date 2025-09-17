@@ -14,7 +14,7 @@
       </div>
     </div>
     <div class="col-md-6 text-end">
-      <button class="btn btn-success" routerLink="/usuarios/crear">
+      <button class="btn btn-success" routerLink="/app/usuarios/crear">
         <i class="bi bi-plus-circle"></i> Nuevo Usuario
       </button>
     </div>
@@ -61,7 +61,7 @@
   <small>Cargando roles...</small>
 </div>
             <button class="btn btn-sm btn-primary me-2"
-                    [routerLink]="['/usuarios/editar', usuario.IdUsuario]">
+                    [routerLink]="['/app/usuarios/editar', usuario.IdUsuario]">
               Editar
             </button>
             <button class="btn btn-sm btn-danger" (click)="eliminarUsuario(usuario.IdUsuario)">

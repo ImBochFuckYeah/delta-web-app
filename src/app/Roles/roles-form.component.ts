@@ -93,7 +93,7 @@ export class RolesFormComponent implements OnInit {
   }
 
   onCancel(): void {
-    this.router.navigate(['/roles']);
+    this.router.navigate(['/app/roles']);
   }
 
   private handleResponse(response: any): void {
@@ -103,7 +103,7 @@ export class RolesFormComponent implements OnInit {
 
     if (exito) {
       alert('Operación realizada con éxito');
-      this.router.navigate(['/roles']);
+      this.router.navigate(['/app/roles']);
     } else {
       alert('Error: ' + mensaje);
     }
