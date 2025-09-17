@@ -1,8 +1,13 @@
+import { RolesService } from './../services/roles.service';
+import { SucursalService } from './../services/sucursal.service';
+import { SucursalNamePipe } from './../pipes/sucursal-name.pipe';
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UsuarioService, UsuarioCrearRequest, UsuarioActualizarRequest } from '../services/usuario.service';
+//import { SucursalService } from '../services/sucursal.service';
+//import { RolesService } from '../services/roles.service';
 
 @Component({
   selector: 'app-usuario-form',
@@ -14,8 +19,11 @@ import { UsuarioService, UsuarioCrearRequest, UsuarioActualizarRequest } from '.
 export class UsuarioFormComponent implements OnInit {
   isEdit = false;
   loading = false;
+  loadingSucursales = false;
   usuarioId: string = '';
-
+  sucursales: any[] = [];
+  roles: any [] = [];
+  loadingRoles = false;
   formData: any = {
     IdUsuario: '',
     Nombre: '',
@@ -26,16 +34,18 @@ export class UsuarioFormComponent implements OnInit {
     IdGenero: 1, // Valor por defecto requerido
     CorreoElectronico: '',
     TelefonoMovil: '',
-    IdSucursal: 1, // Valor por defecto
+    IdSucursal: 0, // Valor por defecto
     Pregunta: '¿Nombre de tu primera mascota?', // Requerido
     Respuesta: '', // Requerido
-    IdRole: 2, // Valor por defecto
+    IdRole: 0, // Valor por defecto
     FotografiaBase64: '',
     UsuarioAccion: 'admin' // Requerido para auditoría
   };
 
   constructor(
     private usuarioService: UsuarioService,
+    private sucursalService: SucursalService,
+    private rolesService: RolesService,
     private route: ActivatedRoute,
     private router: Router
   ) { }
@@ -43,10 +53,62 @@ export class UsuarioFormComponent implements OnInit {
   ngOnInit(): void {
     this.usuarioId = this.route.snapshot.paramMap.get('id') || '';
     this.isEdit = !!this.usuarioId;
+    this.cargarSucursales();
+    this.cargarRoles();
 
     if (this.isEdit) {
       this.cargarUsuario();
     }
+  }
+
+
+    cargarRoles(): void {
+    this.loadingRoles = true;
+    this.rolesService.obtenerTodosLosRoles().subscribe({
+      next: (roles) => {
+        console.log('Roles recibidos:', roles);
+        if (Array.isArray(roles)) {
+          this.roles = roles;
+          if (!this.isEdit && this.roles.length > 0) {
+            this.formData.IdRole = this.roles[0].IdRole; // ✅ Seleccionar primer rol por defecto
+          }
+        } else {
+          console.error('Los roles no son un array:', roles);
+          this.roles = [];
+        }
+        this.loadingRoles = false;
+      },
+      error: (error) => {
+        console.error('Error al cargar roles:', error);
+        this.loadingRoles = false;
+      }
+    });
+  }
+
+
+    onCancel(): void {
+    this.router.navigate(['/usuarios']);
+  }
+
+
+    cargarSucursales(): void {
+    this.loadingSucursales = true;
+    this.sucursalService.obtenerSucursales().subscribe({
+      next: (response) => {
+        if (response.ok) {
+          this.sucursales = response.data;
+          // Si no es edición, seleccionar la primera sucursal por defecto
+          if (!this.isEdit && this.sucursales.length > 0) {
+            this.formData.IdSucursal = this.sucursales[0].IdSucursal;
+          }
+        }
+        this.loadingSucursales = false;
+      },
+      error: (error) => {
+        console.error('Error al cargar sucursales:', error);
+        this.loadingSucursales = false;
+      }
+    });
   }
 
   cargarUsuario(): void {

@@ -1,28 +1,85 @@
+import { RolesService } from './../services/roles.service';
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { UsuarioService, UsuarioDto, UsuarioListarRequest, PagedResult } from '../services/usuario.service';
 import { RouterLink } from '@angular/router';
+import { SucursalNamePipe } from '../pipes/sucursal-name.pipe';
+import { SucursalService } from '../services/sucursal.service';
+import { RoleNamePipe } from '../pipes/role-name.pipe';
+//import { RolesService } from '../services/roles.service';
 
 @Component({
   selector: 'app-usuario-list',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule, RouterLink,SucursalNamePipe, RoleNamePipe],
   templateUrl: './usuario-list.component.html',
   styleUrls: ['./usuario-list.component.css']
 })
 export class UsuarioListComponent implements OnInit {
   usuarios: UsuarioDto[] = [];
+  sucursales: any[] = [];
+  roles: any [] = [];
   totalItems = 0;
   currentPage = 1;
   pageSize = 10;
-  searchTerm = 'admin';
+ // searchTerm = 'admin';
+searchTerm = '';
   loading = false;
+  loadingSucursales = false;
+  loadingRoles = false;
 
-  constructor(private usuarioService: UsuarioService) { }
+  constructor(private usuarioService: UsuarioService,
+    private sucursalService: SucursalService,
+    private rolesService: RolesService
+
+  ) { }
 
   ngOnInit(): void {
+    this.cargarSucursales();
+    this.cargarRoles();
     this.cargarUsuarios();
+
+  }
+
+cargarRoles(): void {
+  this.loadingRoles = true;
+  this.rolesService.obtenerTodosLosRoles().subscribe({
+    next: (roles) => {
+      console.log('Roles recibidos:', roles); // ✅ Debug
+      console.log('Tipo de datos:', typeof roles); // ✅ Debug
+      console.log('Es array?', Array.isArray(roles)); // ✅ Debug
+
+      if (Array.isArray(roles)) {
+        this.roles = roles;
+      } else {
+        console.error('Los roles no son un array:', roles);
+        this.roles = [];
+      }
+
+      this.loadingRoles = false;
+    },
+    error: (error) => {
+      console.error('Error al cargar roles:', error);
+      this.loadingRoles = false;
+    }
+  });
+}
+
+  cargarSucursales(): void {
+    this.loadingSucursales = true;
+    this.sucursalService.obtenerSucursales().subscribe({
+      next: (response) => {
+        if (response.ok) {
+          this.sucursales = response.data;
+        }
+        this.loadingSucursales = false;
+      },
+      error: (error) => {
+        console.error('Error al cargar sucursales:', error);
+        this.loadingSucursales = false;
+      }
+    });
   }
 
 cargarUsuarios(): void {
