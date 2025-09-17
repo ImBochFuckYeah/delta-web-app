@@ -43,15 +43,35 @@
         </div>
 
         <div class="mb-3">
-          <label class="form-label">Sucursal</label>
-          <input type="number" class="form-control" [(ngModel)]="formData.IdSucursal"
-                 name="IdSucursal">
+          <label class="form-label">Sucursal *</label>
+          <select class="form-select" [(ngModel)]="formData.IdSucursal" name="IdSucursal" required>
+            <option value="">Seleccionar sucursal</option>
+            <option *ngFor="let sucursal of sucursales" [value]="sucursal.IdSucursal">
+              {{ sucursal.Nombre }}
+            </option>
+          </select>
+          <div *ngIf="loadingSucursales" class="form-text">
+            <small class="text-muted">Cargando sucursales...</small>
+          </div>
         </div>
 
-        <div class="mb-3">
+        <!-- <div class="mb-3">
           <label class="form-label">Rol</label>
           <input type="number" class="form-control" [(ngModel)]="formData.IdRole"
                  name="IdRole">
+        </div> -->
+
+               <div class="mb-3">
+          <label class="form-label">Rol *</label>
+          <select class="form-select" [(ngModel)]="formData.IdRole" name="IdRole" required>
+            <option value="">Seleccionar rol</option>
+            <option *ngFor="let role of roles" [value]="role.IdRole">
+              {{ role.Nombre }}
+            </option>
+          </select>
+          <div *ngIf="loadingRoles" class="form-text">
+            <small class="text-muted">Cargando roles...</small>
+          </div>
         </div>
 
         <div class="mb-3">
@@ -66,16 +86,18 @@
       </div>
     </div>
 
-    <div class="row">
-      <div class="col-12">
-        <button type="submit" class="btn btn-primary" [disabled]="loading || !usuarioForm.form.valid">
-          <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
-          {{ isEdit ? 'Actualizar' : 'Crear' }} Usuario
-        </button>
-    <a routerLink="/usuarios" class="btn btn-secondary ms-2">
-  Cancelar
-</a>
-      </div>
-    </div>
+<div class="row">
+  <div class="col-12">
+    <button type="submit" class="btn btn-primary" [disabled]="loading || !usuarioForm.form.valid || loadingSucursales">
+      <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+      {{ isEdit ? 'Actualizar' : 'Crear' }} Usuario
+    </button>
+
+    <!-- Botón Cancelar con clases corregidas -->
+    <button type="button" class="btn btn-outline-secondary ms-2" (click)="onCancel()">
+      Cancelar
+    </button>
+  </div>
+</div>
   </form>
 </div>

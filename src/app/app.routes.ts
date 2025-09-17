@@ -2,8 +2,12 @@ import { Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { UsuarioFormComponent } from './usuario/usuario-form.component';
 import { UsuarioListComponent } from './usuario/usuario-list.component';
-import { MenuComponent } from './menu/menu.component'; // Asegúrate de crear este componente
-//import { AuthGuard } from './services/auth.guard.ts'; // Asegúrate de crear este guard
+import { MenuComponent } from './menu/menu.component';
+//import { AuthGuard } from './services/auth.guard.ts';
+
+import { RolesListComponent } from './Roles/roles-list.component';
+import { RolesFormComponent } from './Roles/roles-form.component';
+
 import { AuthGuard } from './services/auth.guard';
 import { LoginGuard } from './services/login-guard';
 import { Forbidden } from './errors/forbidden/forbidden';
@@ -23,7 +27,14 @@ export const routes: Routes = [
       { path: 'usuarios', component: UsuarioListComponent, canActivate: [AuthGuard] },
       { path: 'usuarios/crear', component: UsuarioFormComponent, canActivate: [AuthGuard] },
       { path: 'usuarios/editar/:id', component: UsuarioFormComponent, canActivate: [AuthGuard] },
+      { path: '', redirectTo: 'usuarios', pathMatch: 'full' },
+
+      { path: 'roles', component: RolesListComponent, canActivate: [AuthGuard] },
+      { path: 'roles/crear', component: RolesFormComponent, canActivate: [AuthGuard] },
+      { path: 'roles/editar/:id', component: RolesFormComponent, canActivate: [AuthGuard] },
       { path: '', redirectTo: 'usuarios', pathMatch: 'full' }
+
+
     ]
   },
   { path: '', redirectTo: '/login', pathMatch: 'full' },

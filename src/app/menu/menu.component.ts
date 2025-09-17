@@ -13,6 +13,7 @@ import { AuthService } from '../services/auth.service';
 export class MenuComponent {
   menuItems = [
     { path: '/usuarios', label: 'Gestión de Usuarios', icon: 'bi-people' },
+    { path: '/roles', label: 'Gestion de Roles', icon: 'bi-people' },
     { path: '/dashboard', label: 'Dashboard', icon: 'bi-speedometer2' }
   ];
 
