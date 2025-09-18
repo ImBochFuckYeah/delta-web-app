@@ -20,9 +20,15 @@
     </div>
   </div>
 
-  <!-- Indicador de carga de sucursales -->
+  <!-- Indicadores de carga -->
   <div *ngIf="loadingSucursales" class="alert alert-info text-center">
     <small>Cargando información de sucursales...</small>
+  </div>
+  <div *ngIf="loadingRoles" class="alert alert-info text-center">
+    <small>Cargando información de roles...</small>
+  </div>
+  <div *ngIf="loadingGeneros" class="alert alert-info text-center">
+    <small>Cargando información de géneros...</small>
   </div>
 
   <!-- Tabla de usuarios -->
@@ -36,6 +42,7 @@
           <th>Email</th>
           <th>Teléfono</th>
           <th>Sucursal</th>
+          <!-- <th>Género</th> -->
           <th>Estado</th>
           <th>Rol</th>
           <th>Acciones</th>
@@ -49,17 +56,15 @@
           <td>{{ usuario.CorreoElectronico }}</td>
           <td>{{ usuario.TelefonoMovil }}</td>
           <td>
-            <!-- Aquí usamos el pipe para mostrar el nombre de la sucursal -->
             {{ usuario.IdSucursal | sucursalName:sucursales }}
           </td>
-          <td>{{ usuario.IdStatusUsuario }}</td>
+          <!-- <td>
+            {{ usuario.IdGenero | generoName:generos }}
+          </td> -->
+          <!-- <td>{{ usuario.IdStatusUsuario }}</td> -->
+           <td>{{ usuario.IdStatusUsuario | statusName:statusUsuarios }}</td>
           <td>{{ usuario.IdRole | roleName:roles }}</td>
           <td>
-
-            <!-- ✅ Loading indicator para roles -->
-<div *ngIf="loadingRoles" class="text-center text-muted">
-  <small>Cargando roles...</small>
-</div>
             <button class="btn btn-sm btn-primary me-2"
                     [routerLink]="['/app/usuarios/editar', usuario.IdUsuario]">
               Editar
@@ -70,7 +75,7 @@
           </td>
         </tr>
         <tr *ngIf="usuarios.length === 0 && !loading">
-          <td colspan="9" class="text-center">No se encontraron usuarios</td>
+          <td colspan="10" class="text-center">No se encontraron usuarios</td> <!-- ✅ Ajustar colspan a 10 -->
         </tr>
       </tbody>
     </table>

@@ -1,0 +1,11 @@
+.container {
+  max-width: 800px;
+}
+
+.form-label {
+  font-weight: 500;
+}
+
+.btn {
+  min-width: 120px;
+}

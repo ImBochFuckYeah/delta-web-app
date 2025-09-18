@@ -7,12 +7,18 @@ import { RouterLink } from '@angular/router';
 import { SucursalNamePipe } from '../pipes/sucursal-name.pipe';
 import { SucursalService } from '../services/sucursal.service';
 import { RoleNamePipe } from '../pipes/role-name.pipe';
+import { GeneroNamePipe } from '../pipes/genero-name.pipe'; // ✅ Importar el nuevo pipe
+import { GenerosService } from '../services/genero.service';
+import { StatusNamePipe } from '../pipes/status-name.pipe';
+import { StatusUsuariosService } from '../services/status-usuario.service';
+import { StatusUsuarioListarRequest } from '../services/status-usuario.service';
+
 //import { RolesService } from '../services/roles.service';
 
 @Component({
   selector: 'app-usuario-list',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink,SucursalNamePipe, RoleNamePipe],
+  imports: [CommonModule, FormsModule, RouterLink,SucursalNamePipe, RoleNamePipe, StatusNamePipe],
   templateUrl: './usuario-list.component.html',
   styleUrls: ['./usuario-list.component.css']
 })
@@ -20,6 +26,8 @@ export class UsuarioListComponent implements OnInit {
   usuarios: UsuarioDto[] = [];
   sucursales: any[] = [];
   roles: any [] = [];
+  generos: any[] = [];
+    statusUsuarios: any[] = [];
   totalItems = 0;
   currentPage = 1;
   pageSize = 10;
@@ -28,19 +36,73 @@ searchTerm = '';
   loading = false;
   loadingSucursales = false;
   loadingRoles = false;
+  loadingGeneros = false;
+  loadingStatus = false;
 
   constructor(private usuarioService: UsuarioService,
     private sucursalService: SucursalService,
-    private rolesService: RolesService
+    private rolesService: RolesService,
+    private generosService: GenerosService,
+    private statusUsuariosService: StatusUsuariosService
 
   ) { }
 
   ngOnInit(): void {
     this.cargarSucursales();
+    this.cargarGeneros();
     this.cargarRoles();
+    this.cargarStatusUsuarios();
     this.cargarUsuarios();
 
+
   }
+
+cargarStatusUsuarios(): void {
+  this.loadingStatus = true;
+
+  const request: StatusUsuarioListarRequest = {
+    Pagina: 1,
+    TamanoPagina: 100 // O un número suficientemente grande para obtener todos
+  };
+
+  this.statusUsuariosService.listar(request).subscribe({
+    next: (response) => {
+      if (response.ok && response.data) {
+        this.statusUsuarios = response.data;
+        console.log('✅ Status usuarios cargados:', this.statusUsuarios);
+      } else {
+        console.error('❌ Error al cargar status:', response.error);
+        this.statusUsuarios = [];
+      }
+      this.loadingStatus = false;
+    },
+    error: (error) => {
+      console.error('❌ Error al cargar status:', error);
+      this.loadingStatus = false;
+      this.statusUsuarios = [];
+    }
+  });
+}
+
+
+cargarGeneros(): void {
+  this.loadingGeneros = true;
+  this.generosService.listar({}).subscribe({
+    next: (response) => {
+      if (response.ok && response.data) {
+        this.generos = response.data;
+        console.log('✅ Géneros cargados:', this.generos); // Debug
+      } else {
+        console.error('❌ Respuesta no ok:', response);
+      }
+      this.loadingGeneros = false;
+    },
+    error: (error) => {
+      console.error('❌ Error al cargar géneros:', error);
+      this.loadingGeneros = false;
+    }
+  });
+}
 
 cargarRoles(): void {
   this.loadingRoles = true;
