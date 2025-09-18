@@ -1,0 +1,12 @@
+.table th {
+  background-color: #f8f9fa;
+  border-top: none;
+}
+
+.btn-sm {
+  min-width: auto;
+}
+
+.pagination {
+  margin-top: 20px;
+}

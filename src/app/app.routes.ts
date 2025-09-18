@@ -3,16 +3,20 @@ import { LoginComponent } from './login/login.component';
 import { UsuarioFormComponent } from './usuario/usuario-form.component';
 import { UsuarioListComponent } from './usuario/usuario-list.component';
 import { MenuComponent } from './menu/menu.component';
-//import { AuthGuard } from './services/auth.guard.ts';
-
 import { RolesListComponent } from './Roles/roles-list.component';
 import { RolesFormComponent } from './Roles/roles-form.component';
-
+import { GenerosListComponent } from './Genero/generos-list.component';
+import { GenerosFormComponent } from './Genero/generos-form.component';
 import { AuthGuard } from './services/auth.guard';
 import { LoginGuard } from './services/login-guard';
 import { Forbidden } from './errors/forbidden/forbidden';
 import { ForgotPassword } from './forgot-password/forgot-password';
 import { ResetPassword } from './reset-password/reset-password';
+import { StatusUsuariosListComponent } from './usuario/status-usuarios-list.component';
+//import { StatusUsuariosFormComponent } from '.usuario/status-usuarios-form.component';
+import { StatusUsuariosFormComponent } from './usuario/status-usuarios-form.component';
+import { RolePermisosComponent } from './RoleOpciones/RoleOpciones.component';
+import { RolesCrearComponent } from './Roles/roles-crear.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [LoginGuard] },
@@ -22,19 +26,27 @@ export const routes: Routes = [
   {
     path: 'app',
     component: MenuComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard], // Solo necesario aquí, se aplica a todas las rutas hijas
     children: [
-      { path: 'usuarios', component: UsuarioListComponent, canActivate: [AuthGuard] },
-      { path: 'usuarios/crear', component: UsuarioFormComponent, canActivate: [AuthGuard] },
-      { path: 'usuarios/editar/:id', component: UsuarioFormComponent, canActivate: [AuthGuard] },
-      { path: '', redirectTo: 'usuarios', pathMatch: 'full' },
+      { path: 'usuarios', component: UsuarioListComponent },
+      { path: 'usuarios/crear', component: UsuarioFormComponent },
+      { path: 'usuarios/editar/:id', component: UsuarioFormComponent },
 
-      { path: 'roles', component: RolesListComponent, canActivate: [AuthGuard] },
-      { path: 'roles/crear', component: RolesFormComponent, canActivate: [AuthGuard] },
-      { path: 'roles/editar/:id', component: RolesFormComponent, canActivate: [AuthGuard] },
-      { path: '', redirectTo: 'usuarios', pathMatch: 'full' }
+      { path: 'roles', component: RolesListComponent },
+      //{ path: 'roles/crear', component: RolesFormComponent },
+       { path: 'roles/crear', component: RolesCrearComponent },
+      { path: 'roles/editar/:id', component: RolesFormComponent },
+       { path: 'roles/permisos/:id', component: RolePermisosComponent },
 
+      { path: 'generos', component: GenerosListComponent },
+      { path: 'generos/crear', component: GenerosFormComponent },
+      { path: 'generos/editar/:id', component: GenerosFormComponent },
 
+        { path: 'status-usuarios', component: StatusUsuariosListComponent },
+      { path: 'status-usuarios/crear', component: StatusUsuariosFormComponent },
+      { path: 'status-usuarios/editar/:id', component: StatusUsuariosFormComponent },
+
+      { path: '', redirectTo: 'usuarios', pathMatch: 'full' } // Solo una redirección
     ]
   },
   { path: '', redirectTo: '/login', pathMatch: 'full' },

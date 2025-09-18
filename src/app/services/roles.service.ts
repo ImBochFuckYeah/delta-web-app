@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { map, catchError, switchMap } from 'rxjs/operators';
+import { RoleOpcionesService } from './role-opciones.service';
 
 export interface RolDto {
   IdRole: number;
@@ -18,7 +19,6 @@ export interface RolListarRequest {
   TamanoPagina?: number;
 }
 
-// ✅ NUEVA interfaz que coincide con la respuesta real del backend
 export interface RolesBackendResponse {
   ok: boolean;
   data: RolDto[];
@@ -38,7 +38,8 @@ export class RolesService {
   private baseUrl = 'http://smart.guateplast.com.gt:58096/Roles';
   private rolesCache: any[] = [];
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,
+  private roleOpcionesService: RoleOpcionesService) { }
 
   listar(request: RolListarRequest): Observable<RolesBackendResponse> {
     let params = new HttpParams();
@@ -97,21 +98,49 @@ export class RolesService {
       map(response => {
         if (response.ok && response.data) {
           this.rolesCache = response.data; // Cachear los roles
-          return response.data; // ✅ Esto devuelve any[]
+          return response.data;
         }
         return [];
       }),
       catchError(error => {
         console.error('Error al obtener roles:', error);
-        return of([]); // ✅ Esto devuelve any[]
+        return of([]);
       })
     );
   }
 
-  // ✅ Método para limpiar cache (opcional)
   limpiarCache(): void {
     this.rolesCache = [];
   }
+
+crearConPermisos(nombre: string, usuario: string = 'admin', permisos: any[] = []): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/Crear`, {
+      params: {
+        Nombre: nombre,
+        Usuario: usuario
+      }
+    }).pipe(
+      switchMap((response) => {
+        if (response.ok && response.data) {
+          const nuevoRolId = response.data.IdRole;
+          // Si hay permisos para asignar, los guardamos
+          if (permisos.length > 0) {
+            return this.roleOpcionesService.guardarMultiple(
+              permisos.map(p => ({ ...p, IdRole: nuevoRolId }))
+            ).pipe(
+              map(() => response)
+            );
+          }
+          return of(response);
+        }
+        return of(response);
+      }),
+      catchError(error => of(error))
+    );
+  }
+
+
+
 }
 
 
