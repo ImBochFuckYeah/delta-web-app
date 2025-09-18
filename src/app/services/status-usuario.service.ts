@@ -28,7 +28,8 @@ export interface StatusUsuariosBackendResponse {
   providedIn: 'root'
 })
 export class StatusUsuariosService {
-  private apiUrl = 'http://localhost:54409/StatusUsuarios'; // Ajusta según tu configuración
+  //private apiUrl = 'http://localhost:54409/StatusUsuarios';
+  private apiUrl = 'http://smart.guateplast.com.gt:58096/StatusUsuarios';
 
   constructor(private http: HttpClient) { }
 

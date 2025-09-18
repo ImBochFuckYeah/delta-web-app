@@ -44,7 +44,7 @@ export class RolesListComponent implements OnInit {
 
         if (response.ok && response.data) {
           this.roles = response.data;
-          this.totalItems = response.data.length; // ✅ O usa otra propiedad si el backend devuelve el total
+          this.totalItems = response.data.length;
           console.log('Roles cargados:', this.roles);
         } else {
           console.warn('Respuesta no exitosa:', response);

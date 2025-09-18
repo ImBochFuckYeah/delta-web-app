@@ -34,8 +34,7 @@ export class RolesCrearComponent implements OnInit {
 
   cargarOpcionesDisponibles(): void {
     this.loadingOpciones = true;
-    // Aquí necesitarías un servicio que traiga todas las opciones disponibles
-    // Por ahora, creamos opciones de ejemplo
+
     this.opcionesDisponibles = [
       { IdOpcion: 1, Nombre: 'Usuarios' },
       { IdOpcion: 2, Nombre: 'Roles' },

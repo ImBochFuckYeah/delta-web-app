@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RolesService } from '../services/roles.service';
-import { RoleOpcionesService, RoleOpcionDto } from '../services/role-opciones.service'; // ✅ Nombre correcto
+import { RoleOpcionesService, RoleOpcionDto } from '../services/role-opciones.service';
 
 @Component({
   selector: 'app-role-permisos',

@@ -19,7 +19,6 @@ export interface RolListarRequest {
   TamanoPagina?: number;
 }
 
-// ✅ NUEVA interfaz que coincide con la respuesta real del backend
 export interface RolesBackendResponse {
   ok: boolean;
   data: RolDto[];
@@ -99,18 +98,17 @@ export class RolesService {
       map(response => {
         if (response.ok && response.data) {
           this.rolesCache = response.data; // Cachear los roles
-          return response.data; // ✅ Esto devuelve any[]
+          return response.data;
         }
         return [];
       }),
       catchError(error => {
         console.error('Error al obtener roles:', error);
-        return of([]); // ✅ Esto devuelve any[]
+        return of([]);
       })
     );
   }
 
-  // ✅ Método para limpiar cache (opcional)
   limpiarCache(): void {
     this.rolesCache = [];
   }
@@ -130,7 +128,7 @@ crearConPermisos(nombre: string, usuario: string = 'admin', permisos: any[] = []
             return this.roleOpcionesService.guardarMultiple(
               permisos.map(p => ({ ...p, IdRole: nuevoRolId }))
             ).pipe(
-              map(() => response) // Devolvemos la respuesta original
+              map(() => response)
             );
           }
           return of(response);

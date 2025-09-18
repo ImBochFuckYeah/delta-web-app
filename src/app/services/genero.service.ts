@@ -28,7 +28,8 @@ export interface GenerosBackendResponse {
   providedIn: 'root'
 })
 export class GenerosService {
-  private apiUrl = 'http://localhost:54409/Generos'; // Ajusta según tu configuración de rutas
+ // private apiUrl = 'http://localhost:54409/Generos';
+ private apiUrl = 'http://smart.guateplast.com.gt:58096/Generos';
 
   constructor(private http: HttpClient) { }
 

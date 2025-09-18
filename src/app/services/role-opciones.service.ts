@@ -22,7 +22,9 @@ export interface RoleOpcionDto {
   providedIn: 'root'
 })
 export class RoleOpcionesService {
-  private baseUrl = 'http://localhost:54409/RoleOpciones';
+  //private baseUrl = 'http://localhost:54409/RoleOpciones';
+
+ private baseUrl = 'http://smart.guateplast.com.gt:58096/RoleOpciones';
 
   constructor(private http: HttpClient) { }
 

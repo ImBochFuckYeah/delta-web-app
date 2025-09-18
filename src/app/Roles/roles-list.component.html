@@ -40,7 +40,6 @@
           <td>{{ role.FechaCreacion | date:'short' }}</td>
           <td>{{ role.UsuarioCreacion }}</td>
           <td>
-            <!-- ✅ Botón de Permisos - Agregado aquí -->
             <button class="btn btn-info btn-sm me-2"
                     (click)="editarPermisos(role.IdRole)"
                     title="Editar Permisos">
