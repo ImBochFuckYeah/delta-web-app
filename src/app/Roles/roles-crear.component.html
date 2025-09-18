@@ -1,0 +1,91 @@
+<div class="container mt-4">
+  <h2>Crear Nuevo Rol con Permisos</h2>
+
+  <form (ngSubmit)="onSubmit()" #rolForm="ngForm">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="mb-3">
+          <label class="form-label">Nombre del Rol *</label>
+          <input type="text" class="form-control" [(ngModel)]="formData.Nombre"
+                 name="Nombre" required>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sección de Permisos -->
+    <div class="row">
+      <div class="col-12">
+        <div class="card mb-4">
+          <div class="card-header">
+            <h5 class="mb-0">Permisos del Rol</h5>
+          </div>
+
+          <div class="card-body">
+            <div *ngIf="loadingOpciones" class="text-center">
+              <div class="spinner-border spinner-border-sm" role="status">
+                <span class="visually-hidden">Cargando opciones...</span>
+              </div>
+            </div>
+
+            <div *ngIf="!loadingOpciones && opcionesDisponibles.length > 0" class="table-responsive">
+              <table class="table table-bordered table-hover">
+                <thead class="table-dark">
+                  <tr>
+                    <th>Opción</th>
+                    <th class="text-center">Alta</th>
+                    <th class="text-center">Baja</th>
+                    <th class="text-center">Cambio</th>
+                    <th class="text-center">Imprimir</th>
+                    <th class="text-center">Exportar</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let opcion of opcionesDisponibles">
+                    <td>{{opcion.Nombre}}</td>
+                    <td class="text-center">
+                      <input type="checkbox"
+                             [checked]="getPermiso(opcion.IdOpcion)?.Alta"
+                             (change)="togglePermiso(opcion.IdOpcion, 'Alta')">
+                    </td>
+                    <td class="text-center">
+                      <input type="checkbox"
+                             [checked]="getPermiso(opcion.IdOpcion)?.Baja"
+                             (change)="togglePermiso(opcion.IdOpcion, 'Baja')">
+                    </td>
+                    <td class="text-center">
+                      <input type="checkbox"
+                             [checked]="getPermiso(opcion.IdOpcion)?.Cambio"
+                             (change)="togglePermiso(opcion.IdOpcion, 'Cambio')">
+                    </td>
+                    <td class="text-center">
+                      <input type="checkbox"
+                             [checked]="getPermiso(opcion.IdOpcion)?.Imprimir"
+                             (change)="togglePermiso(opcion.IdOpcion, 'Imprimir')">
+                    </td>
+                    <td class="text-center">
+                      <input type="checkbox"
+                             [checked]="getPermiso(opcion.IdOpcion)?.Exportar"
+                             (change)="togglePermiso(opcion.IdOpcion, 'Exportar')">
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <button type="submit" class="btn btn-primary" [disabled]="loading || !rolForm.form.valid">
+          <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+          Crear Rol con Permisos
+        </button>
+        <button type="button" class="btn btn-secondary ms-2" (click)="onCancel()">
+          Cancelar
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

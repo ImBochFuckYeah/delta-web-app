@@ -15,6 +15,9 @@ import { ResetPassword } from './reset-password/reset-password';
 import { StatusUsuariosListComponent } from './usuario/status-usuarios-list.component';
 //import { StatusUsuariosFormComponent } from '.usuario/status-usuarios-form.component';
 import { StatusUsuariosFormComponent } from './usuario/status-usuarios-form.component';
+import { RolePermisosComponent } from './RoleOpciones/RoleOpciones.component';
+import { RolesCrearComponent } from './Roles/roles-crear.component';
+
 export const routes: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [LoginGuard] },
   { path: 'forbidden', component: Forbidden },
@@ -30,8 +33,10 @@ export const routes: Routes = [
       { path: 'usuarios/editar/:id', component: UsuarioFormComponent },
 
       { path: 'roles', component: RolesListComponent },
-      { path: 'roles/crear', component: RolesFormComponent },
+      //{ path: 'roles/crear', component: RolesFormComponent },
+       { path: 'roles/crear', component: RolesCrearComponent },
       { path: 'roles/editar/:id', component: RolesFormComponent },
+       { path: 'roles/permisos/:id', component: RolePermisosComponent },
 
       { path: 'generos', component: GenerosListComponent },
       { path: 'generos/crear', component: GenerosFormComponent },

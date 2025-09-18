@@ -13,9 +13,12 @@
       </div>
     </div>
     <div class="col-md-6 text-end">
-      <button class="btn btn-success" routerLink="/app/roles/crear">
+      <!-- <button class="btn btn-success" routerLink="/app/roles/crear">
         <i class="bi bi-plus-circle"></i> Nuevo Rol
-      </button>
+      </button> -->
+      <button class="btn btn-success" routerLink="/app/roles/crear">
+  <i class="bi bi-plus-circle"></i> Nuevo Rol con Permisos
+</button>
     </div>
   </div>
 
@@ -37,12 +40,20 @@
           <td>{{ role.FechaCreacion | date:'short' }}</td>
           <td>{{ role.UsuarioCreacion }}</td>
           <td>
-            <button class="btn btn-sm btn-primary me-2"
-                    [routerLink]="['/app/roles/editar', role.IdRole]">
-              Editar
+            <!-- ✅ Botón de Permisos - Agregado aquí -->
+            <button class="btn btn-info btn-sm me-2"
+                    (click)="editarPermisos(role.IdRole)"
+                    title="Editar Permisos">
+              <i class="bi bi-key"></i> Permisos
             </button>
-            <button class="btn btn-sm btn-danger" (click)="eliminarRol(role.IdRole)">
-              Eliminar
+
+            <button class="btn btn-primary btn-sm me-2"
+                    [routerLink]="['/app/roles/editar', role.IdRole]">
+              <i class="bi bi-pencil"></i> Editar
+            </button>
+
+            <button class="btn btn-danger btn-sm" (click)="eliminarRol(role.IdRole)">
+              <i class="bi bi-trash"></i> Eliminar
             </button>
           </td>
         </tr>
