@@ -54,7 +54,7 @@ export const routes: Routes = [
       { path: 'sucursales/editar/:id', component: SucursalFormComponent, canActivate: [AuthGuard]},
 
       // ruta principal
-      { path: '', redirectTo: 'usuarios', pathMatch: 'full' }
+      { path: '', redirectTo: 'usuarios', pathMatch: 'full' },
   
       // generos
       { path: 'generos', component: GenerosListComponent },
