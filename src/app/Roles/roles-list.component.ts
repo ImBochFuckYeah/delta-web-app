@@ -36,16 +36,16 @@ export class RolesListComponent implements OnInit {
       TamanoPagina: this.pageSize
     };
 
-    console.log('Cargando roles...', request);
+    // console.log('Cargando roles...', request);
 
     this.rolesService.listar(request).subscribe({
       next: (response: RolesBackendResponse) => {
-        console.log('Respuesta del backend:', response);
+        // console.log('Respuesta del backend:', response);
 
         if (response.ok && response.data) {
           this.roles = response.data;
           this.totalItems = response.data.length;
-          console.log('Roles cargados:', this.roles);
+          // console.log('Roles cargados:', this.roles);
         } else {
           console.warn('Respuesta no exitosa:', response);
         }

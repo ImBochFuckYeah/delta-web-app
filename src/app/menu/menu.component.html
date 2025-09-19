@@ -11,13 +11,19 @@
         </div>
 
         <ul class="nav flex-column">
+          <ng-container *ngIf="!modulos || modulos.length === 0">
+            <li class="nav-item text-center mt-4">
+              <span class="text-muted">No tienes módulos asignados</span>
+            </li>
+          </ng-container>
           <ng-container *ngFor="let modulo of modulos">
-            <li class="nav-item fw-bold mt-3 mb-1">
+            <li class="nav-item fw-bold mt-3 mb-2">
               <span>{{ modulo.modulo }}</span>
             </li>
             <ng-container *ngFor="let menu of modulo.menus">
-              <li class="nav-item ms-2 fw-semibold">
-                <span>{{ menu.menu }}</span>
+              <li class="nav-item m-2 fw-semibold d-flex align-items-center">
+                <i class="bi bi-folder me-2"></i>
+                <span class="text-muted">{{ menu.menu }}</span>
               </li>
               <ng-container *ngFor="let opcion of menu.opciones">
                 <li class="nav-item ms-4 mb-1">

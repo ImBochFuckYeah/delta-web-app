@@ -2,30 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
-
-interface Opcion {
-  idOpcion: number;
-  opcion: string;
-  pagina: string;
-  Alta: number;
-  Baja: number;
-  Cambio: number;
-  Imprimir: number;
-  Exportar: number;
-}
-
-interface Menu {
-  idMenu: number;
-  menu: string;
-  orden: number;
-  opciones: Opcion[];
-}
-
-interface Modulo {
-  idModulo: number;
-  modulo: string;
-  menus: Menu[];
-}
+import { Modulo } from '../modelos/menu.model';
 
 @Component({
   selector: 'app-menu',
@@ -60,7 +37,9 @@ export class MenuComponent {
         if (!Array.isArray(modulos)) {
           modulos = Object.values(modulos);
         }
-        this.modulos = modulos;
+        // console.log(modulos);
+        this.modulos = modulos[0] ?? [];
+        this.authService.setAllowedRoutesFromMenu(this.modulos);
       }
     }
   }

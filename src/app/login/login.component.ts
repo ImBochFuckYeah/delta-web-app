@@ -36,7 +36,7 @@ export class LoginComponent {
         if (resp.Exito) {
           this.mensaje = `✅ Bienvenido ${resp.Datos?.IdUsuario}`;
 
-          console.log(JSON.parse(resp.Datos.NavegacionJson));
+          // console.log(JSON.parse(resp.Datos.NavegacionJson));
           // Guardar datos de sesión
           localStorage.setItem('currentUser', JSON.stringify(resp.Datos));
           localStorage.setItem('token', resp.Datos.Sesion);
