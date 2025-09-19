@@ -11,13 +11,27 @@
         </div>
 
         <ul class="nav flex-column">
-          <li class="nav-item mb-2" *ngFor="let item of menuItems">
-            <a class="nav-link text-white d-flex align-items-center" [routerLink]="item.path" routerLinkActive="active">
-              <i class="bi {{item.icon}} me-2"></i>
-              {{item.label}}
-            </a>
-          </li>
-          <li class="nav-item mb-2">
+          <ng-container *ngFor="let modulo of modulos">
+            <li class="nav-item fw-bold mt-3 mb-1">
+              <span>{{ modulo.modulo }}</span>
+            </li>
+            <ng-container *ngFor="let menu of modulo.menus">
+              <li class="nav-item ms-2 fw-semibold">
+                <span>{{ menu.menu }}</span>
+              </li>
+              <ng-container *ngFor="let opcion of menu.opciones">
+                <li class="nav-item ms-4 mb-1">
+                  <a class="nav-link text-white d-flex align-items-center"
+                     [routerLink]="opcion.pagina"
+                     routerLinkActive="active">
+                    <i class="bi bi-chevron-right me-2"></i>
+                    {{ opcion.opcion }}
+                  </a>
+                </li>
+              </ng-container>
+            </ng-container>
+          </ng-container>
+          <li class="nav-item mb-2 mt-3">
             <a class="nav-link text-white d-flex align-items-center" href="#"
               (click)="logout(); $event.preventDefault()">
               <span class="nav-link-icon me-2">

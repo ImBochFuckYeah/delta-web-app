@@ -39,23 +39,25 @@ export const routes: Routes = [
       { path: '', redirectTo: 'usuarios', pathMatch: 'full' },
 
       // roles
-      { path: 'roles', component: RolesListComponent, canActivate: [AuthGuard] },
-      { path: 'roles/crear', component: RolesFormComponent, canActivate: [AuthGuard] },
-      { path: 'roles/editar/:id', component: RolesFormComponent, canActivate: [AuthGuard] },
-      
+      { path: 'roles', component: RolesListComponent },
+      //{ path: 'roles/crear', component: RolesFormComponent },
+      { path: 'roles/crear', component: RolesCrearComponent },
+      { path: 'roles/editar/:id', component: RolesFormComponent },
+      { path: 'roles/permisos/:id', component: RolePermisosComponent },
+
       // empresas
-      { path: 'empresas', component: EmpresaListComponent, canActivate: [AuthGuard]},
-      { path: 'empresas/crear', component: EmpresaFormComponent, canActivate: [AuthGuard]},
-      { path: 'empresas/editar/:id', component: EmpresaFormComponent, canActivate: [AuthGuard]},
-      
+      { path: 'empresas', component: EmpresaListComponent, canActivate: [AuthGuard] },
+      { path: 'empresas/crear', component: EmpresaFormComponent, canActivate: [AuthGuard] },
+      { path: 'empresas/editar/:id', component: EmpresaFormComponent, canActivate: [AuthGuard] },
+
       // sucursales
-      { path: 'sucursales', component: SucursalListComponent, canActivate: [AuthGuard]},
-      { path: 'sucursales/crear', component: SucursalFormComponent, canActivate: [AuthGuard]},
-      { path: 'sucursales/editar/:id', component: SucursalFormComponent, canActivate: [AuthGuard]},
+      { path: 'sucursales', component: SucursalListComponent, canActivate: [AuthGuard] },
+      { path: 'sucursales/crear', component: SucursalFormComponent, canActivate: [AuthGuard] },
+      { path: 'sucursales/editar/:id', component: SucursalFormComponent, canActivate: [AuthGuard] },
 
       // ruta principal
       { path: '', redirectTo: 'usuarios', pathMatch: 'full' },
-  
+
       // generos
       { path: 'generos', component: GenerosListComponent },
       { path: 'generos/crear', component: GenerosFormComponent },
