@@ -17,6 +17,7 @@ export interface RolListarRequest {
   Buscar?: string;
   Pagina?: number;
   TamanoPagina?: number;
+  usuarioAccion: string;
 }
 
 export interface RolesBackendResponse {
@@ -34,16 +35,29 @@ export interface ApiResponse<T> {
   providedIn: 'root'
 })
 export class RolesService {
-   private baseUrl = 'http://localhost:54409/Roles';
+  private baseUrl = 'http://localhost:54409/Roles';
   //private baseUrl = 'http://smart.guateplast.com.gt:58096/Roles';
   private rolesCache: any[] = [];
 
+  private getUsuarioActual(): string {
+    const sessionStr = localStorage.getItem('currentUser');
+    if (sessionStr) {
+      try {
+        const sessionObj = JSON.parse(sessionStr);
+        return sessionObj.IdUsuario || 'Desconocido';
+      } catch {
+        return 'Desconocido';
+      }
+    }
+    return 'Desconocido';
+  }
+
   constructor(private http: HttpClient,
-  private roleOpcionesService: RoleOpcionesService) { }
+    private roleOpcionesService: RoleOpcionesService) { }
 
   listar(request: RolListarRequest): Observable<RolesBackendResponse> {
-    let params = new HttpParams();
-
+    let params = new HttpParams()
+      .set('usuarioAccion', this.getUsuarioActual());
     if (request.Buscar) params = params.set('BuscarNombre', request.Buscar);
     if (request.Pagina) params = params.set('Page', request.Pagina.toString());
     if (request.TamanoPagina) params = params.set('PageSize', request.TamanoPagina.toString());
@@ -53,7 +67,7 @@ export class RolesService {
 
   obtener(idRole: number): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/Listar`, {
-      params: { IdRole: idRole.toString() }
+      params: { IdRole: idRole.toString(), UsuarioAccion: this.getUsuarioActual() }
     }).pipe(
       map(response => ({
         Exito: response.ok,
@@ -67,7 +81,7 @@ export class RolesService {
     return this.http.get<any>(`${this.baseUrl}/Crear`, {
       params: {
         Nombre: nombre,
-        Usuario: usuario
+        Usuario: this.getUsuarioActual() ?? usuario
       }
     });
   }
@@ -77,14 +91,14 @@ export class RolesService {
       params: {
         IdRole: idRole.toString(),
         Nombre: nombre,
-        Usuario: usuario
+        Usuario: this.getUsuarioActual() ?? usuario
       }
     });
   }
 
   eliminar(idRole: number): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/Eliminar`, {
-      params: { IdRole: idRole.toString() }
+      params: { IdRole: idRole.toString(), Usuario: this.getUsuarioActual() }
     });
   }
 
@@ -94,7 +108,11 @@ export class RolesService {
       return of(this.rolesCache);
     }
 
-    return this.http.get<any>(`${this.baseUrl}/Listar`).pipe(
+    return this.http.get<any>(`${this.baseUrl}/Listar`, {
+      params: {
+        UsuarioAccion: this.getUsuarioActual()
+      }
+    }).pipe(
       map(response => {
         if (response.ok && response.data) {
           this.rolesCache = response.data; // Cachear los roles
@@ -113,11 +131,11 @@ export class RolesService {
     this.rolesCache = [];
   }
 
-crearConPermisos(nombre: string, usuario: string = 'admin', permisos: any[] = []): Observable<any> {
+  crearConPermisos(nombre: string, usuario: string = 'admin', permisos: any[] = []): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/Crear`, {
       params: {
         Nombre: nombre,
-        Usuario: usuario
+        Usuario: this.getUsuarioActual() ?? usuario
       }
     }).pipe(
       switchMap((response) => {

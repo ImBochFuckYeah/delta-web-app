@@ -6,7 +6,13 @@ import { Modulo, Menu, Opcion } from '../modelos/menu.model';
   providedIn: 'root'
 })
 export class AuthService {
-  constructor(private router: Router) { }
+  constructor(private router: Router) {
+    const rutas = localStorage.getItem('allowedRoutes');
+    if (rutas) {
+      this.allowedRoutes = JSON.parse(rutas);
+      this.allowedRoutesSet = true;
+    }
+  }
 
   isLoggedIn(): boolean {
     return !!localStorage.getItem('token');
@@ -20,6 +26,7 @@ export class AuthService {
   logout(): void {
     localStorage.removeItem('currentUser');
     localStorage.removeItem('token');
+    localStorage.removeItem('allowedRoutes'); // Limpia persistencia
     this.allowedRoutesSet = false;
     this.allowedRoutes = [];
     this.router.navigate(['/login']);
@@ -44,11 +51,12 @@ export class AuthService {
       });
     });
     this.allowedRoutes = rutas;
+    localStorage.setItem('allowedRoutes', JSON.stringify(rutas)); // Persistencia
     this.allowedRoutesSet = true;
   }
 
   isRouteAllowed(ruta: string): boolean {
-    // console.log('ruta_param:', ruta, '. allowed_routes: ', this.allowedRoutes)
+    // console.log('ruta_param:', ruta, '. allowed_routes:', this.allowedRoutes)
     return this.allowedRoutes.includes(ruta);
   }
 }

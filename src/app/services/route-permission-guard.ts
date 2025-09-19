@@ -9,7 +9,7 @@ export class RoutePermissionGuard implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     let ruta = state.url.replace(/^\/app\/?/, '');
     ruta = ruta.split('/')[0];
-    // console.log('ruta: ', ruta);
+    // console.log('ruta guard: ', ruta);
     if (this.authService.isRouteAllowed(ruta)) {
       return true;
     } else {

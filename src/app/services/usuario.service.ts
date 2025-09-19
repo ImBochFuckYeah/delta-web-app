@@ -9,7 +9,7 @@ export interface UsuarioDto {
   Apellido: string;
   CorreoElectronico: string;
   IdSucursal: number;
-   IdGenero: number;
+  IdGenero: number;
   IdStatusUsuario: number;
   IdRole: number;
   TelefonoMovil: string;
@@ -109,10 +109,23 @@ export class UsuarioService {
 
   constructor(private http: HttpClient) { }
 
+  private getUsuarioActual(): string {
+    const sessionStr = localStorage.getItem('currentUser');
+    if (sessionStr) {
+      try {
+        const sessionObj = JSON.parse(sessionStr);
+        return sessionObj.IdUsuario || 'Desconocido';
+      } catch {
+        return 'Desconocido';
+      }
+    }
+    return 'Desconocido';
+  }
+
   // Listar usuarios - CORREGIDO
   listar(request: UsuarioListarRequest): Observable<ListarUsuariosResponse> {
-    let params = new HttpParams();
-
+    let params = new HttpParams()
+      .set('usuarioAccion', this.getUsuarioActual());
     if (request.Buscar) params = params.set('buscar', request.Buscar);
     if (request.IdSucursal) params = params.set('idSucursal', request.IdSucursal.toString());
     if (request.IdStatusUsuario) params = params.set('idStatusUsuario', request.IdStatusUsuario.toString());
@@ -128,7 +141,7 @@ export class UsuarioService {
   // Obtener usuario por ID - CORREGIDO
   obtener(idUsuario: string): Observable<ApiResponse<UsuarioDto>> {
     return this.http.get<ApiResponse<UsuarioDto>>(`${this.baseUrl}/Usuarios/Obtener`, {
-      params: { idUsuario }
+      params: { idUsuario, UsuarioAccion: this.getUsuarioActual() }
     });
   }
 
@@ -137,7 +150,7 @@ export class UsuarioService {
     // Asegurar campos requeridos
     const requestBody = {
       ...request,
-      UsuarioAccion: request.UsuarioAccion || 'admin'
+      UsuarioAccion: this.getUsuarioActual()
     };
 
     return this.http.post<any>(`${this.baseUrl}/Usuarios/Crear`, requestBody);
@@ -148,7 +161,7 @@ export class UsuarioService {
     // Asegurar campos requeridos
     const requestBody = {
       ...request,
-      UsuarioAccion: request.UsuarioAccion || 'admin'
+      UsuarioAccion: this.getUsuarioActual()
     };
 
     return this.http.post<any>(`${this.baseUrl}/Usuarios/Actualizar`, requestBody);
@@ -157,20 +170,22 @@ export class UsuarioService {
   // Eliminar usuario - CORREGIDO (ahora usa GET con parámetros)
   eliminar(request: UsuarioEliminarRequest): Observable<any> {
     let params = new HttpParams()
-      .set('idUsuario', request.IdUsuario);
+      .set('idUsuario', request.IdUsuario)
+      .set('UsuarioAccion', this.getUsuarioActual());
 
     if (request.HardDelete !== undefined) {
       params = params.set('hardDelete', request.HardDelete.toString());
     }
-    if (request.UsuarioAccion) {
-      params = params.set('usuarioAccion', request.UsuarioAccion);
-    }
+    // if (request.UsuarioAccion) {
+    //   params = params.set('usuarioAccion', request.UsuarioAccion);
+    // }
 
     return this.http.get<any>(`${this.baseUrl}/Usuarios/Eliminar`, { params });
   }
 
   // Cambiar password - MANTENIDO (si existe el endpoint)
   cambiarPassword(request: CambiarPasswordRequest): Observable<any> {
+    request.UsuarioAccion = this.getUsuarioActual();
     return this.http.post<any>(`${this.baseUrl}/Usuarios/CambiarPassword`, request);
   }
 

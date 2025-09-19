@@ -33,7 +33,8 @@ export class RolesListComponent implements OnInit {
     const request: RolListarRequest = {
       Buscar: this.searchTerm,
       Pagina: this.currentPage,
-      TamanoPagina: this.pageSize
+      TamanoPagina: this.pageSize,
+      usuarioAccion: ''
     };
 
     // console.log('Cargando roles...', request);
