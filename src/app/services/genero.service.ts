@@ -29,12 +29,26 @@ export interface GenerosBackendResponse {
 })
 export class GenerosService {
   private apiUrl = 'http://localhost:54409/Generos';
- //private apiUrl = 'http://smart.guateplast.com.gt:58096/Generos';
+  //private apiUrl = 'http://smart.guateplast.com.gt:58096/Generos';
+
+  private getUsuarioActual(): string {
+    const sessionStr = localStorage.getItem('currentUser');
+    if (sessionStr) {
+      try {
+        const sessionObj = JSON.parse(sessionStr);
+        return sessionObj.IdUsuario || 'Desconocido';
+      } catch {
+        return 'Desconocido';
+      }
+    }
+    return 'Desconocido';
+  }
 
   constructor(private http: HttpClient) { }
 
   listar(request: GeneroListarRequest): Observable<GenerosBackendResponse> {
-    let params = new HttpParams();
+    let params = new HttpParams()
+      .set('usuarioAccion', this.getUsuarioActual());
 
     if (request.IdGenero) params = params.set('IdGenero', request.IdGenero.toString());
     if (request.BuscarNombre) params = params.set('BuscarNombre', request.BuscarNombre);
@@ -46,25 +60,25 @@ export class GenerosService {
 
   obtener(id: number): Observable<GenerosBackendResponse> {
     return this.http.get<GenerosBackendResponse>(`${this.apiUrl}/Listar`, {
-      params: { IdGenero: id.toString() }
+      params: { IdGenero: id.toString(), usuarioAccion: this.getUsuarioActual() }
     });
   }
 
   crear(nombre: string, usuario: string): Observable<any> {
     return this.http.get(`${this.apiUrl}/Crear`, {
-      params: { Nombre: nombre, Usuario: usuario }
+      params: { Nombre: nombre, Usuario: this.getUsuarioActual() ?? usuario }
     });
   }
 
   actualizar(id: number, nombre: string, usuario: string): Observable<any> {
     return this.http.get(`${this.apiUrl}/Actualizar`, {
-      params: { IdGenero: id.toString(), Nombre: nombre, Usuario: usuario }
+      params: { IdGenero: id.toString(), Nombre: nombre, Usuario: this.getUsuarioActual() ?? usuario }
     });
   }
 
   eliminar(id: number): Observable<any> {
     return this.http.get(`${this.apiUrl}/Eliminar`, {
-      params: { IdGenero: id.toString() }
+      params: { IdGenero: id.toString(), Usuario: this.getUsuarioActual() }
     });
   }
 }
