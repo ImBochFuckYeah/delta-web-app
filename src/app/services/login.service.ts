@@ -27,8 +27,8 @@ export interface ApiResponse<T> {
   providedIn: 'root'
 })
 export class LoginService {
-  private apiUrl = 'http://smart.guateplast.com.gt:58096/Login/ValidarCredenciales';
-  // http://localhost:54409/Login/ValidarCredenciales
+  //private apiUrl = 'http://smart.guateplast.com.gt:58096/Login/ValidarCredenciales';
+  private apiUrl = 'http://localhost:54409/Login/ValidarCredenciales';
 
   constructor(private http: HttpClient) { }
 

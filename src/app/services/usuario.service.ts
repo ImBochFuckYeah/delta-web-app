@@ -103,7 +103,9 @@ export interface ListarUsuariosResponse {
   providedIn: 'root'
 })
 export class UsuarioService {
-  private baseUrl = 'http://smart.guateplast.com.gt:58096';
+  //private baseUrl = 'http://smart.guateplast.com.gt:58096';
+
+  private baseUrl = 'http://localhost:54409';
 
   constructor(private http: HttpClient) { }
 

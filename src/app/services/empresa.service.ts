@@ -39,7 +39,9 @@ export interface EmpresasResponse {
   providedIn: 'root'
 })
 export class EmpresaService {
-  private baseUrl = 'http://smart.guateplast.com.gt:58096/Empresas';
+  //private baseUrl = 'http://smart.guateplast.com.gt:58096/Empresas';
+
+  private baseUrl = 'http://localhost:54409/Empresas';
 
   constructor(private http: HttpClient) { }
 

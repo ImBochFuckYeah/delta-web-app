@@ -25,7 +25,8 @@ export interface SucursalResponse {
   providedIn: 'root'
 })
 export class SucursalService {
-  private baseUrl = 'http://smart.guateplast.com.gt:58096/Sucursales';
+  //private baseUrl = 'http://smart.guateplast.com.gt:58096/Sucursales';
+  private baseUrl = 'http://localhost:54409/Sucursales';
 
   constructor(private http: HttpClient) { }
 
