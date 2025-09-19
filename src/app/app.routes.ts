@@ -3,16 +3,20 @@ import { LoginComponent } from './login/login.component';
 import { UsuarioFormComponent } from './usuario/usuario-form.component';
 import { UsuarioListComponent } from './usuario/usuario-list.component';
 import { MenuComponent } from './menu/menu.component';
-//import { AuthGuard } from './services/auth.guard.ts';
-
 import { RolesListComponent } from './Roles/roles-list.component';
 import { RolesFormComponent } from './Roles/roles-form.component';
-
+import { GenerosListComponent } from './Genero/generos-list.component';
+import { GenerosFormComponent } from './Genero/generos-form.component';
 import { AuthGuard } from './services/auth.guard';
 import { LoginGuard } from './services/login-guard';
 import { Forbidden } from './errors/forbidden/forbidden';
 import { ForgotPassword } from './forgot-password/forgot-password';
 import { ResetPassword } from './reset-password/reset-password';
+import { StatusUsuariosListComponent } from './usuario/status-usuarios-list.component';
+//import { StatusUsuariosFormComponent } from '.usuario/status-usuarios-form.component';
+import { StatusUsuariosFormComponent } from './usuario/status-usuarios-form.component';
+import { RolePermisosComponent } from './RoleOpciones/RoleOpciones.component';
+import { RolesCrearComponent } from './Roles/roles-crear.component';
 import { EmpresaListComponent } from './empresa/empresa-list.component/empresa-list.component';
 import { EmpresaFormComponent } from './empresa/empresa-form.component/empresa-form.component';
 import { SucursalListComponent } from './sucursal/sucursal-list.component/sucursal-list.component';
@@ -26,7 +30,7 @@ export const routes: Routes = [
   {
     path: 'app',
     component: MenuComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard], // Solo necesario aquí, se aplica a todas las rutas hijas
     children: [
       // usuario
       { path: 'usuarios', component: UsuarioListComponent, canActivate: [AuthGuard] },
@@ -51,6 +55,16 @@ export const routes: Routes = [
 
       // ruta principal
       { path: '', redirectTo: 'usuarios', pathMatch: 'full' }
+  
+      // generos
+      { path: 'generos', component: GenerosListComponent },
+      { path: 'generos/crear', component: GenerosFormComponent },
+      { path: 'generos/editar/:id', component: GenerosFormComponent },
+
+      // estatus usuario
+      { path: 'status-usuarios', component: StatusUsuariosListComponent },
+      { path: 'status-usuarios/crear', component: StatusUsuariosFormComponent },
+      { path: 'status-usuarios/editar/:id', component: StatusUsuariosFormComponent },
     ]
   },
   { path: '', redirectTo: '/login', pathMatch: 'full' },

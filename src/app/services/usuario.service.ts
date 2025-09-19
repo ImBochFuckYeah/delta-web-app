@@ -9,6 +9,7 @@ export interface UsuarioDto {
   Apellido: string;
   CorreoElectronico: string;
   IdSucursal: number;
+   IdGenero: number;
   IdStatusUsuario: number;
   IdRole: number;
   TelefonoMovil: string;

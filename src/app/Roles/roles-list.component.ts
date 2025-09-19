@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import {Router, RouterLink } from '@angular/router';
 import { RolesService, RolDto, RolListarRequest, RolesBackendResponse } from '../services/roles.service';
+
 
 @Component({
   selector: 'app-roles-list',
@@ -19,7 +20,9 @@ export class RolesListComponent implements OnInit {
   searchTerm = '';
   loading = false;
 
-  constructor(private rolesService: RolesService) { }
+  constructor(private rolesService: RolesService,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
     this.cargarRoles();
@@ -41,7 +44,7 @@ export class RolesListComponent implements OnInit {
 
         if (response.ok && response.data) {
           this.roles = response.data;
-          this.totalItems = response.data.length; // ✅ O usa otra propiedad si el backend devuelve el total
+          this.totalItems = response.data.length;
           console.log('Roles cargados:', this.roles);
         } else {
           console.warn('Respuesta no exitosa:', response);
@@ -92,4 +95,9 @@ export class RolesListComponent implements OnInit {
   get pages(): number[] {
     return Array.from({ length: this.totalPages }, (_, i) => i + 1);
   }
+
+  editarPermisos(idRole: number): void {
+    this.router.navigate(['/app/roles/permisos', idRole]);
+  }
+
 }

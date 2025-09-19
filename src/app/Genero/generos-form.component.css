@@ -1,0 +1,12 @@
+.form-label {
+  font-weight: 500;
+}
+
+.btn:disabled {
+  cursor: not-allowed;
+}
+
+.spinner-border-sm {
+  width: 1rem;
+  height: 1rem;
+}

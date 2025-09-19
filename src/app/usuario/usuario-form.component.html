@@ -3,6 +3,7 @@
 
   <form (ngSubmit)="onSubmit()" #usuarioForm="ngForm">
     <div class="row">
+      <!-- Columna izquierda -->
       <div class="col-md-6">
         <div class="mb-3">
           <label class="form-label">ID Usuario *</label>
@@ -23,6 +24,38 @@
         </div>
 
         <div class="mb-3">
+          <label class="form-label">Fecha de Nacimiento</label>
+          <input type="date" class="form-control" [(ngModel)]="formData.FechaNacimiento"
+                 name="FechaNacimiento">
+        </div>
+<!--
+        <div class="mb-3">
+          <label class="form-label">Género</label>
+          <select class="form-select" [(ngModel)]="formData.IdGenero" name="IdGenero">
+            <option value="1">Masculino</option>
+            <option value="2">Femenino</option>
+            <option value="3">Otro</option>
+          </select>
+        </div>
+      </div> -->
+
+              <div class="mb-3">
+          <label class="form-label">Género *</label>
+          <select class="form-select" [(ngModel)]="formData.IdGenero" name="IdGenero" required>
+            <option value="">Seleccionar género</option>
+            <option *ngFor="let genero of generos" [value]="genero.IdGenero">
+              {{ genero.Nombre }}
+            </option>
+          </select>
+          <div *ngIf="loadingGeneros" class="form-text">
+            <small class="text-muted">Cargando géneros...</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Columna derecha -->
+      <div class="col-md-6">
+        <div class="mb-3">
           <label class="form-label">Email *</label>
           <input type="email" class="form-control" [(ngModel)]="formData.CorreoElectronico"
                  name="CorreoElectronico" required>
@@ -33,9 +66,7 @@
           <input type="tel" class="form-control" [(ngModel)]="formData.TelefonoMovil"
                  name="TelefonoMovil">
         </div>
-      </div>
 
-      <div class="col-md-6">
         <div class="mb-3">
           <label class="form-label">Password {{ isEdit ? '(dejar vacío para no cambiar)' : '*' }}</label>
           <input type="password" class="form-control" [(ngModel)]="formData.Password"
@@ -55,13 +86,7 @@
           </div>
         </div>
 
-        <!-- <div class="mb-3">
-          <label class="form-label">Rol</label>
-          <input type="number" class="form-control" [(ngModel)]="formData.IdRole"
-                 name="IdRole">
-        </div> -->
-
-               <div class="mb-3">
+        <div class="mb-3">
           <label class="form-label">Rol *</label>
           <select class="form-select" [(ngModel)]="formData.IdRole" name="IdRole" required>
             <option value="">Seleccionar rol</option>
@@ -74,30 +99,81 @@
           </div>
         </div>
 
-        <div class="mb-3">
-          <label class="form-label">Foto</label>
-          <input type="file" class="form-control" (change)="onFileSelected($event)"
-                 accept="image/*">
-        </div>
+        <!-- <div class="mb-3">
+          <label class="form-label">Estado</label>
+          <select class="form-select" [(ngModel)]="formData.IdStatusUsuario" name="IdStatusUsuario">
+            <option value="1">Activo</option>
+            <option value="2">Inactivo</option>
+            <option value="3">Bloqueado</option>
+          </select>
+        </div> -->
 
-        <div class="mb-3" *ngIf="formData.FotografiaBase64">
-          <img [src]="formData.FotografiaBase64" alt="Preview" class="img-thumbnail" style="max-height: 100px;">
+<div class="mb-3">
+  <label class="form-label">Estado *</label>
+  <select class="form-select" [(ngModel)]="formData.IdStatusUsuario" name="IdStatusUsuario" required>
+    <option value="">Seleccionar estado</option>
+    <option *ngFor="let status of statusUsuarios" [value]="status.IdStatusUsuario">
+      {{ status.Nombre }}
+    </option>
+  </select>
+  <div *ngIf="loadingStatus" class="form-text">
+    <small class="text-muted">Cargando estados...</small>
+  </div>
+</div>
+
+
+
+      </div>
+
+
+
+
+    </div>
+
+    <!-- Campos adicionales -->
+    <div class="row">
+      <div class="col-md-6">
+        <div class="mb-3">
+          <label class="form-label">Pregunta de Seguridad</label>
+          <input type="text" class="form-control" [(ngModel)]="formData.Pregunta"
+                 name="Pregunta">
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="mb-3">
+          <label class="form-label">Respuesta de Seguridad</label>
+          <input type="text" class="form-control" [(ngModel)]="formData.Respuesta"
+                 name="Respuesta">
         </div>
       </div>
     </div>
 
-<div class="row">
-  <div class="col-12">
-    <button type="submit" class="btn btn-primary" [disabled]="loading || !usuarioForm.form.valid || loadingSucursales">
-      <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
-      {{ isEdit ? 'Actualizar' : 'Crear' }} Usuario
-    </button>
+    <div class="mb-3">
+      <label class="form-label">Foto</label>
+      <input type="file" class="form-control" (change)="onFileSelected($event)"
+             accept="image/*">
+    </div>
 
-    <!-- Botón Cancelar con clases corregidas -->
-    <button type="button" class="btn btn-outline-secondary ms-2" (click)="onCancel()">
-      Cancelar
-    </button>
-  </div>
-</div>
+    <div class="mb-3" *ngIf="formData.FotografiaBase64">
+      <img [src]="formData.FotografiaBase64" alt="Preview" class="img-thumbnail" style="max-height: 100px;">
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <!-- <button type="submit" class="btn btn-primary" [disabled]="loading || !usuarioForm.form.valid || loadingSucursales">
+          <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+          {{ isEdit ? 'Actualizar' : 'Crear' }} Usuario
+        </button> -->
+
+        <button type="submit" class="btn btn-primary"
+        [disabled]="loading || !usuarioForm.form.valid || loadingSucursales || loadingRoles || loadingGeneros || loadingStatus">
+  {{ isEdit ? 'Actualizar' : 'Crear' }} Usuario
+</button>
+
+        <button type="button" class="btn btn-outline-secondary ms-2" (click)="onCancel()">
+          Cancelar
+        </button>
+      </div>
+    </div>
   </form>
 </div>

@@ -12,6 +12,73 @@
       </div>
     </div>
 
+    <!-- Sección de Permisos (solo para edición) -->
+    <div class="row" *ngIf="isEdit">
+      <div class="col-12">
+        <div class="card mb-4">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Permisos del Rol</h5>
+            <button type="button" class="btn btn-sm btn-outline-primary"
+                    (click)="togglePermisos()">
+              {{ mostrarPermisos ? 'Ocultar' : 'Mostrar' }} Permisos
+            </button>
+          </div>
+
+          <div class="card-body" *ngIf="mostrarPermisos">
+            <div *ngIf="loadingPermisos" class="text-center">
+              <div class="spinner-border spinner-border-sm" role="status">
+                <span class="visually-hidden">Cargando permisos...</span>
+              </div>
+            </div>
+
+            <div *ngIf="!loadingPermisos && permisos.length === 0" class="alert alert-info">
+              No se encontraron permisos para este rol.
+            </div>
+
+            <div *ngIf="!loadingPermisos && permisos.length > 0" class="table-responsive">
+              <table class="table table-bordered table-hover">
+                <thead class="table-dark">
+                  <tr>
+                    <th>Opción</th>
+                    <th class="text-center">Alta</th>
+                    <th class="text-center">Baja</th>
+                    <th class="text-center">Cambio</th>
+                    <th class="text-center">Imprimir</th>
+                    <th class="text-center">Exportar</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let permiso of permisos">
+                    <td>{{permiso.NombreOpcion}}</td>
+                    <td class="text-center">
+                      <input type="checkbox" [checked]="permiso.Alta"
+                             (change)="permiso.Alta = !permiso.Alta">
+                    </td>
+                    <td class="text-center">
+                      <input type="checkbox" [checked]="permiso.Baja"
+                             (change)="permiso.Baja = !permiso.Baja">
+                    </td>
+                    <td class="text-center">
+                      <input type="checkbox" [checked]="permiso.Cambio"
+                             (change)="permiso.Cambio = !permiso.Cambio">
+                    </td>
+                    <td class="text-center">
+                      <input type="checkbox" [checked]="permiso.Imprimir"
+                             (change)="permiso.Imprimir = !permiso.Imprimir">
+                    </td>
+                    <td class="text-center">
+                      <input type="checkbox" [checked]="permiso.Exportar"
+                             (change)="permiso.Exportar = !permiso.Exportar">
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="row">
       <div class="col-12">
         <button type="submit" class="btn btn-primary" [disabled]="loading || !rolForm.form.valid">
@@ -20,6 +87,12 @@
         </button>
         <button type="button" class="btn btn-secondary ms-2" (click)="onCancel()">
           Cancelar
+        </button>
+
+        <!-- Botón para ir a la vista completa de permisos -->
+        <button *ngIf="isEdit" type="button" class="btn btn-info ms-2"
+                [routerLink]="['/app/roles/permisos', roleId]">
+          <i class="bi bi-key"></i> Gestionar Permisos Completo
         </button>
       </div>
     </div>

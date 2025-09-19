@@ -1,10 +1,10 @@
 <div class="container mt-4">
-  <h2>Gestión de Roles</h2>
+  <h2>Gestión de Status Usuarios</h2>
 
   <div class="row mb-3">
     <div class="col-md-6">
       <div class="input-group">
-        <input type="text" class="form-control" placeholder="Buscar roles..."
+        <input type="text" class="form-control" placeholder="Buscar status usuarios..."
                [(ngModel)]="searchTerm" (keyup.enter)="onSearch()">
         <button class="btn btn-primary" (click)="onSearch()" [disabled]="loading">
           <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
@@ -13,12 +13,9 @@
       </div>
     </div>
     <div class="col-md-6 text-end">
-      <!-- <button class="btn btn-success" routerLink="/app/roles/crear">
-        <i class="bi bi-plus-circle"></i> Nuevo Rol
-      </button> -->
-      <button class="btn btn-success" routerLink="/app/roles/crear">
-  <i class="bi bi-plus-circle"></i> Nuevo Rol con Permisos
-</button>
+      <button class="btn btn-success" routerLink="/app/status-usuarios/crear">
+        <i class="bi bi-plus-circle"></i> Nuevo Status Usuario
+      </button>
     </div>
   </div>
 
@@ -34,30 +31,23 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let role of roles">
-          <td>{{ role.IdRole }}</td>
-          <td>{{ role.Nombre }}</td>
-          <td>{{ role.FechaCreacion | date:'short' }}</td>
-          <td>{{ role.UsuarioCreacion }}</td>
+        <tr *ngFor="let statusUsuario of statusUsuarios">
+          <td>{{ statusUsuario.IdStatusUsuario }}</td>
+          <td>{{ statusUsuario.Nombre }}</td>
+          <td>{{ statusUsuario.FechaCreacion | date:'short' }}</td>
+          <td>{{ statusUsuario.UsuarioCreacion }}</td>
           <td>
-            <button class="btn btn-info btn-sm me-2"
-                    (click)="editarPermisos(role.IdRole)"
-                    title="Editar Permisos">
-              <i class="bi bi-key"></i> Permisos
+            <button class="btn btn-sm btn-primary me-2"
+                    [routerLink]="['/app/status-usuarios/editar', statusUsuario.IdStatusUsuario]">
+              Editar
             </button>
-
-            <button class="btn btn-primary btn-sm me-2"
-                    [routerLink]="['/app/roles/editar', role.IdRole]">
-              <i class="bi bi-pencil"></i> Editar
-            </button>
-
-            <button class="btn btn-danger btn-sm" (click)="eliminarRol(role.IdRole)">
-              <i class="bi bi-trash"></i> Eliminar
+            <button class="btn btn-sm btn-danger" (click)="eliminarStatusUsuario(statusUsuario.IdStatusUsuario)">
+              Eliminar
             </button>
           </td>
         </tr>
-        <tr *ngIf="roles.length === 0 && !loading">
-          <td colspan="5" class="text-center">No se encontraron roles</td>
+        <tr *ngIf="statusUsuarios.length === 0 && !loading">
+          <td colspan="5" class="text-center">No se encontraron status usuarios</td>
         </tr>
       </tbody>
     </table>
