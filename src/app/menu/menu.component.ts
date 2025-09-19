@@ -14,7 +14,8 @@ export class MenuComponent {
   menuItems = [
     { path: '/app/usuarios', label: 'Gestión de Usuarios', icon: 'bi-people' },
     { path: '/app/roles', label: 'Gestion de Roles', icon: 'bi-people' },
-    { path: '/app/dashboard', label: 'Dashboard', icon: 'bi-speedometer2' }
+    { path: '/app/empresas', label: 'Gestion de Empresas', icon: 'bi-people' },
+    { path: '/app/sucursales', label: 'Gestion de Sucursales', icon: 'bi-people' }
   ];
 
   currentUser: any;

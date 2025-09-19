@@ -12,19 +12,19 @@ import { RoleNamePipe } from '../pipes/role-name.pipe';
 @Component({
   selector: 'app-usuario-list',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink,SucursalNamePipe, RoleNamePipe],
+  imports: [CommonModule, FormsModule, RouterLink, SucursalNamePipe, RoleNamePipe],
   templateUrl: './usuario-list.component.html',
   styleUrls: ['./usuario-list.component.css']
 })
 export class UsuarioListComponent implements OnInit {
   usuarios: UsuarioDto[] = [];
   sucursales: any[] = [];
-  roles: any [] = [];
+  roles: any[] = [];
   totalItems = 0;
   currentPage = 1;
   pageSize = 10;
- // searchTerm = 'admin';
-searchTerm = '';
+  // searchTerm = 'admin';
+  searchTerm = '';
   loading = false;
   loadingSucursales = false;
   loadingRoles = false;
@@ -42,29 +42,29 @@ searchTerm = '';
 
   }
 
-cargarRoles(): void {
-  this.loadingRoles = true;
-  this.rolesService.obtenerTodosLosRoles().subscribe({
-    next: (roles) => {
-      console.log('Roles recibidos:', roles); // ✅ Debug
-      console.log('Tipo de datos:', typeof roles); // ✅ Debug
-      console.log('Es array?', Array.isArray(roles)); // ✅ Debug
+  cargarRoles(): void {
+    this.loadingRoles = true;
+    this.rolesService.obtenerTodosLosRoles().subscribe({
+      next: (roles) => {
+        console.log('Roles recibidos:', roles); // ✅ Debug
+        console.log('Tipo de datos:', typeof roles); // ✅ Debug
+        console.log('Es array?', Array.isArray(roles)); // ✅ Debug
 
-      if (Array.isArray(roles)) {
-        this.roles = roles;
-      } else {
-        console.error('Los roles no son un array:', roles);
-        this.roles = [];
+        if (Array.isArray(roles)) {
+          this.roles = roles;
+        } else {
+          console.error('Los roles no son un array:', roles);
+          this.roles = [];
+        }
+
+        this.loadingRoles = false;
+      },
+      error: (error) => {
+        console.error('Error al cargar roles:', error);
+        this.loadingRoles = false;
       }
-
-      this.loadingRoles = false;
-    },
-    error: (error) => {
-      console.error('Error al cargar roles:', error);
-      this.loadingRoles = false;
-    }
-  });
-}
+    });
+  }
 
   cargarSucursales(): void {
     this.loadingSucursales = true;
@@ -82,28 +82,28 @@ cargarRoles(): void {
     });
   }
 
-cargarUsuarios(): void {
-  this.loading = true;
-  const request: UsuarioListarRequest = {
-    Buscar: this.searchTerm,
-    Pagina: this.currentPage,
-    TamanoPagina: this.pageSize
-  };
+  cargarUsuarios(): void {
+    this.loading = true;
+    const request: UsuarioListarRequest = {
+      Buscar: this.searchTerm,
+      Pagina: this.currentPage,
+      TamanoPagina: this.pageSize
+    };
 
-  this.usuarioService.listar(request).subscribe({
-    next: (response) => {
-      if (response.Resultado === 1) { // Ahora usa Resultado en lugar de Exito
-        this.usuarios = response.Items;
-        this.totalItems = response.Total;
+    this.usuarioService.listar(request).subscribe({
+      next: (response) => {
+        if (response.Resultado === 1) { // Ahora usa Resultado en lugar de Exito
+          this.usuarios = response.Items;
+          this.totalItems = response.Total;
+        }
+        this.loading = false;
+      },
+      error: (error) => {
+        console.error('Error al cargar usuarios:', error);
+        this.loading = false;
       }
-      this.loading = false;
-    },
-    error: (error) => {
-      console.error('Error al cargar usuarios:', error);
-      this.loading = false;
-    }
-  });
-}
+    });
+  }
 
   onSearch(): void {
     this.currentPage = 1;

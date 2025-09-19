@@ -1,0 +1,56 @@
+<div class="container mt-4">
+  <h2>{{ editMode ? 'Editar Empresa' : 'Crear Empresa' }}</h2>
+  <form #empresaForm="ngForm" (ngSubmit)="onSubmit()" autocomplete="off">
+    <div class="mb-3">
+      <label for="nombre" class="form-label">Nombre</label>
+      <input type="text" id="nombre" class="form-control" required [(ngModel)]="empresa.Nombre" name="nombre">
+    </div>
+    <div class="mb-3">
+      <label for="direccion" class="form-label">Dirección</label>
+      <input type="text" id="direccion" class="form-control" required [(ngModel)]="empresa.Direccion" name="direccion">
+    </div>
+    <div class="mb-3">
+      <label for="nit" class="form-label">NIT</label>
+      <input type="text" id="nit" class="form-control" required [(ngModel)]="empresa.Nit" name="nit">
+    </div>
+    <div class="mb-3">
+      <label for="PasswordCantidadMayusculas" class="form-label">Cantidad de Mayúsculas</label>
+      <input type="number" id="PasswordCantidadMayusculas" class="form-control" [(ngModel)]="empresa.PasswordCantidadMayusculas" name="PasswordCantidadMayusculas">
+    </div>
+    <div class="mb-3">
+      <label for="PasswordCantidadMinusculas" class="form-label">Cantidad de Minúsculas</label>
+      <input type="number" id="PasswordCantidadMinusculas" class="form-control" [(ngModel)]="empresa.PasswordCantidadMinusculas" name="PasswordCantidadMinusculas">
+    </div>
+    <div class="mb-3">
+      <label for="PasswordCantidadCaracteresEspeciales" class="form-label">Cantidad de Caracteres Especiales</label>
+      <input type="number" id="PasswordCantidadCaracteresEspeciales" class="form-control" [(ngModel)]="empresa.PasswordCantidadCaracteresEspeciales" name="PasswordCantidadCaracteresEspeciales">
+    </div>
+    <div class="mb-3">
+      <label for="PasswordCantidadCaducidadDias" class="form-label">Días de Caducidad de Contraseña</label>
+      <input type="number" id="PasswordCantidadCaducidadDias" class="form-control" [(ngModel)]="empresa.PasswordCantidadCaducidadDias" name="PasswordCantidadCaducidadDias">
+    </div>
+    <div class="mb-3">
+      <label for="PasswordLargo" class="form-label">Largo de Contraseña</label>
+      <input type="number" id="PasswordLargo" class="form-control" [(ngModel)]="empresa.PasswordLargo" name="PasswordLargo">
+    </div>
+    <div class="mb-3">
+      <label for="PasswordIntentosAntesDeBloquear" class="form-label">Intentos Antes de Bloquear</label>
+      <input type="number" id="PasswordIntentosAntesDeBloquear" class="form-control" [(ngModel)]="empresa.PasswordIntentosAntesDeBloquear" name="PasswordIntentosAntesDeBloquear">
+    </div>
+    <div class="mb-3">
+      <label for="PasswordCantidadNumeros" class="form-label">Cantidad de Números</label>
+      <input type="number" id="PasswordCantidadNumeros" class="form-control" [(ngModel)]="empresa.PasswordCantidadNumeros" name="PasswordCantidadNumeros">
+    </div>
+    <div class="mb-3">
+      <label for="PasswordCantidadPreguntasValidar" class="form-label">Cantidad de Preguntas a Validar</label>
+      <input type="number" id="PasswordCantidadPreguntasValidar" class="form-control" [(ngModel)]="empresa.PasswordCantidadPreguntasValidar" name="PasswordCantidadPreguntasValidar">
+    </div>
+    <button type="submit" class="btn btn-success" [disabled]="loading || empresaForm.invalid">
+      <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+      {{ editMode ? 'Actualizar' : 'Crear' }}
+    </button>
+    <button type="button" class="btn btn-secondary ms-2" routerLink="/app/empresas">Cancelar</button>
+  </form>
+  <div *ngIf="error" class="alert alert-danger mt-3">{{ error }}</div>
+  <div *ngIf="success" class="alert alert-success mt-3">{{ success }}</div>
+</div>
