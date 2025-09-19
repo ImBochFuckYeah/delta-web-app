@@ -21,10 +21,14 @@ import { EmpresaListComponent } from './empresa/empresa-list.component/empresa-l
 import { EmpresaFormComponent } from './empresa/empresa-form.component/empresa-form.component';
 import { SucursalListComponent } from './sucursal/sucursal-list.component/sucursal-list.component';
 import { SucursalFormComponent } from './sucursal/sucursal-form.component/sucursal-form.component';
+import { NotFound } from './errors/not-found/not-found';
+import { WelcomePage } from './welcome-page/welcome-page';
+import { RoutePermissionGuard } from './services/route-permission-guard';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [LoginGuard] },
   { path: 'forbidden', component: Forbidden },
+  { path: 'not-found', component: NotFound },
   { path: 'forgot-password', component: ForgotPassword },
   { path: 'reset-password/:usuario', component: ResetPassword },
   {
@@ -33,40 +37,41 @@ export const routes: Routes = [
     canActivate: [AuthGuard], // Solo necesario aquí, se aplica a todas las rutas hijas
     children: [
       // usuario
-      { path: 'usuarios', component: UsuarioListComponent, canActivate: [AuthGuard] },
-      { path: 'usuarios/crear', component: UsuarioFormComponent, canActivate: [AuthGuard] },
-      { path: 'usuarios/editar/:id', component: UsuarioFormComponent, canActivate: [AuthGuard] },
-      { path: '', redirectTo: 'usuarios', pathMatch: 'full' },
+      { path: 'usuarios', component: UsuarioListComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+      { path: 'usuarios/crear', component: UsuarioFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+      { path: 'usuarios/editar/:id', component: UsuarioFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
 
       // roles
-      { path: 'roles', component: RolesListComponent, canActivate: [AuthGuard] },
-      { path: 'roles/crear', component: RolesFormComponent, canActivate: [AuthGuard] },
-      { path: 'roles/editar/:id', component: RolesFormComponent, canActivate: [AuthGuard] },
-      
+      { path: 'roles', component: RolesListComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+      //{ path: 'roles/crear', component: RolesFormComponent },
+      { path: 'roles/crear', component: RolesCrearComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+      { path: 'roles/editar/:id', component: RolesFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+      { path: 'roles/permisos/:id', component: RolePermisosComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+
       // empresas
-      { path: 'empresas', component: EmpresaListComponent, canActivate: [AuthGuard]},
-      { path: 'empresas/crear', component: EmpresaFormComponent, canActivate: [AuthGuard]},
-      { path: 'empresas/editar/:id', component: EmpresaFormComponent, canActivate: [AuthGuard]},
-      
+      { path: 'empresas', component: EmpresaListComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+      { path: 'empresas/crear', component: EmpresaFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+      { path: 'empresas/editar/:id', component: EmpresaFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+
       // sucursales
-      { path: 'sucursales', component: SucursalListComponent, canActivate: [AuthGuard]},
-      { path: 'sucursales/crear', component: SucursalFormComponent, canActivate: [AuthGuard]},
-      { path: 'sucursales/editar/:id', component: SucursalFormComponent, canActivate: [AuthGuard]},
+      { path: 'sucursales', component: SucursalListComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+      { path: 'sucursales/crear', component: SucursalFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+      { path: 'sucursales/editar/:id', component: SucursalFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
 
       // ruta principal
-      { path: '', redirectTo: 'usuarios', pathMatch: 'full' },
-  
+      { path: '', component: WelcomePage, canActivate: [AuthGuard] },
+
       // generos
-      { path: 'generos', component: GenerosListComponent },
-      { path: 'generos/crear', component: GenerosFormComponent },
-      { path: 'generos/editar/:id', component: GenerosFormComponent },
+      { path: 'generos', component: GenerosListComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+      { path: 'generos/crear', component: GenerosFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+      { path: 'generos/editar/:id', component: GenerosFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
 
       // estatus usuario
-      { path: 'status-usuarios', component: StatusUsuariosListComponent },
-      { path: 'status-usuarios/crear', component: StatusUsuariosFormComponent },
-      { path: 'status-usuarios/editar/:id', component: StatusUsuariosFormComponent },
+      { path: 'status-usuarios', component: StatusUsuariosListComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+      { path: 'status-usuarios/crear', component: StatusUsuariosFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+      { path: 'status-usuarios/editar/:id', component: StatusUsuariosFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
     ]
   },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
-  { path: '**', redirectTo: '/forbidden' }
+  { path: '**', redirectTo: '/not-found' }
 ];

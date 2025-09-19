@@ -34,16 +34,16 @@ export class StatusUsuariosListComponent implements OnInit {
       TamanoPagina: this.pageSize
     };
 
-    console.log('Cargando status usuarios...', request);
+    // console.log('Cargando status usuarios...', request);
 
     this.statusUsuariosService.listar(request).subscribe({
       next: (response: StatusUsuariosBackendResponse) => {
-        console.log('Respuesta del backend:', response);
+        // console.log('Respuesta del backend:', response);
 
         if (response.ok && response.data) {
           this.statusUsuarios = response.data;
           this.totalItems = response.data.length;
-          console.log('Status usuarios cargados:', this.statusUsuarios);
+          // console.log('Status usuarios cargados:', this.statusUsuarios);
         } else {
           console.warn('Respuesta no exitosa:', response);
         }
