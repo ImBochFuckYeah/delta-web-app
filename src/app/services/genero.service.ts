@@ -5,10 +5,10 @@ import { Observable } from 'rxjs';
 export interface GeneroDto {
   IdGenero: number;
   Nombre: string;
-  FechaCreacion: string;
-  UsuarioCreacion: string;
-  FechaModificacion: string | null;
-  UsuarioModificacion: string | null;
+  FechaCreacion?: string;
+  UsuarioCreacion?: string;
+  FechaModificacion?: string | null;
+  UsuarioModificacion?: string | null;
 }
 
 export interface GeneroListarRequest {
@@ -19,9 +19,12 @@ export interface GeneroListarRequest {
 }
 
 export interface GenerosBackendResponse {
-  ok: boolean;
-  data: GeneroDto[];
+  ok?: boolean;
+  data?: GeneroDto[];
   error?: string;
+  Mensaje?: string;
+  Resultado?: number;
+  Items: GeneroDto[];
 }
 
 @Injectable({
@@ -78,7 +81,7 @@ export class GenerosService {
 
   eliminar(id: number): Observable<any> {
     return this.http.get(`${this.apiUrl}/Eliminar`, {
-      params: { IdGenero: id.toString(), Usuario: this.getUsuarioActual() }
+      params: { IdGenero: id.toString(), Usuario: this.getUsuarioActual(), HardDelete: 'true' }
     });
   }
 }

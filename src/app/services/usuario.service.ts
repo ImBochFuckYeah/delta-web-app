@@ -191,7 +191,7 @@ export class UsuarioService {
 
   // Métodos para recuperación de contraseña - MANTENIDOS
   obtenerUsuario(correo: string): Observable<any> {
-    const params = new HttpParams().set('correoElectronico', correo);
+    const params = new HttpParams().set('correoElectronico', correo).set('usuarioAccion', 'Administrador');
     return this.http.get<any>(`${this.baseUrl}/Usuarios/Obtener`, { params });
   }
 

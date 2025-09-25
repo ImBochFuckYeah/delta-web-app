@@ -21,8 +21,9 @@ export interface RolListarRequest {
 }
 
 export interface RolesBackendResponse {
-  ok: boolean;
-  data: RolDto[];
+  Mensaje: string;
+  Resultado: number;
+  Items: RolDto[];
 }
 
 export interface ApiResponse<T> {
@@ -68,13 +69,14 @@ export class RolesService {
   obtener(idRole: number): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/Listar`, {
       params: { IdRole: idRole.toString(), UsuarioAccion: this.getUsuarioActual() }
-    }).pipe(
-      map(response => ({
-        Exito: response.ok,
-        Mensaje: response.ok ? 'Éxito' : 'Error',
-        Datos: response.data ? response.data[0] : null
-      }))
-    );
+    })
+    // .pipe(
+    //   map(response => ({
+    //     Exito: response.ok,
+    //     Mensaje: response.ok ? 'Éxito' : 'Error',
+    //     Datos: response.data ? response.data[0] : null
+    //   })))
+      ;
   }
 
   crear(nombre: string, usuario: string = 'admin'): Observable<any> {

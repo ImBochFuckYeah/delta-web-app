@@ -40,11 +40,14 @@ export class GenerosFormComponent implements OnInit {
     this.loading = true;
     this.generosService.obtener(this.generoId).subscribe({
       next: (response) => {
-        if (response.ok && response.data && response.data.length > 0) {
-          this.formData = {
-            ...this.formData,
-            ...response.data[0]
-          };
+        if (response.Mensaje === 'OK' && response.Resultado === 1 && response.Items.length > 0) {
+            const genero = response.Items.find((item: any) => item.IdGenero === this.generoId);
+            if (genero) {
+            this.formData = {
+              ...this.formData,
+              ...genero
+            };
+            }
         }
         this.loading = false;
       },
