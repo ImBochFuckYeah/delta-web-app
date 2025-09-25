@@ -35,9 +35,9 @@ export class GenerosListComponent implements OnInit {
 
     this.generoService.listar(request).subscribe({
       next: (response: GenerosBackendResponse) => {
-        if (response.ok && response.data) {
-          this.generos = response.data;
-          this.totalItems = response.data.length;
+        if (response.Mensaje === 'OK' && response.Resultado == 1) {
+          this.generos = response.Items;
+          this.totalItems = response.Items.length;
         } else {
           console.warn('Respuesta no exitosa:', response);
         }
@@ -65,7 +65,7 @@ export class GenerosListComponent implements OnInit {
     if (confirm('¿Está seguro de eliminar este género?')) {
       this.generoService.eliminar(idGenero).subscribe({
         next: (response: any) => {
-          if (response.ok) {
+          if (response.Resultado === 1) {
             alert('Género eliminado correctamente');
             this.cargarGeneros();
           } else {

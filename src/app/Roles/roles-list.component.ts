@@ -43,9 +43,9 @@ export class RolesListComponent implements OnInit {
       next: (response: RolesBackendResponse) => {
         // console.log('Respuesta del backend:', response);
 
-        if (response.ok && response.data) {
-          this.roles = response.data;
-          this.totalItems = response.data.length;
+        if (response.Mensaje === 'OK' && response.Resultado == 1) {
+          this.roles = response.Items;
+          this.totalItems = response.Items.length;
           // console.log('Roles cargados:', this.roles);
         } else {
           console.warn('Respuesta no exitosa:', response);

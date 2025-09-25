@@ -2,7 +2,6 @@ import { Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { UsuarioFormComponent } from './usuario/usuario-form.component';
 import { UsuarioListComponent } from './usuario/usuario-list.component';
-import { MenuComponent } from './menu/menu.component';
 import { RolesListComponent } from './Roles/roles-list.component';
 import { RolesFormComponent } from './Roles/roles-form.component';
 import { GenerosListComponent } from './Genero/generos-list.component';
@@ -24,6 +23,9 @@ import { SucursalFormComponent } from './sucursal/sucursal-form.component/sucurs
 import { NotFound } from './errors/not-found/not-found';
 import { WelcomePage } from './welcome-page/welcome-page';
 import { RoutePermissionGuard } from './services/route-permission-guard';
+import { SidebarComponent } from './sidebar/sidebar.component';
+import { ModuloListComponent } from './modulo/modulo-list/modulo-list.component';
+import { ModuloFormComponent } from './modulo/modulo-form/modulo-form.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [LoginGuard] },
@@ -33,7 +35,7 @@ export const routes: Routes = [
   { path: 'reset-password/:usuario', component: ResetPassword },
   {
     path: 'app',
-    component: MenuComponent,
+    component: SidebarComponent,
     canActivate: [AuthGuard], // Solo necesario aquí, se aplica a todas las rutas hijas
     children: [
       // usuario
@@ -70,6 +72,11 @@ export const routes: Routes = [
       { path: 'status-usuarios', component: StatusUsuariosListComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
       { path: 'status-usuarios/crear', component: StatusUsuariosFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
       { path: 'status-usuarios/editar/:id', component: StatusUsuariosFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+
+      // modulos
+      { path: 'modulos', component: ModuloListComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+      { path: 'modulos/crear', component: ModuloFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+      { path: 'modulos/editar/:id', component: ModuloFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
     ]
   },
   { path: '', redirectTo: '/login', pathMatch: 'full' },

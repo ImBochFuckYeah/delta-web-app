@@ -46,10 +46,11 @@ export class RolesFormComponent implements OnInit {
     this.loading = true;
     this.rolesService.obtener(this.roleId).subscribe({
       next: (response) => {
-        if (response.Exito && response.Datos) {
+        console.log('Response al cargar rol:', response);
+        if (response.Mensaje === 'OK' && response.Resultado == 1) {
           this.formData = {
             ...this.formData,
-            ...response.Datos
+            ...response.Items[0]
           };
         }
         this.loading = false;
