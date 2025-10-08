@@ -110,8 +110,8 @@ export class EmpresaService {
       .set('PasswordLargo', request.PasswordLargo!)
       .set('PasswordIntentosAntesDeBloquear', request.PasswordIntentosAntesDeBloquear!)
       .set('PasswordCantidadNumeros', request.PasswordCantidadNumeros!)
-      .set('PasswordCantidadPreguntasValidar', request.PasswordCantidadPreguntasValidar!)
-      .set('Usuario', request.Usuario);
+      .set('PasswordCantidadPreguntasValidar', request.PasswordCantidadPreguntasValidar!);
+      // .set('Usuario', request.Usuario);
     return this.http.get<EmpresasResponse>(`${this.baseUrl}/Actualizar`, { params });
   }
 

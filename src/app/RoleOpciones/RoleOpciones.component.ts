@@ -36,8 +36,8 @@ export class RolePermisosComponent implements OnInit {
     // Cargar nombre del rol
     this.rolesService.obtener(this.roleId).subscribe({
       next: (roleResponse) => {
-        if (roleResponse.Exito && roleResponse.Datos) {
-          this.roleNombre = roleResponse.Datos.Nombre;
+        if (roleResponse.Mensaje === 'OK' && roleResponse.Resultado === 1) {
+          this.roleNombre = roleResponse.Items[0].Nombre;
         }
 
         // Cargar permisos

@@ -107,16 +107,16 @@ export class UsuarioListComponent implements OnInit {
     this.loadingGeneros = true;
     this.generosService.listar({}).subscribe({
       next: (response) => {
-        if (response.ok && response.data) {
-          this.generos = response.data;
+        if (response.Mensaje === 'ok' && response.Resultado === 1) {
+          this.generos = response.Items;
         } else {
-          console.error('Respuesta no ok:', response);
+          // console.error('Respuesta no ok:', response);
           this.generos = [];
         }
         this.loadingGeneros = false;
       },
       error: (error) => {
-        console.error('Error al cargar géneros:', error);
+        // console.error('Error al cargar géneros:', error);
         this.loadingGeneros = false;
         this.generos = [];
       }
