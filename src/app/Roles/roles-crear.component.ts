@@ -79,7 +79,8 @@ export class RolesCrearComponent implements OnInit {
     ).subscribe({
       next: (response) => {
         this.loading = false;
-        if (response.ok || response.Exito) {
+        console.log('Respuesta del servidor:', response);
+        if (response.Resultado === 1) {
           alert('Rol creado con permisos correctamente');
           this.router.navigate(['/app/roles']);
         } else {

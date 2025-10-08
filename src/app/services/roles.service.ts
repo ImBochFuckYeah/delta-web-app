@@ -141,8 +141,8 @@ export class RolesService {
       }
     }).pipe(
       switchMap((response) => {
-        if (response.ok && response.data) {
-          const nuevoRolId = response.data.IdRole;
+        if (response.Mensaje === 'Creado' && response.Resultado === 1) {
+          const nuevoRolId = response.Data.IdRole;
           // Si hay permisos para asignar, los guardamos
           if (permisos.length > 0) {
             return this.roleOpcionesService.guardarMultiple(

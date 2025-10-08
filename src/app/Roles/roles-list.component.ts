@@ -74,7 +74,7 @@ export class RolesListComponent implements OnInit {
     if (confirm('¿Está seguro de eliminar este rol?')) {
       this.rolesService.eliminar(idRole).subscribe({
         next: (response) => {
-          if (response.ok) {
+          if (response.Resultado === 1) {
             alert('Rol eliminado correctamente');
             this.cargarRoles();
           } else {
