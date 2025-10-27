@@ -54,9 +54,9 @@ export const routes: Routes = [
       { path: 'roles/permisos/:id', component: RolePermisosComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
 
       // empresas
-      { path: 'empresa', component: EmpresaListComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
-      { path: 'empresa/crear', component: EmpresaFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
-      { path: 'empresa/editar/:id', component: EmpresaFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+      { path: 'empresas', component: EmpresaListComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+      { path: 'empresas/crear', component: EmpresaFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+      { path: 'empresas/editar/:id', component: EmpresaFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
 
       // sucursales
       { path: 'sucursales', component: SucursalListComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
