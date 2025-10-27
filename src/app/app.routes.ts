@@ -26,6 +26,9 @@ import { RoutePermissionGuard } from './services/route-permission-guard';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { ModuloListComponent } from './modulo/modulo-list/modulo-list.component';
 import { ModuloFormComponent } from './modulo/modulo-form/modulo-form.component';
+import { TiposCuentaComponent } from './tipos-cuenta/tipos-cuenta.component';
+import { TiposDocumentoComponent } from './tipos-documento/tipos-documento.component';
+
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [LoginGuard] },
@@ -77,6 +80,12 @@ export const routes: Routes = [
       { path: 'modulos', component: ModuloListComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
       { path: 'modulos/crear', component: ModuloFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
       { path: 'modulos/editar/:id', component: ModuloFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+
+      // tipos de cuenta
+      { path: 'tipo_saldo_cuenta', component: TiposCuentaComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+      // tipos de documento
+      { path: 'tipos_documento', component: TiposDocumentoComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+
     ]
   },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
