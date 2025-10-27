@@ -26,6 +26,9 @@ import { RoutePermissionGuard } from './services/route-permission-guard';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { ModuloListComponent } from './modulo/modulo-list/modulo-list.component';
 import { ModuloFormComponent } from './modulo/modulo-form/modulo-form.component';
+import { TiposCuentaComponent } from './tipos-cuenta/tipos-cuenta.component';
+import { TiposDocumentoComponent } from './tipos-documento/tipos-documento.component';
+
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [LoginGuard] },
@@ -51,9 +54,9 @@ export const routes: Routes = [
       { path: 'roles/permisos/:id', component: RolePermisosComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
 
       // empresas
-      { path: 'empresas', component: EmpresaListComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
-      { path: 'empresas/crear', component: EmpresaFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
-      { path: 'empresas/editar/:id', component: EmpresaFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+      { path: 'empresa', component: EmpresaListComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+      { path: 'empresa/crear', component: EmpresaFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+      { path: 'empresa/editar/:id', component: EmpresaFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
 
       // sucursales
       { path: 'sucursales', component: SucursalListComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
@@ -77,6 +80,12 @@ export const routes: Routes = [
       { path: 'modulos', component: ModuloListComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
       { path: 'modulos/crear', component: ModuloFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
       { path: 'modulos/editar/:id', component: ModuloFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+
+      // tipos de cuenta
+      { path: 'tipo_saldo_cuenta', component: TiposCuentaComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+      // tipos de documento
+      { path: 'tipos_documento', component: TiposDocumentoComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+
     ]
   },
   { path: '', redirectTo: '/login', pathMatch: 'full' },

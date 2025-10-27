@@ -1,0 +1,152 @@
+<div class="container mt-4">
+  <h2>Gestión de Tipos de Cuenta</h2>
+
+  <!-- Mensajes -->
+  <div *ngIf="mensaje" class="alert" [ngClass]="{
+    'alert-success': tipoMensaje === 'success',
+    'alert-danger': tipoMensaje === 'error',
+    'alert-info': tipoMensaje === 'info'
+  }" role="alert">
+    {{ mensaje }}
+  </div>
+
+  <!-- Barra de búsqueda y botón nuevo -->
+  <div class="row mb-3">
+    <div class="col-md-6">
+      <div class="input-group">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Buscar tipo de cuenta por nombre..."
+          [(ngModel)]="buscar"
+          (keyup.enter)="buscarTiposCuenta()">
+        <button
+          class="btn btn-primary"
+          (click)="buscarTiposCuenta()"
+          [disabled]="cargando">
+          <span *ngIf="cargando" class="spinner-border spinner-border-sm me-2"></span>
+          Buscar
+        </button>
+      </div>
+    </div>
+    <div class="col-md-6 text-end">
+      <button
+        class="btn btn-success"
+        (click)="nuevoTipoCuenta()"
+        [disabled]="cargando">
+        <i class="bi bi-plus-circle"></i> Nuevo Tipo de Cuenta
+      </button>
+    </div>
+  </div>
+
+  <!-- Tabla -->
+  <div class="table-responsive">
+    <table class="table table-striped table-hover">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Fecha Creación</th>
+          <th>Usuario Creación</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let tipoCuenta of tiposCuenta">
+          <td>{{ tipoCuenta.IdTipoSaldoCuenta }}</td>
+          <td>{{ tipoCuenta.Nombre }}</td>
+          <td>{{ tipoCuenta.FechaCreacion | date:'dd/MM/yyyy HH:mm' }}</td>
+          <td>{{ tipoCuenta.UsuarioCreacion || 'N/A' }}</td>
+          <td>
+            <button
+              class="btn btn-sm btn-primary me-2"
+              (click)="editarTipoCuenta(tipoCuenta)"
+              [disabled]="cargando">
+              Editar
+            </button>
+            <button
+              class="btn btn-sm btn-danger"
+              (click)="eliminarTipoCuenta(tipoCuenta)"
+              [disabled]="cargando">
+              Eliminar
+            </button>
+          </td>
+        </tr>
+        <tr *ngIf="tiposCuenta.length === 0 && !cargando">
+          <td colspan="5" class="text-center">No se encontraron tipos de cuenta</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Paginación -->
+  <nav *ngIf="totalPaginas() > 1">
+    <ul class="pagination justify-content-center">
+      <li class="page-item" [class.disabled]="paginaActual === 1">
+        <a class="page-link" (click)="cambiarPagina('anterior')">Anterior</a>
+      </li>
+      <li
+        class="page-item"
+        *ngFor="let page of getPaginasArray()"
+        [class.active]="page === paginaActual">
+        <a class="page-link" (click)="irAPagina(page)">{{ page }}</a>
+      </li>
+      <li class="page-item" [class.disabled]="paginaActual === totalPaginas()">
+        <a class="page-link" (click)="cambiarPagina('siguiente')">Siguiente</a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Loader -->
+  <div *ngIf="cargando" class="text-center mt-3">
+    <div class="spinner-border text-primary">
+      <span class="visually-hidden">Cargando...</span>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para Crear/Editar -->
+<div class="modal fade" [class.show]="mostrarFormulario" [style.display]="mostrarFormulario ? 'block' : 'none'" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{ modoEdicion ? 'Editar' : 'Nuevo' }} Tipo de Cuenta</h5>
+        <button type="button" class="btn-close" (click)="cancelar()" [disabled]="cargando"></button>
+      </div>
+      <form (ngSubmit)="guardarTipoCuenta()">
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre <span class="text-danger">*</span></label>
+            <input
+              type="text"
+              class="form-control"
+              id="nombre"
+              [(ngModel)]="nombre"
+              name="nombre"
+              placeholder="Ingrese el nombre del tipo de cuenta"
+              maxlength="50"
+              required
+              [disabled]="cargando">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="cancelar()"
+            [disabled]="cargando">
+            Cancelar
+          </button>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="cargando || !nombre.trim()">
+            <span *ngIf="cargando" class="spinner-border spinner-border-sm me-2"></span>
+            {{ cargando ? 'Guardando...' : 'Guardar' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop fade" [class.show]="mostrarFormulario" *ngIf="mostrarFormulario"></div>
