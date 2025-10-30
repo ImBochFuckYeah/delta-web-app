@@ -26,6 +26,12 @@ import { RoutePermissionGuard } from './services/route-permission-guard';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { ModuloListComponent } from './modulo/modulo-list/modulo-list.component';
 import { ModuloFormComponent } from './modulo/modulo-form/modulo-form.component';
+import { PersonaListComponent } from './persona/persona-list.component';
+import { PersonaFormComponent } from './persona/persona-form.component';
+import { CuentaListComponent } from './cuentas/cuenta-list.component';
+import { CuentaFormComponent } from './cuentas/cuenta-form.component';
+import { SaldoConsultaComponent } from './cuentas/saldo-consulta.component';
+
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [LoginGuard] },
@@ -39,9 +45,9 @@ export const routes: Routes = [
     canActivate: [AuthGuard], // Solo necesario aquí, se aplica a todas las rutas hijas
     children: [
       // usuario
-      { path: 'usuarios', component: UsuarioListComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
-      { path: 'usuarios/crear', component: UsuarioFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
-      { path: 'usuarios/editar/:id', component: UsuarioFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+      { path: 'usuario.php', component: UsuarioListComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+      { path: 'usuario.php/crear', component: UsuarioFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+      { path: 'usuario.php/editar/:id', component: UsuarioFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
 
       // roles
       { path: 'roles', component: RolesListComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
@@ -77,6 +83,20 @@ export const routes: Routes = [
       { path: 'modulos', component: ModuloListComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
       { path: 'modulos/crear', component: ModuloFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
       { path: 'modulos/editar/:id', component: ModuloFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+
+
+// Personas
+{ path: 'persona.php', component: PersonaListComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+{ path: 'persona.php/crear', component: PersonaFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+{ path: 'persona.php/editar/:id', component: PersonaFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+
+// Cuentas
+{ path: 'saldo_cuenta.php', component: CuentaListComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+{ path: 'saldo_cuenta.php/crear', component: CuentaFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+{ path: 'saldo_cuenta.php/editar/:id', component: CuentaFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+{ path: 'consulta_saldo.php', component: SaldoConsultaComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+
+
     ]
   },
   { path: '', redirectTo: '/login', pathMatch: 'full' },

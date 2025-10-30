@@ -1,0 +1,61 @@
+<div class="container mt-4">
+  <h3>{{ isEdit ? 'Editar Persona' : 'Nueva Persona' }}</h3>
+
+  <form (ngSubmit)="save()">
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Nombre *</label>
+        <input class="form-control" [(ngModel)]="model.Nombre" name="Nombre" required>
+      </div>
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Apellido</label>
+        <input class="form-control" [(ngModel)]="model.Apellido" name="Apellido">
+      </div>
+
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Correo</label>
+        <input type="email" class="form-control" [(ngModel)]="model.CorreoElectronico" name="CorreoElectronico">
+      </div>
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Teléfono</label>
+        <input class="form-control" [(ngModel)]="model.Telefono" name="Telefono">
+      </div>
+
+      <div class="col-12 mb-3">
+        <label class="form-label">Dirección</label>
+        <input class="form-control" [(ngModel)]="model.Direccion" name="Direccion">
+      </div>
+
+      <div class="row">
+  <div class="col-md-6">
+    <label>Género</label>
+    <select class="form-control" [(ngModel)]="model.IdGenero" name="IdGenero" required>
+      <option [ngValue]="1">Masculino</option>
+      <option [ngValue]="2">Femenino</option>
+    </select>
+  </div>
+  <div class="col-md-6">
+    <label>Estado Civil</label>
+    <select class="form-control" [(ngModel)]="model.IdEstadoCivil" name="IdEstadoCivil" required>
+      <option [ngValue]="1">Soltero(a)</option>
+      <option [ngValue]="2">Casado(a)</option>
+      <option [ngValue]="3">Divorciado(a)</option>
+      <option [ngValue]="4">Viudo(a)</option>
+    </select>
+  </div>
+</div>
+
+
+      <div class="col-12 mb-3">
+        <label class="form-label">Documentos (JSON)</label>
+        <textarea class="form-control" [(ngModel)]="model.DocumentosJson" name="DocumentosJson" rows="3"
+          placeholder='[{"IdTipoDocumento":1,"NoDocumento":"1234567890101"}]'></textarea>
+      </div>
+    </div>
+
+    <button class="btn btn-primary" [disabled]="loading">
+      <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>Guardar
+    </button>
+    <a class="btn btn-outline-secondary ms-2" routerLink="/app/persona.php">Cancelar</a>
+  </form>
+</div>

@@ -1,0 +1,203 @@
+{
+  "info": {
+    "name": "ProyectoAnalisis - Gestión Personas y Cuentas",
+    "_postman_id": "4e9a7b2d-999b-4caa-ae3a-4b9a999fa000",
+    "description": "Colección para probar el módulo de Gestión de Personas y Cuentas del backend C# ProyectoAnalisis.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "🧍 Personas",
+      "item": [
+        {
+          "name": "Listar Personas",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:54409/api/Personas/ListarBusqueda?usuarioAccion=admin&Buscar=&Pagina=1&TamanoPagina=20",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "54409",
+              "path": ["api", "Personas", "ListarBusqueda"],
+              "query": [
+                { "key": "usuarioAccion", "value": "admin" },
+                { "key": "Buscar", "value": "" },
+                { "key": "Pagina", "value": "1" },
+                { "key": "TamanoPagina", "value": "20" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Obtener Persona por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:54409/api/Personas/Obtener?usuarioAccion=admin&IdPersona=1&IncluirDocumentos=true",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "54409",
+              "path": ["api", "Personas", "Obtener"],
+              "query": [
+                { "key": "usuarioAccion", "value": "admin" },
+                { "key": "IdPersona", "value": "1" },
+                { "key": "IncluirDocumentos", "value": "true" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Crear Persona",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"Usuario\": \"admin\",\n  \"Nombre\": \"Juan\",\n  \"Apellido\": \"Pérez\",\n  \"FechaNacimiento\": \"1990-05-12\",\n  \"IdGenero\": 1,\n  \"Direccion\": \"Ciudad\",\n  \"Telefono\": \"12345678\",\n  \"CorreoElectronico\": \"juanperez@example.com\",\n  \"IdEstadoCivil\": 1,\n  \"DocumentosJson\": \"[{\\\"IdTipoDocumento\\\":1,\\\"NoDocumento\\\":\\\"1234567890101\\\"}]\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:54409/api/Personas/Crear",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "54409",
+              "path": ["api", "Personas", "Crear"]
+            }
+          }
+        },
+        {
+          "name": "Actualizar Persona",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"IdPersona\": 1,\n  \"Usuario\": \"admin\",\n  \"Nombre\": \"Juan Carlos\",\n  \"Apellido\": \"Pérez\",\n  \"Direccion\": \"Guatemala\",\n  \"Telefono\": \"56781234\",\n  \"CorreoElectronico\": \"juan.carlos@example.com\",\n  \"IdEstadoCivil\": 2,\n  \"ReemplazarDocumentos\": false\n}"
+            },
+            "url": {
+              "raw": "http://localhost:54409/api/Personas/Actualizar",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "54409",
+              "path": ["api", "Personas", "Actualizar"]
+            }
+          }
+        },
+        {
+          "name": "Eliminar Persona",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:54409/api/Personas/Eliminar?Usuario=admin&IdPersona=1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "54409",
+              "path": ["api", "Personas", "Eliminar"],
+              "query": [
+                { "key": "Usuario", "value": "admin" },
+                { "key": "IdPersona", "value": "1" }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "💳 Cuentas y Saldos",
+      "item": [
+        {
+          "name": "Listar Cuentas",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:54409/Cuentas/Listar?usuarioAccion=admin&Pagina=1&TamanoPagina=20",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "54409",
+              "path": ["Cuentas", "Listar"],
+              "query": [
+                { "key": "usuarioAccion", "value": "admin" },
+                { "key": "Pagina", "value": "1" },
+                { "key": "TamanoPagina", "value": "20" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Crear Cuenta",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"Usuario\": \"admin\",\n  \"IdPersona\": 1,\n  \"IdTipoSaldoCuenta\": 1,\n  \"IdStatusCuenta\": 1,\n  \"SaldoAnterior\": 1000.00,\n  \"NoCuenta\": \"CTA-001\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:54409/Cuentas/Crear",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "54409",
+              "path": ["Cuentas", "Crear"]
+            }
+          }
+        },
+        {
+          "name": "Consultar Saldo Actual",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:54409/Cuentas/ConsultarSaldo?usuarioAccion=admin&IdSaldoCuenta=1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "54409",
+              "path": ["Cuentas", "ConsultarSaldo"],
+              "query": [
+                { "key": "usuarioAccion", "value": "admin" },
+                { "key": "IdSaldoCuenta", "value": "1" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Listar Movimientos",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:54409/EstadoCuenta/Consultar?usuarioAccion=admin&IdSaldoCuenta=1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "54409",
+              "path": ["EstadoCuenta", "Consultar"],
+              "query": [
+                { "key": "usuarioAccion", "value": "admin" },
+                { "key": "IdSaldoCuenta", "value": "1" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Registrar Movimiento (Débito o Crédito)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"Usuario\": \"admin\",\n  \"IdSaldoCuenta\": 1,\n  \"TipoMovimiento\": \"D\",\n  \"Monto\": 150.00,\n  \"Descripcion\": \"Pago de servicio\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:54409/Cuentas/GuardarMovimiento",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "54409",
+              "path": ["Cuentas", "GuardarMovimiento"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

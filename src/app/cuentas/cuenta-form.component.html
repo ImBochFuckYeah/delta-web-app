@@ -1,0 +1,34 @@
+<div class="container mt-4">
+  <h3>{{ isEdit ? 'Editar Cuenta' : 'Nueva Cuenta' }}</h3>
+
+  <form (ngSubmit)="save()">
+    <div class="row">
+      <div class="col-md-4 mb-3">
+        <label class="form-label">IdPersona *</label>
+        <input type="number" class="form-control" [(ngModel)]="model.IdPersona" name="IdPersona" required>
+      </div>
+      <div class="col-md-4 mb-3">
+        <label class="form-label">Tipo de Saldo *</label>
+        <input type="number" class="form-control" [(ngModel)]="model.IdTipoSaldoCuenta" name="IdTipoSaldoCuenta" required>
+      </div>
+      <div class="col-md-4 mb-3">
+        <label class="form-label">Estado de Cuenta *</label>
+        <input type="number" class="form-control" [(ngModel)]="model.IdStatusCuenta" name="IdStatusCuenta" required>
+      </div>
+
+      <div class="col-md-4 mb-3">
+        <label class="form-label">Saldo Anterior *</label>
+        <input type="number" class="form-control" [(ngModel)]="model.SaldoAnterior" name="SaldoAnterior" required>
+      </div>
+      <div class="col-md-8 mb-3">
+        <label class="form-label">No. de Cuenta (opcional)</label>
+        <input class="form-control" [(ngModel)]="model.NoCuenta" name="NoCuenta">
+      </div>
+    </div>
+
+    <button class="btn btn-primary" [disabled]="loading">
+      <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>Guardar
+    </button>
+    <a class="btn btn-outline-secondary ms-2" routerLink="/app/cuentas">Cancelar</a>
+  </form>
+</div>
