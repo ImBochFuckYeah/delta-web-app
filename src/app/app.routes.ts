@@ -45,9 +45,9 @@ export const routes: Routes = [
     canActivate: [AuthGuard], // Solo necesario aquí, se aplica a todas las rutas hijas
     children: [
       // usuario
-      { path: 'usuario.php', component: UsuarioListComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
-      { path: 'usuario.php/crear', component: UsuarioFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
-      { path: 'usuario.php/editar/:id', component: UsuarioFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+      { path: 'usuarios', component: UsuarioListComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+      { path: 'usuarios/crear', component: UsuarioFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+      { path: 'usuarios/editar/:id', component: UsuarioFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
 
       // roles
       { path: 'roles', component: RolesListComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
@@ -85,16 +85,16 @@ export const routes: Routes = [
       { path: 'modulos/editar/:id', component: ModuloFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
 
 
-// Personas
-{ path: 'persona.php', component: PersonaListComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
-{ path: 'persona.php/crear', component: PersonaFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
-{ path: 'persona.php/editar/:id', component: PersonaFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
-
-// Cuentas
-{ path: 'saldo_cuenta.php', component: CuentaListComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
-{ path: 'saldo_cuenta.php/crear', component: CuentaFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
-{ path: 'saldo_cuenta.php/editar/:id', component: CuentaFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
-{ path: 'consulta_saldo.php', component: SaldoConsultaComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+      // Personas
+      { path: 'personas', component: PersonaListComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+      { path: 'personas/crear', component: PersonaFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+      { path: 'personas/editar/:id', component: PersonaFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+      
+      // Cuentas
+      { path: 'saldo_cuentas', component: CuentaListComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+      { path: 'saldo_cuentas/crear', component: CuentaFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+      { path: 'saldo_cuentas/editar/:id', component: CuentaFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+      { path: 'consulta_saldos', component: SaldoConsultaComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
 
 
     ]
