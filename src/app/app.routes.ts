@@ -26,9 +26,11 @@ import { RoutePermissionGuard } from './services/route-permission-guard';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { ModuloListComponent } from './modulo/modulo-list/modulo-list.component';
 import { ModuloFormComponent } from './modulo/modulo-form/modulo-form.component';
-import { TiposCuentaComponent } from './tipos-cuenta/tipos-cuenta.component';
-import { TiposDocumentoComponent } from './tipos-documento/tipos-documento.component';
-import { StatusCuentaComponent } from './status-cuenta/status-cuenta.component';
+import { PersonaListComponent } from './persona/persona-list.component';
+import { PersonaFormComponent } from './persona/persona-form.component';
+import { CuentaListComponent } from './cuentas/cuenta-list.component';
+import { CuentaFormComponent } from './cuentas/cuenta-form.component';
+import { SaldoConsultaComponent } from './cuentas/saldo-consulta.component';
 
 
 export const routes: Routes = [
@@ -82,14 +84,19 @@ export const routes: Routes = [
       { path: 'modulos/crear', component: ModuloFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
       { path: 'modulos/editar/:id', component: ModuloFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
 
-      // tipos de cuenta
-      { path: 'tipo_saldo_cuenta', component: TiposCuentaComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
 
-      // tipos de documento
-      { path: 'tipos_documento', component: TiposDocumentoComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+      // Personas
+      { path: 'personas', component: PersonaListComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+      { path: 'personas/crear', component: PersonaFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+      { path: 'personas/editar/:id', component: PersonaFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+      
+      // Cuentas
+      { path: 'saldo_cuentas', component: CuentaListComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+      { path: 'saldo_cuentas/crear', component: CuentaFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+      { path: 'saldo_cuentas/editar/:id', component: CuentaFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+      { path: 'consulta_saldos', component: SaldoConsultaComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
 
-      // status de cuenta
-      { path: 'status_cuenta', component: StatusCuentaComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+
     ]
   },
   { path: '', redirectTo: '/login', pathMatch: 'full' },

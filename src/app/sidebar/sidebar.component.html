@@ -27,12 +27,18 @@
               </li>
               <ng-container *ngFor="let opcion of menu.opciones">
                 <li class="nav-item ms-4 mb-1">
-                  <a class="nav-link text-white d-flex align-items-center"
+                  <!-- <a class="nav-link text-white d-flex align-items-center"
                      [routerLink]="opcion.pagina"
                      routerLinkActive="active">
                     <i class="bi bi-chevron-right me-2"></i>
                     {{ opcion.opcion }}
-                  </a>
+                  </a> -->
+                  <a class="nav-link text-white d-flex align-items-center"
+                   [routerLink]="['/app', opcion.pagina]"
+                    routerLinkActive="active">
+                    <i class="bi bi-chevron-right me-2"></i>
+                    {{ opcion.opcion }}</a>
+
                 </li>
               </ng-container>
             </ng-container>
