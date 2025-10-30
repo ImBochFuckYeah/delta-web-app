@@ -31,6 +31,15 @@ import { PersonaFormComponent } from './persona/persona-form.component';
 import { CuentaListComponent } from './cuentas/cuenta-list.component';
 import { CuentaFormComponent } from './cuentas/cuenta-form.component';
 import { SaldoConsultaComponent } from './cuentas/saldo-consulta.component';
+import { EstadoCivilListComponent } from './estado-civil/estado-civil-list';
+import { EstadoCivilComponent } from './estado-civil/estado-civil';
+import { TiposMovCCListComponent } from './tipos-movimiento-cxc-list/tipos-movimiento-cxc-list';
+import { TiposMovCCFormComponent } from './tipos-movimiento-cxc-list/tipos-movimiento-cxc-form';
+import { TiposCuentaComponent } from './tipos-cuenta/tipos-cuenta.component';
+import { TiposDocumentoComponent } from './tipos-documento/tipos-documento.component';
+import { StatusCuentaComponent } from './status-cuenta/status-cuenta.component';
+
+
 
 
 export const routes: Routes = [
@@ -89,12 +98,31 @@ export const routes: Routes = [
       { path: 'personas', component: PersonaListComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
       { path: 'personas/crear', component: PersonaFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
       { path: 'personas/editar/:id', component: PersonaFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
-      
+
       // Cuentas
       { path: 'saldo_cuentas', component: CuentaListComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
       { path: 'saldo_cuentas/crear', component: CuentaFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
       { path: 'saldo_cuentas/editar/:id', component: CuentaFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
       { path: 'consulta_saldos', component: SaldoConsultaComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+
+      //estado civil
+      { path: 'estado-civil', component: EstadoCivilListComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+      { path: 'estado-civil/crear', component: EstadoCivilComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+      { path: 'estado-civil/editar/:id', component: EstadoCivilComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+
+ // tipos de movimiento
+      { path: 'tipos-movimiento-cxc', component: TiposMovCCListComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+      { path: 'tipos-movimiento-cxc/crear', component: TiposMovCCFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+      { path: 'tipos-movimiento-cxc/editar/:id', component: TiposMovCCFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+
+        // tipos de cuenta
+      { path: 'tipo_saldo_cuenta', component: TiposCuentaComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+
+      // tipos de documento
+      { path: 'tipos_documento', component: TiposDocumentoComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+
+      // status de cuenta
+      { path: 'status_cuenta', component: StatusCuentaComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
 
 
     ]
