@@ -46,9 +46,9 @@ export class MenuFormComponent implements OnInit {
   cargarModulos(): void {
     this.moduloService.listar({ incluirAuditoria: false }).subscribe({
       next: (resp) => {
-        if (resp.Data) {
+        if (resp.Resultado === 1 && resp.Items) {
           // Si es un array, usarlo directamente; si es un objeto, convertirlo a array
-          this.modulos = Array.isArray(resp.Data) ? resp.Data : [resp.Data];
+          this.modulos = Array.isArray(resp.Items) ? resp.Items : [resp.Items];
         } else {
           this.modulos = [];
         }
@@ -114,7 +114,7 @@ export class MenuFormComponent implements OnInit {
 
       this.menuService.actualizar(updateRequest).subscribe({
         next: (resp) => {
-          if (resp.ok) {
+          if (resp.Resultado === 1 && resp.Data) {
             this.success = 'Menú actualizado correctamente';
             setTimeout(() => this.router.navigate(['/app/menus']), 1500);
           } else {

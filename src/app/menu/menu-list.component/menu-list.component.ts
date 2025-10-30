@@ -36,9 +36,9 @@ export class MenuListComponent implements OnInit {
   cargarModulos(): void {
     this.moduloService.listar({ incluirAuditoria: false }).subscribe({
       next: (resp) => {
-        if (resp.Data) {
+        if (resp.Resultado === 1 && resp.Items) {
           // Si es un array, usarlo directamente; si es un objeto, convertirlo a array
-          this.modulos = Array.isArray(resp.Data) ? resp.Data : [resp.Data];
+          this.modulos = Array.isArray(resp.Items) ? resp.Items : [resp.Items];
         } else {
           this.modulos = [];
         }

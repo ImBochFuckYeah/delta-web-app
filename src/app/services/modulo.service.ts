@@ -49,11 +49,26 @@ export class ModuloService {
 
   listar(request: ModuloRequest): Observable<ModuloResponse> {
     let params = new HttpParams()
-      .set('UsuarioAccion', this.getUsuarioActual())
-      .set('IncluirAuditoria', true);
-      // .set('Nombre', request.Nombre!.toString());
+      .set('usuarioAccion', request.usuarioAccion || this.getUsuarioActual())
+      .set('Pagina', request.Pagina?.toString() || '1')
+      .set('TamanoPagina', request.TamanoPagina?.toString() || '20')
+      .set('OrdenPor', request.OrdenPor || 'Nombre')
+      .set('OrdenDir', request.OrdenDir || 'ASC');
+    
+    if (request.Buscar) params = params.set('Buscar', request.Buscar);
     if (request.Nombre) params = params.set('Nombre', request.Nombre.toString());
     if (request.IdModulo) params = params.set('IdModulo', request.IdModulo.toString());
+    return this.http.get<ModuloResponse>(`${this.baseUrl}/ListarBusqueda`, { params });
+  }
+
+  obtener(request: ModuloRequest): Observable<ModuloResponse> {
+    let params = new HttpParams()
+      .set('usuarioAccion', request.usuarioAccion || this.getUsuarioActual())
+      .set('incluirAuditoria', request.incluirAuditoria?.toString() || 'false');
+    
+    if (request.IdModulo) params = params.set('IdModulo', request.IdModulo.toString());
+    if (request.Nombre) params = params.set('Nombre', request.Nombre.toString());
+    
     return this.http.get<ModuloResponse>(`${this.baseUrl}/Listar`, { params });
   }
 
@@ -71,13 +86,13 @@ export class ModuloService {
     if (request.IdModulo) params = params.set('IdModulo', request.IdModulo.toString());
     if (request.Nombre) params = params.set('Nombre', request.Nombre.toString());
     if (request.OrdenMenu) params = params.set('OrdenMenu', request.OrdenMenu.toString());
-    return this.http.put<ModuloResponse>(`${this.baseUrl}/Actualizar`, { params });
+    return this.http.get<ModuloResponse>(`${this.baseUrl}/Actualizar`, { params });
   }
 
   eliminar(request: ModuloRequest): Observable<ModuloResponse> {
     let params = new HttpParams()
       .set('Usuario', this.getUsuarioActual());
     if (request.IdModulo) params = params.set('IdModulo', request.IdModulo.toString());
-    return this.http.delete<ModuloResponse>(`${this.baseUrl}/Eliminar`, { params });
+    return this.http.get<ModuloResponse>(`${this.baseUrl}/Eliminar`, { params });
   }
 }

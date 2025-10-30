@@ -34,8 +34,8 @@ export class ModuloListComponent implements OnInit {
     this.moduloService.listar(request).subscribe({
       next: (response) => {
         if (response.Mensaje === 'OK' && response.Resultado == 1) {
-          this.modulos = Array.isArray(response.Data) ? response.Data : (response.Data ? [response.Data] : []);
-          this.totalItems = response.Data?.length ?? this.modulos.length;
+          this.modulos = Array.isArray(response.Items) ? response.Items : (response.Items ? [response.Items] : []);
+          this.totalItems = response.Items?.length ?? this.modulos.length;
         } else {
           this.modulos = [];
           this.totalItems = 0;
