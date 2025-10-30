@@ -1,0 +1,52 @@
+<div class="container mt-4">
+  <h2>
+    {{ isEdit ? 'Editar Tipo de Movimiento (Cuentas Corrientes)' : 'Crear Tipo de Movimiento (Cuentas Corrientes)' }}
+  </h2>
+
+  <div class="mb-3">
+    <a class="btn btn-link p-0" routerLink="/tipos-mov-cc">← Volver al listado</a>
+  </div>
+
+  <form (ngSubmit)="onSubmit()" #formRef="ngForm">
+    <div class="row">
+      <div class="col-md-6">
+        <label class="form-label">Nombre *</label>
+        <input
+          class="form-control"
+          [(ngModel)]="formData.Nombre"
+          name="Nombre"
+          required
+          maxlength="100"
+        />
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">Operación *</label>
+        <select
+          class="form-control"
+          [(ngModel)]="formData.Operacion"
+          name="Operacion"
+          required
+        >
+          <option [ngValue]=1>Cargo</option>
+          <option [ngValue]=2>Abono</option>
+        </select>
+      </div>
+    </div>
+
+    <hr />
+
+    <button
+      type="submit"
+      class="btn btn-primary me-2"
+      [disabled]="loading || !formRef.form.valid"
+    >
+      <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+      {{ isEdit ? 'Actualizar' : 'Crear' }}
+    </button>
+
+    <button type="button" class="btn btn-secondary" (click)="onCancel()">
+      Cancelar
+    </button>
+  </form>
+</div>
