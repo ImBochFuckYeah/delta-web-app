@@ -1,42 +1,56 @@
-/* Estilos para la lista de roles */
-.container {
-  max-width: 1200px;
-}
+/* Estilos optimizados para la lista de usuarios */
 
+/* Header y título */
 h2 {
   color: #2c3e50;
   font-weight: 600;
-  margin-bottom: 1.5rem;
-  border-bottom: 2px solid #3498db;
-  padding-bottom: 0.5rem;
+  margin-bottom: 0;
+  position: relative;
 }
 
-.table {
-  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-  border-radius: 0.375rem;
+h2::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, #3498db, #2980b9);
+  border-radius: 2px;
+}
+
+/* Card y tabla */
+.card {
+  border: none;
+  border-radius: 0.75rem;
   overflow: hidden;
 }
 
+.table {
+  margin-bottom: 0;
+}
+
+.table-dark {
+  background: linear-gradient(135deg, #2c3e50, #34495e);
+}
+
 .table th {
-  background-color: #2c3e50;
-  color: white;
   font-weight: 600;
+  font-size: 0.9rem;
+  padding: 1rem 0.75rem;
   border: none;
-  padding: 0.75rem;
 }
 
 .table td {
-  padding: 0.75rem;
+  padding: 1rem 0.75rem;
   vertical-align: middle;
-  border-color: #dee2e6;
+  border-color: #f8f9fa;
 }
 
 .table-hover tbody tr:hover {
-  background-color: rgba(52, 152, 219, 0.1);
-}
-
-.table-striped tbody tr:nth-of-type(odd) {
-  background-color: rgba(0, 0, 0, 0.02);
+  background-color: rgba(52, 152, 219, 0.05);
+  transform: translateY(-1px);
+  transition: all 0.2s ease-in-out;
 }
 
 .btn {
@@ -174,4 +188,84 @@ h2 {
   .text-end {
     text-align: left !important;
   }
+
+  .btn-group {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  
+  .btn-group .btn {
+    border-radius: 0.5rem !important;
+  }
+}
+
+/* Nuevos estilos para la versión optimizada */
+
+/* Badges */
+.badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.4rem 0.8rem;
+  border-radius: 0.375rem;
+}
+
+/* Estados de filas */
+.table-warning {
+  background-color: rgba(255, 193, 7, 0.1) !important;
+}
+
+.table-danger {
+  background-color: rgba(220, 53, 69, 0.1) !important;
+}
+
+/* Input group mejorado */
+.input-group-text {
+  background-color: #f8f9fa;
+  border-color: #dee2e6;
+  color: #6c757d;
+  border-right: none;
+}
+
+.input-group .form-control {
+  border-left: none;
+}
+
+.input-group .form-control:focus {
+  border-color: #3498db;
+  box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.15);
+}
+
+/* Paginación mejorada */
+.pagination .page-link {
+  color: #3498db;
+  border-color: #dee2e6;
+  padding: 0.6rem 0.9rem;
+  transition: all 0.2s ease-in-out;
+  border-radius: 0.375rem;
+  margin: 0 0.125rem;
+}
+
+.pagination .page-link:hover {
+  background-color: #3498db;
+  border-color: #3498db;
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(52, 152, 219, 0.2);
+}
+
+.pagination .page-item.active .page-link {
+  background-color: #3498db;
+  border-color: #3498db;
+  box-shadow: 0 2px 4px rgba(52, 152, 219, 0.3);
+}
+
+/* Loading spinner */
+.spinner-border-sm {
+  width: 1rem;
+  height: 1rem;
+}
+
+/* Empty state */
+.fa-users.opacity-50 {
+  opacity: 0.3 !important;
 }

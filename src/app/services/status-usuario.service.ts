@@ -33,6 +33,19 @@ export class StatusUsuariosService {
 
   constructor(private http: HttpClient) { }
 
+  private getUsuarioActual(): string {
+    const sessionStr = localStorage.getItem('currentUser');
+    if (sessionStr) {
+      try {
+        const sessionObj = JSON.parse(sessionStr);
+        return sessionObj.IdUsuario || 'Desconocido';
+      } catch {
+        return 'Desconocido';
+      }
+    }
+    return 'Desconocido';
+  }
+
   listar(request: StatusUsuarioListarRequest): Observable<StatusUsuariosBackendResponse> {
     let params = new HttpParams();
 
@@ -50,15 +63,15 @@ export class StatusUsuariosService {
     });
   }
 
-  crear(nombre: string, usuario: string): Observable<any> {
+  crear(nombre: string): Observable<any> {
     return this.http.get(`${this.apiUrl}/Crear`, {
-      params: { Nombre: nombre, Usuario: usuario }
+      params: { Nombre: nombre, Usuario: this.getUsuarioActual() }
     });
   }
 
-  actualizar(id: number, nombre: string, usuario: string): Observable<any> {
+  actualizar(id: number, nombre: string): Observable<any> {
     return this.http.get(`${this.apiUrl}/Actualizar`, {
-      params: { IdStatusUsuario: id.toString(), Nombre: nombre, Usuario: usuario }
+      params: { IdStatusUsuario: id.toString(), Nombre: nombre, Usuario: this.getUsuarioActual() }
     });
   }
 

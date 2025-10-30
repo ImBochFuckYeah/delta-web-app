@@ -68,7 +68,6 @@ export class StatusUsuariosFormComponent implements OnInit {
       this.statusUsuariosService.actualizar(
         this.statusUsuarioId,
         this.formData.Nombre,
-        this.formData.UsuarioAccion
       ).subscribe({
         next: (response) => {
           this.handleResponse(response);
@@ -80,7 +79,6 @@ export class StatusUsuariosFormComponent implements OnInit {
     } else {
       this.statusUsuariosService.crear(
         this.formData.Nombre,
-        this.formData.UsuarioAccion
       ).subscribe({
         next: (response) => {
           this.handleResponse(response);

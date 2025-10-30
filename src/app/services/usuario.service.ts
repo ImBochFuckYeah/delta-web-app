@@ -85,9 +85,9 @@ export interface PagedResult<T> {
 }
 
 export interface ApiResponse<T> {
-  Exito: boolean;
+  Resultado: number;
   Mensaje: string;
-  Datos?: T;
+  Data?: T;
 }
 
 export interface ListarUsuariosResponse {

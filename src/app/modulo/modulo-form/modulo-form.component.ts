@@ -35,7 +35,7 @@ export class ModuloFormComponent implements OnInit {
     this.editMode = this.moduloId > 0;
     if (this.editMode) {
       this.loading = true;
-      this.moduloService.listar({ IdModulo: this.moduloId, Pagina: 1, TamanoPagina: 1, usuarioAccion: '' }).subscribe({
+      this.moduloService.obtener({ IdModulo: this.moduloId, Pagina: 1, TamanoPagina: 1, usuarioAccion: '' }).subscribe({
         next: (resp) => {
           console.log('Response from listar:', resp);
           if (resp.Mensaje === 'OK' && resp.Resultado == 1) {

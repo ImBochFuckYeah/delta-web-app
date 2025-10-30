@@ -26,6 +26,8 @@ import { RoutePermissionGuard } from './services/route-permission-guard';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { ModuloListComponent } from './modulo/modulo-list/modulo-list.component';
 import { ModuloFormComponent } from './modulo/modulo-form/modulo-form.component';
+import { MenuListComponent } from './menu/menu-list.component/menu-list.component';
+import { MenuFormComponent } from './menu/menu-form.component/menu-form.component';
 import { PersonaListComponent } from './persona/persona-list.component';
 import { PersonaFormComponent } from './persona/persona-form.component';
 import { CuentaListComponent } from './cuentas/cuenta-list.component';
@@ -92,6 +94,9 @@ export const routes: Routes = [
       { path: 'modulos', component: ModuloListComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
       { path: 'modulos/crear', component: ModuloFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
       { path: 'modulos/editar/:id', component: ModuloFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+      { path: 'menus', component: MenuListComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+      { path: 'menus/crear', component: MenuFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+      { path: 'menus/editar/:id', component: MenuFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
 
 
       // Personas
