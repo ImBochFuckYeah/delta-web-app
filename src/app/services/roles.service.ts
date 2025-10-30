@@ -70,12 +70,12 @@ export class RolesService {
     return this.http.get<any>(`${this.baseUrl}/Listar`, {
       params: { IdRole: idRole.toString(), UsuarioAccion: this.getUsuarioActual() }
     })
-    // .pipe(
-    //   map(response => ({
-    //     Exito: response.ok,
-    //     Mensaje: response.ok ? 'Éxito' : 'Error',
-    //     Datos: response.data ? response.data[0] : null
-    //   })))
+      // .pipe(
+      //   map(response => ({
+      //     Exito: response.ok,
+      //     Mensaje: response.ok ? 'Éxito' : 'Error',
+      //     Datos: response.data ? response.data[0] : null
+      //   })))
       ;
   }
 
@@ -116,9 +116,9 @@ export class RolesService {
       }
     }).pipe(
       map(response => {
-        if (response.ok && response.data) {
-          this.rolesCache = response.data; // Cachear los roles
-          return response.data;
+        if (response.Mensaje === "OK" && response.Items) {
+          this.rolesCache = response.Items; // Cachear los roles
+          return response;
         }
         return [];
       }),

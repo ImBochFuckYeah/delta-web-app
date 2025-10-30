@@ -1,179 +1,359 @@
 <div class="container mt-4">
-  <h2>{{ isEdit ? 'Editar' : 'Crear' }} Usuario</h2>
-
-  <form (ngSubmit)="onSubmit()" #usuarioForm="ngForm">
-    <div class="row">
-      <!-- Columna izquierda -->
-      <div class="col-md-6">
-        <div class="mb-3">
-          <label class="form-label">ID Usuario *</label>
-          <input type="text" class="form-control" [(ngModel)]="formData.IdUsuario"
-                 name="IdUsuario" required [readonly]="isEdit">
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label">Nombre *</label>
-          <input type="text" class="form-control" [(ngModel)]="formData.Nombre"
-                 name="Nombre" required>
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label">Apellido *</label>
-          <input type="text" class="form-control" [(ngModel)]="formData.Apellido"
-                 name="Apellido" required>
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label">Fecha de Nacimiento</label>
-          <input type="date" class="form-control" [(ngModel)]="formData.FechaNacimiento"
-                 name="FechaNacimiento">
-        </div>
-<!--
-        <div class="mb-3">
-          <label class="form-label">Género</label>
-          <select class="form-select" [(ngModel)]="formData.IdGenero" name="IdGenero">
-            <option value="1">Masculino</option>
-            <option value="2">Femenino</option>
-            <option value="3">Otro</option>
-          </select>
-        </div>
-      </div> -->
-
-              <div class="mb-3">
-          <label class="form-label">Género *</label>
-          <select class="form-select" [(ngModel)]="formData.IdGenero" name="IdGenero" required>
-            <option value="">Seleccionar género</option>
-            <option *ngFor="let genero of generos" [value]="genero.IdGenero">
-              {{ genero.Nombre }}
-            </option>
-          </select>
-          <div *ngIf="loadingGeneros" class="form-text">
-            <small class="text-muted">Cargando géneros...</small>
+  <div class="row justify-content-center">
+    <div class="col-lg-10 col-xl-8">
+      
+      <!-- Header con indicador de loading -->
+      <div class="d-flex align-items-center mb-4">
+        <h2 class="mb-0">{{ isEdit ? 'Editar' : 'Crear' }} Usuario</h2>
+        <div *ngIf="loading" class="ms-3">
+          <div class="spinner-border spinner-border-sm text-primary" role="status" aria-label="Cargando">
+            <span class="visually-hidden">Cargando...</span>
           </div>
         </div>
       </div>
 
-      <!-- Columna derecha -->
-      <div class="col-md-6">
-        <div class="mb-3">
-          <label class="form-label">Email *</label>
-          <input type="email" class="form-control" [(ngModel)]="formData.CorreoElectronico"
-                 name="CorreoElectronico" required>
-        </div>
+      <!-- Formulario -->
+      <form (ngSubmit)="onSubmit()" #usuarioForm="ngForm" novalidate>
+        <div class="row">
+          <!-- Columna izquierda -->
+          <div class="col-md-6">
+            
+            <!-- ID Usuario -->
+            <div class="mb-3">
+              <label for="IdUsuario" class="form-label">ID Usuario *</label>
+              <input 
+                id="IdUsuario"
+                type="text" 
+                class="form-control" 
+                [(ngModel)]="formData.IdUsuario" 
+                name="IdUsuario" 
+                required
+                [readonly]="isEdit"
+                maxlength="50"
+                autocomplete="username"
+                #idUsuario="ngModel">
+              <div *ngIf="idUsuario.invalid && idUsuario.touched" class="invalid-feedback d-block">
+                El ID de usuario es requerido
+              </div>
+            </div>
 
-        <div class="mb-3">
-          <label class="form-label">Teléfono</label>
-          <input type="tel" class="form-control" [(ngModel)]="formData.TelefonoMovil"
-                 name="TelefonoMovil">
-        </div>
+            <!-- Nombre -->
+            <div class="mb-3">
+              <label for="Nombre" class="form-label">Nombre *</label>
+              <input 
+                id="Nombre"
+                type="text" 
+                class="form-control" 
+                [(ngModel)]="formData.Nombre" 
+                name="Nombre" 
+                required
+                maxlength="100"
+                autocomplete="given-name"
+                #nombre="ngModel">
+              <div *ngIf="nombre.invalid && nombre.touched" class="invalid-feedback d-block">
+                El nombre es requerido
+              </div>
+            </div>
 
-        <div class="mb-3">
-          <label class="form-label">Password {{ isEdit ? '(dejar vacío para no cambiar)' : '*' }}</label>
-          <input type="password" class="form-control" [(ngModel)]="formData.Password"
-                 name="Password" [required]="!isEdit">
-        </div>
+            <!-- Apellido -->
+            <div class="mb-3">
+              <label for="Apellido" class="form-label">Apellido *</label>
+              <input 
+                id="Apellido"
+                type="text" 
+                class="form-control" 
+                [(ngModel)]="formData.Apellido" 
+                name="Apellido" 
+                required
+                maxlength="100"
+                autocomplete="family-name"
+                #apellido="ngModel">
+              <div *ngIf="apellido.invalid && apellido.touched" class="invalid-feedback d-block">
+                El apellido es requerido
+              </div>
+            </div>
 
-        <div class="mb-3">
-          <label class="form-label">Sucursal *</label>
-          <select class="form-select" [(ngModel)]="formData.IdSucursal" name="IdSucursal" required>
-            <option value="">Seleccionar sucursal</option>
-            <option *ngFor="let sucursal of sucursales" [value]="sucursal.IdSucursal">
-              {{ sucursal.Nombre }}
-            </option>
-          </select>
-          <div *ngIf="loadingSucursales" class="form-text">
-            <small class="text-muted">Cargando sucursales...</small>
+            <!-- Fecha de Nacimiento -->
+            <div class="mb-3">
+              <label for="FechaNacimiento" class="form-label">Fecha de Nacimiento</label>
+              <input 
+                id="FechaNacimiento"
+                type="date" 
+                class="form-control" 
+                [(ngModel)]="formData.FechaNacimiento" 
+                name="FechaNacimiento"
+                autocomplete="bday">
+            </div>
+            
+            <!-- Género -->
+            <div class="mb-3">
+              <label for="IdGenero" class="form-label">Género *</label>
+              <select 
+                id="IdGenero"
+                class="form-select" 
+                [(ngModel)]="formData.IdGenero" 
+                name="IdGenero" 
+                required
+                [disabled]="loadingGeneros"
+                #genero="ngModel">
+                <option value="">Seleccionar género</option>
+                <option *ngFor="let genero of generos" [value]="genero.IdGenero">
+                  {{ genero.Nombre }}
+                </option>
+              </select>
+              <div *ngIf="loadingGeneros" class="form-text">
+                <small class="text-muted d-flex align-items-center">
+                  <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+                  Cargando géneros...
+                </small>
+              </div>
+              <div *ngIf="genero.invalid && genero.touched" class="invalid-feedback d-block">
+                Por favor seleccione un género
+              </div>
+            </div>
+            
+          </div>
+
+          <!-- Columna derecha -->
+          <div class="col-md-6">
+            
+            <!-- Email -->
+            <div class="mb-3">
+              <label for="CorreoElectronico" class="form-label">Email *</label>
+              <input 
+                id="CorreoElectronico"
+                type="email" 
+                class="form-control" 
+                [(ngModel)]="formData.CorreoElectronico" 
+                name="CorreoElectronico"
+                required
+                email
+                maxlength="100"
+                autocomplete="email"
+                #email="ngModel">
+              <div *ngIf="email.invalid && email.touched" class="invalid-feedback d-block">
+                <div *ngIf="email.errors?.['required']">El email es requerido</div>
+                <div *ngIf="email.errors?.['email']">Ingrese un email válido</div>
+              </div>
+            </div>
+
+            <!-- Teléfono -->
+            <div class="mb-3">
+              <label for="TelefonoMovil" class="form-label">Teléfono</label>
+              <input 
+                id="TelefonoMovil"
+                type="tel" 
+                class="form-control" 
+                [(ngModel)]="formData.TelefonoMovil" 
+                name="TelefonoMovil"
+                maxlength="20"
+                autocomplete="tel"
+                pattern="[0-9\-\+\(\)\s]*">
+            </div>
+
+            <!-- Password -->
+            <div class="mb-3">
+              <label for="Password" class="form-label">
+                Contraseña {{ isEdit ? '(dejar vacío para no cambiar)' : '*' }}
+              </label>
+              <input 
+                id="Password"
+                type="password" 
+                class="form-control" 
+                [(ngModel)]="formData.Password" 
+                name="Password"
+                [required]="!isEdit"
+                minlength="6"
+                autocomplete="new-password"
+                #password="ngModel">
+              <div *ngIf="password.invalid && password.touched" class="invalid-feedback d-block">
+                <div *ngIf="password.errors?.['required']">La contraseña es requerida</div>
+                <div *ngIf="password.errors?.['minlength']">La contraseña debe tener al menos 6 caracteres</div>
+              </div>
+            </div>
+
+            <!-- Sucursal -->
+            <div class="mb-3">
+              <label for="IdSucursal" class="form-label">Sucursal *</label>
+              <select 
+                id="IdSucursal"
+                class="form-select" 
+                [(ngModel)]="formData.IdSucursal" 
+                name="IdSucursal" 
+                required
+                [disabled]="loadingSucursales"
+                #sucursal="ngModel">
+                <option value="">Seleccionar sucursal</option>
+                <option *ngFor="let sucursal of sucursales" [value]="sucursal.IdSucursal">
+                  {{ sucursal.Nombre }}
+                </option>
+              </select>
+              <div *ngIf="loadingSucursales" class="form-text">
+                <small class="text-muted d-flex align-items-center">
+                  <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+                  Cargando sucursales...
+                </small>
+              </div>
+              <div *ngIf="sucursal.invalid && sucursal.touched" class="invalid-feedback d-block">
+                Por favor seleccione una sucursal
+              </div>
+            </div>
+
+            <!-- Rol -->
+            <div class="mb-3">
+              <label for="IdRole" class="form-label">Rol *</label>
+              <select 
+                id="IdRole"
+                class="form-select" 
+                [(ngModel)]="formData.IdRole" 
+                name="IdRole" 
+                required
+                [disabled]="loadingRoles"
+                #role="ngModel">
+                <option value="">Seleccionar rol</option>
+                <option *ngFor="let role of roles" [value]="role.IdRole">
+                  {{ role.Nombre }}
+                </option>
+              </select>
+              <div *ngIf="loadingRoles" class="form-text">
+                <small class="text-muted d-flex align-items-center">
+                  <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+                  Cargando roles...
+                </small>
+              </div>
+              <div *ngIf="role.invalid && role.touched" class="invalid-feedback d-block">
+                Por favor seleccione un rol
+              </div>
+            </div>
+
+            <!-- Estado -->
+            <div class="mb-3">
+              <label for="IdStatusUsuario" class="form-label">Estado *</label>
+              <select 
+                id="IdStatusUsuario"
+                class="form-select" 
+                [(ngModel)]="formData.IdStatusUsuario" 
+                name="IdStatusUsuario" 
+                required
+                [disabled]="loadingStatus"
+                #status="ngModel">
+                <option value="">Seleccionar estado</option>
+                <option *ngFor="let status of statusUsuarios" [value]="status.IdStatusUsuario">
+                  {{ status.Nombre }}
+                </option>
+              </select>
+              <div *ngIf="loadingStatus" class="form-text">
+                <small class="text-muted d-flex align-items-center">
+                  <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+                  Cargando estados...
+                </small>
+              </div>
+              <div *ngIf="status.invalid && status.touched" class="invalid-feedback d-block">
+                Por favor seleccione un estado
+              </div>
+            </div>
+
           </div>
         </div>
 
-        <div class="mb-3">
-          <label class="form-label">Rol *</label>
-          <select class="form-select" [(ngModel)]="formData.IdRole" name="IdRole" required>
-            <option value="">Seleccionar rol</option>
-            <option *ngFor="let role of roles" [value]="role.IdRole">
-              {{ role.Nombre }}
-            </option>
-          </select>
-          <div *ngIf="loadingRoles" class="form-text">
-            <small class="text-muted">Cargando roles...</small>
+        <!-- Campos adicionales de seguridad -->
+        <div class="row mt-4">
+          <div class="col-12">
+            <h5 class="text-muted border-bottom pb-2 mb-3">Información de Seguridad</h5>
+          </div>
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label for="Pregunta" class="form-label">Pregunta de Seguridad</label>
+              <input 
+                id="Pregunta"
+                type="text" 
+                class="form-control" 
+                [(ngModel)]="formData.Pregunta" 
+                name="Pregunta"
+                maxlength="200"
+                placeholder="¿Cuál es el nombre de tu primera mascota?">
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label for="Respuesta" class="form-label">
+                Respuesta de Seguridad {{ !isEdit ? '*' : '' }}
+              </label>
+              <input 
+                id="Respuesta"
+                type="text" 
+                class="form-control" 
+                [(ngModel)]="formData.Respuesta" 
+                name="Respuesta"
+                [required]="!isEdit"
+                maxlength="100"
+                #respuesta="ngModel">
+              <div *ngIf="!isEdit && respuesta.invalid && respuesta.touched" class="invalid-feedback d-block">
+                La respuesta de seguridad es requerida
+              </div>
+            </div>
           </div>
         </div>
 
-        <!-- <div class="mb-3">
-          <label class="form-label">Estado</label>
-          <select class="form-select" [(ngModel)]="formData.IdStatusUsuario" name="IdStatusUsuario">
-            <option value="1">Activo</option>
-            <option value="2">Inactivo</option>
-            <option value="3">Bloqueado</option>
-          </select>
-        </div> -->
+        <!-- Foto de perfil -->
+        <div class="row mt-4">
+          <div class="col-12">
+            <h5 class="text-muted border-bottom pb-2 mb-3">Foto de Perfil</h5>
+          </div>
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label for="fotografia" class="form-label">Seleccionar Imagen</label>
+              <input 
+                id="fotografia"
+                type="file" 
+                class="form-control" 
+                (change)="onFileSelected($event)" 
+                accept="image/*">
+              <div class="form-text">
+                <small class="text-muted">Formatos soportados: JPG, PNG, GIF. Tamaño máximo: 2MB</small>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="mb-3" *ngIf="formData.FotografiaBase64">
+              <label class="form-label">Vista Previa</label>
+              <div>
+                <img 
+                  [src]="formData.FotografiaBase64" 
+                  alt="Vista previa de la foto" 
+                  class="img-thumbnail d-block" 
+                  style="max-height: 120px; max-width: 120px; object-fit: cover;">
+              </div>
+            </div>
+          </div>
+        </div>
 
-<div class="mb-3">
-  <label class="form-label">Estado *</label>
-  <select class="form-select" [(ngModel)]="formData.IdStatusUsuario" name="IdStatusUsuario" required>
-    <option value="">Seleccionar estado</option>
-    <option *ngFor="let status of statusUsuarios" [value]="status.IdStatusUsuario">
-      {{ status.Nombre }}
-    </option>
-  </select>
-  <div *ngIf="loadingStatus" class="form-text">
-    <small class="text-muted">Cargando estados...</small>
+        <!-- Botones de acción -->
+        <div class="row mt-5">
+          <div class="col-12">
+            <div class="d-flex gap-2 justify-content-end">
+              <button 
+                type="button" 
+                class="btn btn-outline-secondary"
+                [disabled]="loading"
+                (click)="onCancel()">
+                <i class="fas fa-times me-1"></i>
+                Cancelar
+              </button>
+              
+              <button 
+                type="submit" 
+                class="btn btn-primary"
+                [disabled]="loading || !usuarioForm.form.valid || loadingSucursales || loadingRoles || loadingGeneros || loadingStatus">
+                <span *ngIf="loading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                <i *ngIf="!loading" class="fas fa-save me-1"></i>
+                {{ isEdit ? 'Actualizar' : 'Crear' }} Usuario
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+      
+    </div>
   </div>
-</div>
-
-
-
-      </div>
-
-
-
-
-    </div>
-
-    <!-- Campos adicionales -->
-    <div class="row">
-      <div class="col-md-6">
-        <div class="mb-3">
-          <label class="form-label">Pregunta de Seguridad</label>
-          <input type="text" class="form-control" [(ngModel)]="formData.Pregunta"
-                 name="Pregunta">
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="mb-3">
-          <label class="form-label">Respuesta de Seguridad</label>
-          <input type="text" class="form-control" [(ngModel)]="formData.Respuesta"
-                 name="Respuesta">
-        </div>
-      </div>
-    </div>
-
-    <div class="mb-3">
-      <label class="form-label">Foto</label>
-      <input type="file" class="form-control" (change)="onFileSelected($event)"
-             accept="image/*">
-    </div>
-
-    <div class="mb-3" *ngIf="formData.FotografiaBase64">
-      <img [src]="formData.FotografiaBase64" alt="Preview" class="img-thumbnail" style="max-height: 100px;">
-    </div>
-
-    <div class="row">
-      <div class="col-12">
-        <!-- <button type="submit" class="btn btn-primary" [disabled]="loading || !usuarioForm.form.valid || loadingSucursales">
-          <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
-          {{ isEdit ? 'Actualizar' : 'Crear' }} Usuario
-        </button> -->
-
-        <button type="submit" class="btn btn-primary"
-        [disabled]="loading || !usuarioForm.form.valid || loadingSucursales || loadingRoles || loadingGeneros || loadingStatus">
-  {{ isEdit ? 'Actualizar' : 'Crear' }} Usuario
-</button>
-
-        <button type="button" class="btn btn-outline-secondary ms-2" (click)="onCancel()">
-          Cancelar
-        </button>
-      </div>
-    </div>
-  </form>
 </div>

@@ -1,0 +1,195 @@
+// Menu Form Component Styles
+.container {
+  max-width: 1200px;
+}
+
+.card {
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: none;
+  
+  .card-header {
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    color: white;
+    border-radius: 12px 12px 0 0;
+    padding: 1.25rem 1.5rem;
+    
+    .card-title {
+      font-weight: 600;
+      font-size: 1.25rem;
+    }
+  }
+  
+  .card-body {
+    padding: 2rem;
+  }
+}
+
+.form-label {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #495057;
+  
+  .text-danger {
+    font-weight: normal;
+  }
+}
+
+.form-control, .form-select {
+  border-radius: 8px;
+  border: 2px solid #e9ecef;
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  
+  &:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  }
+  
+  &.is-invalid {
+    border-color: #dc3545;
+  }
+  
+  &:invalid {
+    border-color: #dc3545;
+  }
+}
+
+.form-text {
+  color: #6c757d;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+.btn {
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  
+  &.btn-success {
+    background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
+    border: none;
+    
+    &:hover:not(:disabled) {
+      background: linear-gradient(135deg, #1e7e34 0%, #155724 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
+    }
+    
+    &:disabled {
+      background: #6c757d;
+      cursor: not-allowed;
+    }
+  }
+  
+  &.btn-secondary {
+    background-color: #6c757d;
+    border: none;
+    
+    &:hover {
+      background-color: #545b62;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3);
+    }
+  }
+}
+
+.d-flex.gap-2 {
+  gap: 0.75rem;
+}
+
+.alert {
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  border: none;
+  
+  &.alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+    
+    i {
+      color: #dc3545;
+    }
+  }
+  
+  &.alert-success {
+    background-color: #d1edff;
+    color: #0f5132;
+    
+    i {
+      color: #28a745;
+    }
+  }
+}
+
+.spinner-border {
+  &.spinner-border-sm {
+    width: 1rem;
+    height: 1rem;
+  }
+}
+
+// Loading overlay styles
+.text-center {
+  .spinner-border {
+    width: 3rem;
+    height: 3rem;
+  }
+  
+  div:last-child {
+    color: #6c757d;
+    font-weight: 500;
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .container {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  
+  .card {
+    margin: 0 10px;
+    
+    .card-body {
+      padding: 1.5rem;
+    }
+  }
+  
+  .d-flex.gap-2 {
+    flex-direction: column;
+    
+    .btn {
+      width: 100%;
+    }
+  }
+}
+
+// Animation for form validation feedback
+.form-control.ng-invalid.ng-touched,
+.form-select.ng-invalid.ng-touched {
+  animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+  20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+// Focus management
+.form-control:focus,
+.form-select:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+// Improve spacing between form elements
+.mb-3:last-of-type {
+  margin-bottom: 2rem;
+}
