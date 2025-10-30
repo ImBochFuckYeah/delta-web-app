@@ -100,10 +100,10 @@ export const routes: Routes = [
       { path: 'personas/editar/:id', component: PersonaFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
 
       // Cuentas
-      { path: 'saldo_cuentas', component: CuentaListComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
-      { path: 'saldo_cuentas/crear', component: CuentaFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
-      { path: 'saldo_cuentas/editar/:id', component: CuentaFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
-      { path: 'consulta_saldos', component: SaldoConsultaComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+      { path: 'saldo-cuentas', component: CuentaListComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+      { path: 'saldo-cuentas/crear', component: CuentaFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+      { path: 'saldo-cuentas/editar/:id', component: CuentaFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+      { path: 'consulta-saldos', component: SaldoConsultaComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
 
       //estado civil
       { path: 'estado-civil', component: EstadoCivilListComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
