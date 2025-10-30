@@ -110,19 +110,19 @@ export const routes: Routes = [
       { path: 'estado-civil/crear', component: EstadoCivilComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
       { path: 'estado-civil/editar/:id', component: EstadoCivilComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
 
- // tipos de movimiento
+      // tipos de movimiento
       { path: 'tipos-movimiento-cxc', component: TiposMovCCListComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
       { path: 'tipos-movimiento-cxc/crear', component: TiposMovCCFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
       { path: 'tipos-movimiento-cxc/editar/:id', component: TiposMovCCFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
 
-        // tipos de cuenta
-      { path: 'tipo_saldo_cuenta', component: TiposCuentaComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+      // tipos de cuenta
+      { path: 'tipo-saldo-cuenta', component: TiposCuentaComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
 
       // tipos de documento
-      { path: 'tipos_documento', component: TiposDocumentoComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+      { path: 'tipos-documento', component: TiposDocumentoComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
 
       // status de cuenta
-      { path: 'status_cuenta', component: StatusCuentaComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+      { path: 'status-cuenta', component: StatusCuentaComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
 
 
     ]
