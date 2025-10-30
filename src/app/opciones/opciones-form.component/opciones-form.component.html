@@ -1,0 +1,117 @@
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title mb-0">{{ editMode ? 'Editar Opción' : 'Crear Nueva Opción' }}</h2>
+        </div>
+        <div class="card-body">
+          <form #opcionForm="ngForm" (ngSubmit)="onSubmit()" autocomplete="off">
+            <div class="mb-3">
+              <label for="nombre" class="form-label">
+                Nombre de la Opción <span class="text-danger">*</span>
+              </label>
+              <input 
+                type="text" 
+                id="nombre" 
+                class="form-control" 
+                required 
+                [(ngModel)]="opcion.Nombre" 
+                name="nombre"
+                placeholder="Ingrese el nombre de la opción"
+                maxlength="100">
+              <div class="form-text">El nombre debe ser descriptivo y único dentro del menú.</div>
+            </div>
+
+            <div class="mb-3">
+              <label for="menu" class="form-label">
+                Menú <span class="text-danger">*</span>
+              </label>
+              <select 
+                id="menu" 
+                class="form-select" 
+                required 
+                [(ngModel)]="opcion.IdMenu" 
+                name="menu">
+                <option [ngValue]="null" disabled>Seleccione un menú</option>
+                <option *ngFor="let menu of menus" [ngValue]="menu.IdMenu">
+                  {{ menu.Nombre }}
+                </option>
+              </select>
+              <div class="form-text">Seleccione el menú al que pertenecerá esta opción.</div>
+            </div>
+
+            <div class="mb-3">
+              <label for="pagina" class="form-label">
+                Página <span class="text-danger">*</span>
+              </label>
+              <input 
+                type="text" 
+                id="pagina" 
+                class="form-control" 
+                required 
+                [(ngModel)]="opcion.Pagina" 
+                name="pagina"
+                placeholder="Ej: /usuarios, /productos, etc."
+                maxlength="255">
+              <div class="form-text">Ruta o identificador de la página asociada a esta opción.</div>
+            </div>
+
+            <div class="mb-3">
+              <label for="orden" class="form-label">
+                Orden del Menú <span class="text-danger">*</span>
+              </label>
+              <input 
+                type="number" 
+                id="orden" 
+                class="form-control" 
+                required 
+                [(ngModel)]="opcion.OrdenMenu" 
+                name="orden"
+                placeholder="Ingrese el orden de la opción"
+                min="1"
+                max="999">
+              <div class="form-text">Número que determina la posición de la opción en el menú (1 = primero).</div>
+            </div>
+
+            <div class="d-flex gap-2 justify-content-end">
+              <button 
+                type="button" 
+                class="btn btn-secondary" 
+                routerLink="/app/opciones">
+                <i class="bi bi-arrow-left"></i> Cancelar
+              </button>
+              <button 
+                type="submit" 
+                class="btn btn-success" 
+                [disabled]="loading || !isFormValid()">
+                <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+                <i *ngIf="!loading" class="bi bi-check-circle me-1"></i>
+                {{ editMode ? 'Actualizar' : 'Crear' }} Opción
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Mensajes de estado -->
+      <div *ngIf="error" class="alert alert-danger mt-3" role="alert">
+        <i class="bi bi-exclamation-triangle me-2"></i>
+        {{ error }}
+      </div>
+      
+      <div *ngIf="success" class="alert alert-success mt-3" role="alert">
+        <i class="bi bi-check-circle me-2"></i>
+        {{ success }}
+      </div>
+
+      <!-- Loading overlay -->
+      <div *ngIf="loading && editMode" class="text-center mt-3">
+        <div class="spinner-border text-primary">
+          <span class="visually-hidden">Cargando...</span>
+        </div>
+        <div class="mt-2">Cargando información de la opción...</div>
+      </div>
+    </div>
+  </div>
+</div>
