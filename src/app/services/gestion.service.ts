@@ -98,7 +98,7 @@ export class GestionService {
                    .set('TamanoPagina', String(opts.TamanoPagina ?? 50))
                    .set('OrdenPor', 'FechaCreacion')
                    .set('OrdenDir', 'DESC');
-    return this.http.get(`${this.cuentasBase}/Listar`, { params });
+    return this.http.get(`${this.cuentasBase}/ListarBusqueda`, { params });
   }
 
   obtenerCuentaPorNo(usuarioAccion: string, noCuenta: string): Observable<any> {
@@ -112,7 +112,7 @@ export class GestionService {
   }
 
   crearCuenta(model: CuentaDto, usuario: string): Observable<any> {
-    return this.http.post(`${this.cuentasBase}/Crear`, { ...model, Usuario: usuario });
+    return this.http.post(`${this.cuentasBase}/crear`, { ...model, Usuario: usuario });
   }
 
   actualizarCuenta(model: CuentaDto & { IdSaldoCuenta: number }, usuario: string): Observable<any> {
@@ -131,4 +131,13 @@ export class GestionService {
   guardarMovimiento(model: MovimientoDto, usuario: string): Observable<any> {
     return this.http.post(`${this.cuentasBase}/GuardarMovimiento`, { ...model, Usuario: usuario });
   }
+  obtenerCuenta(usuarioAccion: string, idSaldoCuenta: number): Observable<any> {
+  const params = new HttpParams()
+    .set('usuarioAccion', usuarioAccion)
+    .set('IdSaldoCuenta', idSaldoCuenta);
+  return this.http.get(`${this.cuentasBase}/Obtener`, { params });
+}
+
+
+
 }

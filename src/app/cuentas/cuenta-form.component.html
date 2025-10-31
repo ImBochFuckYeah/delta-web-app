@@ -3,32 +3,141 @@
 
   <form (ngSubmit)="save()">
     <div class="row">
-      <div class="col-md-4 mb-3">
-        <label class="form-label">IdPersona *</label>
-        <input type="number" class="form-control" [(ngModel)]="model.IdPersona" name="IdPersona" required>
-      </div>
-      <div class="col-md-4 mb-3">
-        <label class="form-label">Tipo de Saldo *</label>
-        <input type="number" class="form-control" [(ngModel)]="model.IdTipoSaldoCuenta" name="IdTipoSaldoCuenta" required>
-      </div>
-      <div class="col-md-4 mb-3">
-        <label class="form-label">Estado de Cuenta *</label>
-        <input type="number" class="form-control" [(ngModel)]="model.IdStatusCuenta" name="IdStatusCuenta" required>
+      <!-- 🔍 Buscar Persona -->
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Persona *</label>
+        <div class="input-group">
+          <input
+            class="form-control"
+            [(ngModel)]="buscarTermino"
+            name="buscarTermino"
+            placeholder="Buscar persona..."
+            (keyup.enter)="buscarPersonas()"
+            autocomplete="off"
+          />
+          <button
+            class="btn btn-outline-primary"
+            type="button"
+            (click)="buscarPersonas()"
+            [disabled]="cargandoPersonas"
+          >
+            <span *ngIf="cargandoPersonas" class="spinner-border spinner-border-sm me-1"></span>
+            Buscar
+          </button>
+        </div>
+
+        <!-- 🔽 Panel de resultados -->
+        <div *ngIf="mostrandoBuscador" class="border rounded p-2 mt-2 bg-light">
+          <div *ngIf="cargandoPersonas">Cargando...</div>
+
+          <div
+            *ngFor="let p of personas"
+            class="d-flex justify-content-between align-items-center mb-1"
+          >
+            <span>{{ p.Nombre }} {{ p.Apellido }}</span>
+            <button
+              type="button"
+              class="btn btn-sm btn-success"
+              (click)="seleccionarPersona(p)"
+            >
+              Seleccionar
+            </button>
+          </div>
+
+          <div
+            *ngIf="!personas.length && !cargandoPersonas"
+            class="text-muted small"
+          >
+            No se encontraron resultados.
+          </div>
+        </div>
+
+        <!-- ✅ Persona seleccionada -->
+        <div *ngIf="personaSeleccionada" class="text-success small mt-1">
+          Persona seleccionada:
+          <strong>
+            {{ personaSeleccionada.Nombre }} {{ personaSeleccionada.Apellido }}
+          </strong>
+          <span class="text-muted">(ID: {{ personaSeleccionada.IdPersona }})</span>
+        </div>
       </div>
 
-      <div class="col-md-4 mb-3">
-        <label class="form-label">Saldo Anterior *</label>
-        <input type="number" class="form-control" [(ngModel)]="model.SaldoAnterior" name="SaldoAnterior" required>
+      <!-- Tipo de cuenta -->
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Tipo de Cuenta *</label>
+        <select
+          class="form-select"
+          [(ngModel)]="model.IdTipoSaldoCuenta"
+          name="IdTipoSaldoCuenta"
+          required
+        >
+          <option [ngValue]="0">Seleccione...</option>
+          <option
+            *ngFor="let t of tiposCuenta"
+            [ngValue]="t.IdTipoSaldoCuenta"
+          >
+            {{ t.Nombre }}
+          </option>
+        </select>
       </div>
-      <div class="col-md-8 mb-3">
+
+      <!-- Estado de cuenta -->
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Estado de Cuenta *</label>
+        <select
+          class="form-select"
+          [(ngModel)]="model.IdStatusCuenta"
+          name="IdStatusCuenta"
+          required
+        >
+          <option [ngValue]="0">Seleccione...</option>
+          <option
+            *ngFor="let s of statusCuentas"
+            [ngValue]="s.IdStatusCuenta"
+          >
+            {{ s.Nombre }}
+          </option>
+        </select>
+      </div>
+
+      <!-- Saldo anterior -->
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Saldo Anterior *</label>
+        <input
+          type="number"
+          class="form-control"
+          [(ngModel)]="model.SaldoAnterior"
+          name="SaldoAnterior"
+          required
+        />
+      </div>
+
+      <!-- NoCuenta -->
+      <div class="col-md-6 mb-3">
         <label class="form-label">No. de Cuenta (opcional)</label>
-        <input class="form-control" [(ngModel)]="model.NoCuenta" name="NoCuenta">
+        <input
+          class="form-control"
+          [(ngModel)]="model.NoCuenta"
+          name="NoCuenta"
+        />
       </div>
     </div>
 
+    <!-- Botones -->
     <button class="btn btn-primary" [disabled]="loading">
-      <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>Guardar
+      <span
+        *ngIf="loading"
+        class="spinner-border spinner-border-sm me-2"
+      ></span>
+      Guardar
     </button>
-    <a class="btn btn-outline-secondary ms-2" routerLink="/app/cuentas">Cancelar</a>
+
+    <button
+      class="btn btn-outline-secondary ms-2"
+      type="button"
+      (click)="cancel()"
+    >
+      Cancelar
+    </button>
   </form>
 </div>
