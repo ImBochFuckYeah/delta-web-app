@@ -96,12 +96,12 @@ export const routes: Routes = [
       { path: 'modulos', component: ModuloListComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
       { path: 'modulos/crear', component: ModuloFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
       { path: 'modulos/editar/:id', component: ModuloFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
-     
+
       // menus
       { path: 'menus', component: MenuListComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
       { path: 'menus/crear', component: MenuFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
       { path: 'menus/editar/:id', component: MenuFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
-      
+
       // opciones
       { path: 'opciones', component: OpcionesListComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
       { path: 'opciones/crear', component: OpcionesFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },

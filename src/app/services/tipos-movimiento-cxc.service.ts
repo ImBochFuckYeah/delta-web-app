@@ -58,7 +58,7 @@ export class TiposMovimientoCxcService {
     const params = new HttpParams()
       .set('IdTipoMovimientoCXC', String(id))
       .set('usuarioAccion', this.getUsuarioActual());
-    return this.http.get<BackendResponse<TipoMovDto>>(`${this.apiUrl}/ListarPorId`, { params });
+    return this.http.get<BackendResponse<TipoMovDto>>(`${this.apiUrl}/ListarBusqueda`, { params });
   }
 
   crear(nombre: string, operacionCuentaCorriente: number) {

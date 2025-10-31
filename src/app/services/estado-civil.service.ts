@@ -59,11 +59,11 @@ export class EstadoCivilService {
 
   /** Obtener por ID -> /ListarPorId (ojo: antes estaba /Listar) */
   obtener(id: number): Observable<EstadosCivilesBackendResponse> {
-    const params = new HttpParams()
-      .set('IdEstadoCivil', String(id))
-      .set('usuarioAccion', this.getUsuarioActual());
-    return this.http.get<EstadosCivilesBackendResponse>(`${this.apiUrl}/ListarPorId`, { params });
-  }
+  const params = new HttpParams()
+    .set('IdEstadoCivil', String(id))
+    .set('usuarioAccion', this.getUsuarioActual());
+  return this.http.get<EstadosCivilesBackendResponse>(`${this.apiUrl}/ListarBusqueda`, { params });
+}
 
   /** Crear -> /Crear */
   crear(nombre: string): Observable<{ ok: boolean; Mensaje?: string }> {
