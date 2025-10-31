@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { GestionService } from '../services/gestion.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cuenta-list',
@@ -18,7 +19,9 @@ export class CuentaListComponent implements OnInit {
   idPersona?: number;
   page=1; pageSize=10; total=0;
 
-  constructor(private api: GestionService) {}
+  constructor(private api: GestionService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void { this.cargar(); }
 
@@ -38,4 +41,9 @@ export class CuentaListComponent implements OnInit {
   onPageChange(p:number){ this.page=p; this.cargar(); }
   get totalPages(){ return Math.ceil(this.total/this.pageSize); }
   get pages(){ return Array.from({length:this.totalPages},(_,i)=>i+1); }
+
+  cancel(): void {
+    this.router.navigate(['/app/saldo-cuentas']);
+  }
+
 }
