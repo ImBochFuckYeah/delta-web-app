@@ -1,4 +1,4 @@
-<div class="container mt-4">
+<div class="container-fluid mt-4">
   <h2>{{ isEdit ? 'Editar' : 'Crear' }} Status Usuario</h2>
 
   <form (ngSubmit)="onSubmit()" #statusUsuarioForm="ngForm">
@@ -6,19 +6,31 @@
       <div class="col-md-6">
         <div class="mb-3">
           <label class="form-label">Nombre del Status Usuario *</label>
-          <input type="text" class="form-control" [(ngModel)]="formData.Nombre"
-                 name="Nombre" required>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="formData.Nombre"
+            name="Nombre"
+            required
+            [disabled]="loading">
         </div>
       </div>
     </div>
 
     <div class="row">
       <div class="col-12">
-        <button type="submit" class="btn btn-primary" [disabled]="loading || !statusUsuarioForm.form.valid">
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="loading || !statusUsuarioForm.form.valid">
           <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
           {{ isEdit ? 'Actualizar' : 'Crear' }} Status Usuario
         </button>
-        <button type="button" class="btn btn-secondary ms-2" (click)="onCancel()">
+        <button
+          type="button"
+          class="btn btn-secondary ms-2"
+          (click)="onCancel()"
+          [disabled]="loading">
           Cancelar
         </button>
       </div>

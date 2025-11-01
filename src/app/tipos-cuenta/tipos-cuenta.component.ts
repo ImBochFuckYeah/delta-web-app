@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { TipoSaldoCuentaService, TipoSaldoCuenta } from '../services/tipo-saldo-cuenta.service';
 
 @Component({
@@ -12,12 +13,6 @@ import { TipoSaldoCuentaService, TipoSaldoCuenta } from '../services/tipo-saldo-
 })
 export class TiposCuentaComponent implements OnInit {
   tiposCuenta: TipoSaldoCuenta[] = [];
-  tipoCuentaSeleccionado: TipoSaldoCuenta | null = null;
-
-  // Para el formulario
-  nombre: string = '';
-  modoEdicion: boolean = false;
-  mostrarFormulario: boolean = false;
 
   // Para búsqueda y paginación
   buscar: string = '';
@@ -30,7 +25,10 @@ export class TiposCuentaComponent implements OnInit {
   mensaje: string = '';
   tipoMensaje: 'success' | 'error' | 'info' = 'info';
 
-  constructor(private tipoSaldoCuentaService: TipoSaldoCuentaService) {}
+  constructor(
+    private tipoSaldoCuentaService: TipoSaldoCuentaService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.cargarTiposCuenta();
@@ -92,78 +90,17 @@ export class TiposCuentaComponent implements OnInit {
   }
 
   /**
-   * Mostrar formulario para nuevo registro
+   * Navegar para crear nuevo tipo de cuenta
    */
   nuevoTipoCuenta(): void {
-    this.modoEdicion = false;
-    this.nombre = '';
-    this.tipoCuentaSeleccionado = null;
-    this.mostrarFormulario = true;
+    this.router.navigate(['/app/tipo-saldo-cuenta/crear']);
   }
 
   /**
-   * Mostrar formulario para editar
+   * Navegar para editar tipo de cuenta
    */
   editarTipoCuenta(tipoCuenta: TipoSaldoCuenta): void {
-    this.modoEdicion = true;
-    this.nombre = tipoCuenta.Nombre;
-    this.tipoCuentaSeleccionado = tipoCuenta;
-    this.mostrarFormulario = true;
-  }
-
-  /**
-   * Guardar (crear o actualizar)
-   */
-  guardarTipoCuenta(): void {
-    if (!this.nombre.trim()) {
-      this.mostrarMensaje('El nombre es requerido', 'error');
-      return;
-    }
-
-    this.cargando = true;
-
-    if (this.modoEdicion && this.tipoCuentaSeleccionado) {
-      // Actualizar
-      this.tipoSaldoCuentaService.actualizar(
-        this.tipoCuentaSeleccionado.IdTipoSaldoCuenta!,
-        this.nombre
-      ).subscribe({
-        next: (response) => {
-          if (response.Resultado === 1) {
-            this.mostrarMensaje('Tipo de cuenta actualizado correctamente', 'success');
-            this.cancelar();
-            this.cargarTiposCuenta();
-          } else {
-            this.mostrarMensaje(response.Mensaje, 'error');
-          }
-          this.cargando = false;
-        },
-        error: (error) => {
-          this.mostrarMensaje('Error al actualizar', 'error');
-          console.error(error);
-          this.cargando = false;
-        }
-      });
-    } else {
-      // Crear
-      this.tipoSaldoCuentaService.crear(this.nombre).subscribe({
-        next: (response) => {
-          if (response.Resultado === 1) {
-            this.mostrarMensaje('Tipo de cuenta creado correctamente', 'success');
-            this.cancelar();
-            this.cargarTiposCuenta();
-          } else {
-            this.mostrarMensaje(response.Mensaje, 'error');
-          }
-          this.cargando = false;
-        },
-        error: (error) => {
-          this.mostrarMensaje('Error al crear', 'error');
-          console.error(error);
-          this.cargando = false;
-        }
-      });
-    }
+    this.router.navigate(['/app/tipo-saldo-cuenta/editar', tipoCuenta.IdTipoSaldoCuenta]);
   }
 
   /**
@@ -177,30 +114,20 @@ export class TiposCuentaComponent implements OnInit {
     this.cargando = true;
     this.tipoSaldoCuentaService.eliminar(tipoCuenta.IdTipoSaldoCuenta!).subscribe({
       next: (response) => {
+        this.cargando = false;
         if (response.Resultado === 1) {
           this.mostrarMensaje('Tipo de cuenta eliminado correctamente', 'success');
           this.cargarTiposCuenta();
         } else {
           this.mostrarMensaje(response.Mensaje, 'error');
         }
-        this.cargando = false;
       },
       error: (error) => {
+        this.cargando = false;
         this.mostrarMensaje('Error al eliminar', 'error');
         console.error(error);
-        this.cargando = false;
       }
     });
-  }
-
-  /**
-   * Cancelar formulario
-   */
-  cancelar(): void {
-    this.mostrarFormulario = false;
-    this.nombre = '';
-    this.tipoCuentaSeleccionado = null;
-    this.modoEdicion = false;
   }
 
   /**

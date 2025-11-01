@@ -10,7 +10,8 @@ import { StatusCuentaService, StatusCuenta } from '../services/status-cuenta.ser
   selector: 'app-cuenta-form',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './cuenta-form.component.html'
+  templateUrl: './cuenta-form.component.html',
+  styleUrls: ['./cuenta-form.component.css']
 })
 export class CuentaFormComponent implements OnInit {
   model: CuentaDto = { IdPersona: 0, IdTipoSaldoCuenta: 0, IdStatusCuenta: 0, SaldoAnterior: 0, NoCuenta: '' };

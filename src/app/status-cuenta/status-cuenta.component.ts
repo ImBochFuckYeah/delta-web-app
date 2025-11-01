@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { StatusCuentaService, StatusCuenta } from '../services/status-cuenta.service';
 
 @Component({
@@ -12,12 +13,6 @@ import { StatusCuentaService, StatusCuenta } from '../services/status-cuenta.ser
 })
 export class StatusCuentaComponent implements OnInit {
   statusCuentas: StatusCuenta[] = [];
-  statusCuentaSeleccionado: StatusCuenta | null = null;
-
-  // Para el formulario
-  nombre: string = '';
-  modoEdicion: boolean = false;
-  mostrarFormulario: boolean = false;
 
   // Para búsqueda y paginación
   buscar: string = '';
@@ -30,7 +25,10 @@ export class StatusCuentaComponent implements OnInit {
   mensaje: string = '';
   tipoMensaje: 'success' | 'error' | 'info' = 'info';
 
-  constructor(private statusCuentaService: StatusCuentaService) {}
+  constructor(
+    private statusCuentaService: StatusCuentaService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.cargarStatusCuentas();
@@ -92,78 +90,17 @@ export class StatusCuentaComponent implements OnInit {
   }
 
   /**
-   * Mostrar formulario para nuevo registro
+   * Navegar para crear nuevo status de cuenta
    */
   nuevoStatusCuenta(): void {
-    this.modoEdicion = false;
-    this.nombre = '';
-    this.statusCuentaSeleccionado = null;
-    this.mostrarFormulario = true;
+    this.router.navigate(['/app/status-cuenta/crear']);
   }
 
   /**
-   * Mostrar formulario para editar
+   * Navegar para editar status de cuenta
    */
   editarStatusCuenta(statusCuenta: StatusCuenta): void {
-    this.modoEdicion = true;
-    this.nombre = statusCuenta.Nombre;
-    this.statusCuentaSeleccionado = statusCuenta;
-    this.mostrarFormulario = true;
-  }
-
-  /**
-   * Guardar (crear o actualizar)
-   */
-  guardarStatusCuenta(): void {
-    if (!this.nombre.trim()) {
-      this.mostrarMensaje('El nombre es requerido', 'error');
-      return;
-    }
-
-    this.cargando = true;
-
-    if (this.modoEdicion && this.statusCuentaSeleccionado) {
-      // Actualizar
-      this.statusCuentaService.actualizar(
-        this.statusCuentaSeleccionado.IdStatusCuenta!,
-        this.nombre
-      ).subscribe({
-        next: (response) => {
-          if (response.Resultado === 1) {
-            this.mostrarMensaje('Status de cuenta actualizado correctamente', 'success');
-            this.cancelar();
-            this.cargarStatusCuentas();
-          } else {
-            this.mostrarMensaje(response.Mensaje, 'error');
-          }
-          this.cargando = false;
-        },
-        error: (error) => {
-          this.mostrarMensaje('Error al actualizar', 'error');
-          console.error(error);
-          this.cargando = false;
-        }
-      });
-    } else {
-      // Crear
-      this.statusCuentaService.crear(this.nombre).subscribe({
-        next: (response) => {
-          if (response.Resultado === 1) {
-            this.mostrarMensaje('Status de cuenta creado correctamente', 'success');
-            this.cancelar();
-            this.cargarStatusCuentas();
-          } else {
-            this.mostrarMensaje(response.Mensaje, 'error');
-          }
-          this.cargando = false;
-        },
-        error: (error) => {
-          this.mostrarMensaje('Error al crear', 'error');
-          console.error(error);
-          this.cargando = false;
-        }
-      });
-    }
+    this.router.navigate(['/app/status-cuenta/editar', statusCuenta.IdStatusCuenta]);
   }
 
   /**
@@ -191,16 +128,6 @@ export class StatusCuentaComponent implements OnInit {
         this.cargando = false;
       }
     });
-  }
-
-  /**
-   * Cancelar formulario
-   */
-  cancelar(): void {
-    this.mostrarFormulario = false;
-    this.nombre = '';
-    this.statusCuentaSeleccionado = null;
-    this.modoEdicion = false;
   }
 
   /**

@@ -9,7 +9,8 @@ import { Router } from '@angular/router';
   selector: 'app-cuenta-list',
   standalone: true,
   imports: [CommonModule, FormsModule, RouterLink],
-  templateUrl: './cuenta-list.component.html'
+  templateUrl: './cuenta-list.component.html',
+  styleUrls: ['./cuenta-list.component.css']
 })
 export class CuentaListComponent implements OnInit {
   data: any[] = [];

@@ -1,101 +1,87 @@
-<div class="container mt-4">
-  <div class="row justify-content-center">
-    <div class="col-lg-8">
-      <div class="card">
-        <div class="card-header">
-          <h2 class="card-title mb-0">{{ editMode ? 'Editar Menú' : 'Crear Nuevo Menú' }}</h2>
-        </div>
-        <div class="card-body">
-          <form #menuForm="ngForm" (ngSubmit)="onSubmit()" autocomplete="off">
-            <div class="mb-3">
-              <label for="nombre" class="form-label">
-                Nombre del Menú <span class="text-danger">*</span>
-              </label>
-              <input 
-                type="text" 
-                id="nombre" 
-                class="form-control" 
-                required 
-                [(ngModel)]="menu.Nombre" 
-                name="nombre"
-                placeholder="Ingrese el nombre del menú"
-                maxlength="100">
-              <div class="form-text">El nombre debe ser descriptivo y único.</div>
-            </div>
+<div class="container-fluid mt-4">
+  <h2>{{ editMode ? 'Editar Menú' : 'Crear Nuevo Menú' }}</h2>
 
-            <div class="mb-3">
-              <label for="modulo" class="form-label">
-                Módulo <span class="text-danger">*</span>
-              </label>
-              <select 
-                id="modulo" 
-                class="form-select" 
-                required 
-                [(ngModel)]="menu.IdModulo" 
-                name="modulo">
-                <option [ngValue]="null" disabled>Seleccione un módulo</option>
-                <option *ngFor="let modulo of modulos" [ngValue]="modulo.IdModulo">
-                  {{ modulo.Nombre }}
-                </option>
-              </select>
-              <div class="form-text">Seleccione el módulo al que pertenecerá este menú.</div>
-            </div>
+  <!-- Mensajes -->
+  <div *ngIf="error" class="alert alert-danger" role="alert">
+    {{ error }}
+  </div>
+  <div *ngIf="success" class="alert alert-success" role="alert">
+    {{ success }}
+  </div>
 
-            <div class="mb-3">
-              <label for="orden" class="form-label">
-                Orden del Menú <span class="text-danger">*</span>
-              </label>
-              <input 
-                type="number" 
-                id="orden" 
-                class="form-control" 
-                required 
-                [(ngModel)]="menu.OrdenMenu" 
-                name="orden"
-                placeholder="Ingrese el orden del menú"
-                min="1"
-                max="999">
-              <div class="form-text">Número que determina la posición del menú (1 = primero).</div>
-            </div>
-
-            <div class="d-flex gap-2 justify-content-end">
-              <button 
-                type="button" 
-                class="btn btn-secondary" 
-                routerLink="/app/menus">
-                <i class="bi bi-arrow-left"></i> Cancelar
-              </button>
-              <button 
-                type="submit" 
-                class="btn btn-success" 
-                [disabled]="loading || !isFormValid()">
-                <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
-                <i *ngIf="!loading" class="bi bi-check-circle me-1"></i>
-                {{ editMode ? 'Actualizar' : 'Crear' }} Menú
-              </button>
-            </div>
-          </form>
+  <form #menuForm="ngForm" (ngSubmit)="onSubmit()" autocomplete="off">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="mb-3">
+          <label for="nombre" class="form-label">Nombre del Menú *</label>
+          <input
+            type="text"
+            id="nombre"
+            class="form-control"
+            required
+            [(ngModel)]="menu.Nombre"
+            name="nombre"
+            placeholder="Ingrese el nombre del menú"
+            maxlength="100">
         </div>
       </div>
 
-      <!-- Mensajes de estado -->
-      <div *ngIf="error" class="alert alert-danger mt-3" role="alert">
-        <i class="bi bi-exclamation-triangle me-2"></i>
-        {{ error }}
-      </div>
-      
-      <div *ngIf="success" class="alert alert-success mt-3" role="alert">
-        <i class="bi bi-check-circle me-2"></i>
-        {{ success }}
-      </div>
-
-      <!-- Loading overlay -->
-      <div *ngIf="loading && editMode" class="text-center mt-3">
-        <div class="spinner-border text-primary">
-          <span class="visually-hidden">Cargando...</span>
+      <div class="col-md-6">
+        <div class="mb-3">
+          <label for="orden" class="form-label">Orden del Menú *</label>
+          <input
+            type="number"
+            id="orden"
+            class="form-control"
+            required
+            [(ngModel)]="menu.OrdenMenu"
+            name="orden"
+            placeholder="Ingrese el orden del menú"
+            min="1"
+            max="999">
         </div>
-        <div class="mt-2">Cargando información del menú...</div>
       </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="mb-3">
+          <label for="modulo" class="form-label">Módulo *</label>
+          <select
+            id="modulo"
+            class="form-select"
+            required
+            [(ngModel)]="menu.IdModulo"
+            name="modulo">
+            <option [ngValue]="null" disabled>Seleccione un módulo</option>
+            <option *ngFor="let modulo of modulos" [ngValue]="modulo.IdModulo">
+              {{ modulo.Nombre }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Botones de acción -->
+    <button
+      type="submit"
+      class="btn btn-primary"
+      [disabled]="loading || !isFormValid()">
+      <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+      {{ editMode ? 'Actualizar' : 'Crear' }} Menú
+    </button>
+    <button
+      type="button"
+      class="btn btn-secondary ms-2"
+      routerLink="/app/menus">
+      Cancelar
+    </button>
+  </form>
+
+  <!-- Loader general -->
+  <div *ngIf="loading" class="text-center mt-3">
+    <div class="spinner-border text-primary">
+      <span class="visually-hidden">Cargando...</span>
     </div>
   </div>
 </div>

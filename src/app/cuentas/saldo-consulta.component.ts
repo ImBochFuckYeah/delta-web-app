@@ -7,7 +7,8 @@ import { GestionService } from '../services/gestion.service';
   selector: 'app-saldo-consulta',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './saldo-consulta.component.html'
+  templateUrl: './saldo-consulta.component.html',
+  styleUrls: ['./saldo-consulta.component.css']
 })
 export class SaldoConsultaComponent {
   usuarioAccion = 'Administrador';

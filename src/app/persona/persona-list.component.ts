@@ -8,7 +8,8 @@ import { GestionService, PersonaDto } from '../services/gestion.service';
   selector: 'app-persona-list',
   standalone: true,
   imports: [CommonModule, FormsModule, RouterLink],
-  templateUrl: './persona-list.component.html'
+  templateUrl: './persona-list.component.html',
+  styleUrls: ['./persona-list.component.css']
 })
 export class PersonaListComponent implements OnInit {
   personas: PersonaDto[] = [];

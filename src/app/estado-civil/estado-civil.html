@@ -1,4 +1,4 @@
-<div class="container mt-4">
+<div class="container-fluid mt-4 fade-in">
   <h2>{{ isEdit ? 'Editar Estado Civil' : 'Crear Estado Civil' }}</h2>
 
   <form (ngSubmit)="onSubmit()" #estadoCivilForm="ngForm">
@@ -8,34 +8,37 @@
           <label class="form-label">Nombre del Estado Civil *</label>
           <input
             type="text"
-            class="form-control"
+            class="form-control fade-in"
             [(ngModel)]="formData.Nombre"
             name="Nombre"
             required
             maxlength="100"
+            [disabled]="loading"
           />
         </div>
       </div>
     </div>
 
-    <hr />
-
     <div class="row">
       <div class="col-12">
         <button
           type="submit"
-          class="btn btn-primary me-2"
+          class="btn btn-primary fade-in me-2"
           [disabled]="loading || !estadoCivilForm.form.valid"
         >
           <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
           {{ isEdit ? 'Actualizar Estado Civil' : 'Crear Estado Civil' }}
         </button>
-        <button type="button" class="btn btn-secondary" (click)="onCancel()">
+
+        <button
+          type="button"
+          class="btn btn-secondary fade-in"
+          (click)="onCancel()"
+          [disabled]="loading"
+        >
           Cancelar
         </button>
       </div>
     </div>
   </form>
 </div>
-<!-- (opcional) link arriba para volver -->
-<a class="btn btn-link p-0" routerLink="/app/estado-civil">← Volver al listado</a>

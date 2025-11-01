@@ -1,4 +1,3 @@
-<p>tipos-documento works!</p>
 <div class="container mt-4">
   <h2>Gestión de Tipos de Documento</h2>
 
@@ -105,49 +104,3 @@
     </div>
   </div>
 </div>
-
-<!-- Modal para Crear/Editar -->
-<div class="modal fade" [class.show]="mostrarFormulario" [style.display]="mostrarFormulario ? 'block' : 'none'" tabindex="-1">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">{{ modoEdicion ? 'Editar' : 'Nuevo' }} Tipo de Documento</h5>
-        <button type="button" class="btn-close" (click)="cancelar()" [disabled]="cargando"></button>
-      </div>
-      <form (ngSubmit)="guardarTipoDocumento()">
-        <div class="modal-body">
-          <div class="mb-3">
-            <label for="nombre" class="form-label">Nombre <span class="text-danger">*</span></label>
-            <input
-              type="text"
-              class="form-control"
-              id="nombre"
-              [(ngModel)]="nombre"
-              name="nombre"
-              placeholder="Ingrese el nombre del tipo de documento"
-              maxlength="50"
-              required
-              [disabled]="cargando">
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button
-            type="button"
-            class="btn btn-secondary"
-            (click)="cancelar()"
-            [disabled]="cargando">
-            Cancelar
-          </button>
-          <button
-            type="submit"
-            class="btn btn-primary"
-            [disabled]="cargando || !nombre.trim()">
-            <span *ngIf="cargando" class="spinner-border spinner-border-sm me-2"></span>
-            {{ cargando ? 'Guardando...' : 'Guardar' }}
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-<div class="modal-backdrop fade" [class.show]="mostrarFormulario" *ngIf="mostrarFormulario"></div>

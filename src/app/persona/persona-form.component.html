@@ -1,5 +1,5 @@
-<div class="container mt-4">
-  <h3>{{ isEdit ? 'Editar Persona' : 'Nueva Persona' }}</h3>
+<div class="container-fluid mt-4">
+  <h2>{{ isEdit ? 'Editar Persona' : 'Nueva Persona' }}</h2>
 
   <form #form="ngForm" (ngSubmit)="save()" novalidate>
     <div class="row">
@@ -62,7 +62,7 @@
 
       <!-- Documentos -->
       <div class="col-12 mb-3">
-        <label class="form-label">Documentos</label>
+
 
         <div class="row align-items-center mb-2" *ngFor="let doc of documentos; let i = index">
           <div class="col-md-5">
