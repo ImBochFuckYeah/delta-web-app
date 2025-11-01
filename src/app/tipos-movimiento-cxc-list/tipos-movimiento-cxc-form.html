@@ -1,11 +1,11 @@
-<div class="container mt-4">
+<div class="container-fluid mt-4">
   <h2>
     {{ isEdit ? 'Editar Tipo de Movimiento (Cuentas Corrientes)' : 'Crear Tipo de Movimiento (Cuentas Corrientes)' }}
   </h2>
 
-  <div class="mb-3">
+  <!-- <div class="mb-3">
     <a class="btn btn-link p-0" routerLink="/tipos-mov-cc">← Volver al listado</a>
-  </div>
+  </div> -->
 
   <form (ngSubmit)="onSubmit()" #formRef="ngForm">
     <div class="row">

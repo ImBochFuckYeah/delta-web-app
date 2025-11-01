@@ -16,7 +16,7 @@
     </div>
     <div class="col-md-6 text-end">
       <button class="btn btn-success" [routerLink]="['/app','tipos-movimiento-cxc','crear']">
-        <i class="bi bi-plus-circle"></i> Nuevo
+        <i class="bi bi-plus-circle"></i> Nuevo Tipo Movimiento
       </button>
     </div>
   </div>
@@ -39,9 +39,8 @@
           <td>{{ t.Nombre }}</td>
 
           <td>
-            <span class="badge" [ngClass]="opClass(t.OperacionCuentaCorriente)">
+
               {{ opText(t.OperacionCuentaCorriente) }}
-            </span>
           </td>
 
           <td>{{ t.FechaCreacion | date:'short' }}</td>

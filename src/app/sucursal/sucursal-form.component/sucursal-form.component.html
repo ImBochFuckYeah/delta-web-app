@@ -1,27 +1,72 @@
-<div class="container mt-4">
-  <h2>{{ editMode ? 'Editar Sucursal' : 'Crear Sucursal' }}</h2>
-  <form #sucursalForm="ngForm" (ngSubmit)="onSubmit()" autocomplete="off">
-    <div class="mb-3">
-      <label for="nombre" class="form-label">Nombre</label>
-      <input type="text" id="nombre" class="form-control" required [(ngModel)]="sucursal.Nombre" name="nombre">
+<div class="container-fluid mt-4">
+  <h2>{{ editMode ? 'Editar' : 'Crear' }} Sucursal</h2>
+
+  <form (ngSubmit)="onSubmit()" #sucursalForm="ngForm">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="mb-3">
+          <label class="form-label">Nombre *</label>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="sucursal.Nombre"
+            name="nombre"
+            required
+            [disabled]="loading">
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="mb-3">
+          <label class="form-label">Dirección *</label>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="sucursal.Direccion"
+            name="direccion"
+            required
+            [disabled]="loading">
+        </div>
+      </div>
     </div>
-    <div class="mb-3">
-      <label for="direccion" class="form-label">Dirección</label>
-      <input type="text" id="direccion" class="form-control" required [(ngModel)]="sucursal.Direccion" name="direccion">
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="mb-3">
+          <label class="form-label">Empresa *</label>
+          <select
+            class="form-select"
+            [(ngModel)]="sucursal.IdEmpresa"
+            name="empresa"
+            required
+            [disabled]="loading">
+            <option [ngValue]="null" disabled>Seleccione una empresa</option>
+            <option *ngFor="let empresa of empresas" [ngValue]="empresa.IdEmpresa">{{ empresa.Nombre }}</option>
+          </select>
+        </div>
+      </div>
     </div>
-    <div class="mb-3">
-      <label for="empresa" class="form-label">Empresa</label>
-      <select id="empresa" class="form-select" required [(ngModel)]="sucursal.IdEmpresa" name="empresa">
-        <option [ngValue]="null" disabled>Seleccione una empresa</option>
-        <option *ngFor="let empresa of empresas" [ngValue]="empresa.IdEmpresa">{{ empresa.Nombre }}</option>
-      </select>
+
+    <div class="row">
+      <div class="col-12">
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="loading || !sucursalForm.form.valid">
+          <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+          {{ editMode ? 'Actualizar' : 'Crear' }} Sucursal
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary ms-2"
+          routerLink="/app/sucursales"
+          [disabled]="loading">
+          Cancelar
+        </button>
+      </div>
     </div>
-    <button type="submit" class="btn btn-success" [disabled]="loading || sucursalForm.invalid">
-      <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
-      {{ editMode ? 'Actualizar' : 'Crear' }}
-    </button>
-    <button type="button" class="btn btn-secondary ms-2" routerLink="/app/sucursales">Cancelar</button>
   </form>
+
   <div *ngIf="error" class="alert alert-danger mt-3">{{ error }}</div>
   <div *ngIf="success" class="alert alert-success mt-3">{{ success }}</div>
 </div>

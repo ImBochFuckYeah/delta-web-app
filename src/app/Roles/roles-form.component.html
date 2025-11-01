@@ -1,13 +1,18 @@
-<div class="container mt-4">
+<div class="container-fluid mt-4">
   <h2>{{ isEdit ? 'Editar' : 'Crear' }} Rol</h2>
+
 
   <form (ngSubmit)="onSubmit()" #rolForm="ngForm">
     <div class="row">
       <div class="col-md-6">
         <div class="mb-3">
           <label class="form-label">Nombre del Rol *</label>
-          <input type="text" class="form-control" [(ngModel)]="formData.Nombre"
-                 name="Nombre" required>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="formData.Nombre"
+            name="Nombre"
+            required>
         </div>
       </div>
     </div>
@@ -17,27 +22,33 @@
       <div class="col-12">
         <div class="card mb-4">
           <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="mb-0">Permisos del Rol</h5>
-            <button type="button" class="btn btn-sm btn-outline-primary"
-                    (click)="togglePermisos()">
+            <h5>Permisos del Rol</h5>
+            <button
+              type="button"
+              class="btn btn-sm btn-outline-primary"
+              (click)="togglePermisos()"
+              [disabled]="loadingPermisos">
               {{ mostrarPermisos ? 'Ocultar' : 'Mostrar' }} Permisos
             </button>
           </div>
 
           <div class="card-body" *ngIf="mostrarPermisos">
+            <!-- Loader -->
             <div *ngIf="loadingPermisos" class="text-center">
-              <div class="spinner-border spinner-border-sm" role="status">
+              <div class="spinner-border text-primary">
                 <span class="visually-hidden">Cargando permisos...</span>
               </div>
             </div>
 
+            <!-- Sin permisos -->
             <div *ngIf="!loadingPermisos && permisos.length === 0" class="alert alert-info">
               No se encontraron permisos para este rol.
             </div>
 
+            <!-- Tabla de permisos -->
             <div *ngIf="!loadingPermisos && permisos.length > 0" class="table-responsive">
-              <table class="table table-bordered table-hover">
-                <thead class="table-dark">
+              <table class="table table-striped table-hover">
+                <thead>
                   <tr>
                     <th>Opción</th>
                     <th class="text-center">Alta</th>
@@ -49,26 +60,36 @@
                 </thead>
                 <tbody>
                   <tr *ngFor="let permiso of permisos">
-                    <td>{{permiso.NombreOpcion}}</td>
+                    <td>{{ permiso.NombreOpcion }}</td>
                     <td class="text-center">
-                      <input type="checkbox" [checked]="permiso.Alta"
-                             (change)="permiso.Alta = !permiso.Alta">
+                      <input
+                        type="checkbox"
+                        [checked]="permiso.Alta"
+                        (change)="permiso.Alta = !permiso.Alta">
                     </td>
                     <td class="text-center">
-                      <input type="checkbox" [checked]="permiso.Baja"
-                             (change)="permiso.Baja = !permiso.Baja">
+                      <input
+                        type="checkbox"
+                        [checked]="permiso.Baja"
+                        (change)="permiso.Baja = !permiso.Baja">
                     </td>
                     <td class="text-center">
-                      <input type="checkbox" [checked]="permiso.Cambio"
-                             (change)="permiso.Cambio = !permiso.Cambio">
+                      <input
+                        type="checkbox"
+                        [checked]="permiso.Cambio"
+                        (change)="permiso.Cambio = !permiso.Cambio">
                     </td>
                     <td class="text-center">
-                      <input type="checkbox" [checked]="permiso.Imprimir"
-                             (change)="permiso.Imprimir = !permiso.Imprimir">
+                      <input
+                        type="checkbox"
+                        [checked]="permiso.Imprimir"
+                        (change)="permiso.Imprimir = !permiso.Imprimir">
                     </td>
                     <td class="text-center">
-                      <input type="checkbox" [checked]="permiso.Exportar"
-                             (change)="permiso.Exportar = !permiso.Exportar">
+                      <input
+                        type="checkbox"
+                        [checked]="permiso.Exportar"
+                        (change)="permiso.Exportar = !permiso.Exportar">
                     </td>
                   </tr>
                 </tbody>
@@ -79,22 +100,39 @@
       </div>
     </div>
 
+    <!-- Botones de acción -->
     <div class="row">
       <div class="col-12">
-        <button type="submit" class="btn btn-primary" [disabled]="loading || !rolForm.form.valid">
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="loading || !rolForm.form.valid">
           <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
           {{ isEdit ? 'Actualizar' : 'Crear' }} Rol
         </button>
-        <button type="button" class="btn btn-secondary ms-2" (click)="onCancel()">
+        <button
+          type="button"
+          class="btn btn-secondary ms-2"
+          (click)="onCancel()">
           Cancelar
         </button>
 
         <!-- Botón para ir a la vista completa de permisos -->
-        <button *ngIf="isEdit" type="button" class="btn btn-info ms-2"
-                [routerLink]="['/app/roles/permisos', roleId]">
+        <button
+          *ngIf="isEdit"
+          type="button"
+          class="btn btn-info ms-2"
+          [routerLink]="['/app/roles/permisos', roleId]">
           <i class="bi bi-key"></i> Gestionar Permisos Completo
         </button>
       </div>
     </div>
   </form>
+
+  <!-- Loader general -->
+  <div *ngIf="loading" class="text-center mt-3">
+    <div class="spinner-border text-primary">
+      <span class="visually-hidden">Cargando...</span>
+    </div>
+  </div>
 </div>

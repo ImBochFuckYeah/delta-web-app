@@ -11,7 +11,8 @@ import { TipoDocumentoService, TipoDocumento } from '../services/tipo-documento.
   selector: 'app-persona-form',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './persona-form.component.html'
+  templateUrl: './persona-form.component.html',
+  styleUrls: ['./persona-form.component.css']
 })
 export class PersonaFormComponent implements OnInit {
   model: PersonaDto = {

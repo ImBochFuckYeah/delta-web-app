@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { TipoDocumentoService, TipoDocumento } from '../services/tipo-documento.service';
 
 @Component({
@@ -12,12 +13,6 @@ import { TipoDocumentoService, TipoDocumento } from '../services/tipo-documento.
 })
 export class TiposDocumentoComponent implements OnInit {
   tiposDocumento: TipoDocumento[] = [];
-  tipoDocumentoSeleccionado: TipoDocumento | null = null;
-
-  // Para el formulario
-  nombre: string = '';
-  modoEdicion: boolean = false;
-  mostrarFormulario: boolean = false;
 
   // Para búsqueda y paginación
   buscar: string = '';
@@ -30,7 +25,10 @@ export class TiposDocumentoComponent implements OnInit {
   mensaje: string = '';
   tipoMensaje: 'success' | 'error' | 'info' = 'info';
 
-  constructor(private tipoDocumentoService: TipoDocumentoService) {}
+  constructor(
+    private tipoDocumentoService: TipoDocumentoService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.cargarTiposDocumento();
@@ -92,78 +90,17 @@ export class TiposDocumentoComponent implements OnInit {
   }
 
   /**
-   * Mostrar formulario para nuevo registro
+   * Navegar para crear nuevo tipo de documento
    */
   nuevoTipoDocumento(): void {
-    this.modoEdicion = false;
-    this.nombre = '';
-    this.tipoDocumentoSeleccionado = null;
-    this.mostrarFormulario = true;
+    this.router.navigate(['/app/tipos-documento/crear']);
   }
 
   /**
-   * Mostrar formulario para editar
+   * Navegar para editar tipo de documento
    */
   editarTipoDocumento(tipoDocumento: TipoDocumento): void {
-    this.modoEdicion = true;
-    this.nombre = tipoDocumento.Nombre;
-    this.tipoDocumentoSeleccionado = tipoDocumento;
-    this.mostrarFormulario = true;
-  }
-
-  /**
-   * Guardar (crear o actualizar)
-   */
-  guardarTipoDocumento(): void {
-    if (!this.nombre.trim()) {
-      this.mostrarMensaje('El nombre es requerido', 'error');
-      return;
-    }
-
-    this.cargando = true;
-
-    if (this.modoEdicion && this.tipoDocumentoSeleccionado) {
-      // Actualizar
-      this.tipoDocumentoService.actualizar(
-        this.tipoDocumentoSeleccionado.IdTipoDocumento!,
-        this.nombre
-      ).subscribe({
-        next: (response) => {
-          if (response.Resultado === 1) {
-            this.mostrarMensaje('Tipo de documento actualizado correctamente', 'success');
-            this.cancelar();
-            this.cargarTiposDocumento();
-          } else {
-            this.mostrarMensaje(response.Mensaje, 'error');
-          }
-          this.cargando = false;
-        },
-        error: (error) => {
-          this.mostrarMensaje('Error al actualizar', 'error');
-          console.error(error);
-          this.cargando = false;
-        }
-      });
-    } else {
-      // Crear
-      this.tipoDocumentoService.crear(this.nombre).subscribe({
-        next: (response) => {
-          if (response.Resultado === 1) {
-            this.mostrarMensaje('Tipo de documento creado correctamente', 'success');
-            this.cancelar();
-            this.cargarTiposDocumento();
-          } else {
-            this.mostrarMensaje(response.Mensaje, 'error');
-          }
-          this.cargando = false;
-        },
-        error: (error) => {
-          this.mostrarMensaje('Error al crear', 'error');
-          console.error(error);
-          this.cargando = false;
-        }
-      });
-    }
+    this.router.navigate(['/app/tipos-documento/editar', tipoDocumento.IdTipoDocumento]);
   }
 
   /**
@@ -194,16 +131,6 @@ export class TiposDocumentoComponent implements OnInit {
   }
 
   /**
-   * Cancelar formulario
-   */
-  cancelar(): void {
-    this.mostrarFormulario = false;
-    this.nombre = '';
-    this.tipoDocumentoSeleccionado = null;
-    this.modoEdicion = false;
-  }
-
-  /**
    * Mostrar mensaje
    */
   mostrarMensaje(texto: string, tipo: 'success' | 'error' | 'info'): void {
@@ -223,15 +150,13 @@ export class TiposDocumentoComponent implements OnInit {
     const pages: number[] = [];
 
     if (total <= 7) {
-      // Mostrar todas las páginas si son pocas
       for (let i = 1; i <= total; i++) {
         pages.push(i);
       }
     } else {
-      // Mostrar páginas con puntos suspensivos si son muchas
       if (actual <= 3) {
         for (let i = 1; i <= 5; i++) pages.push(i);
-        pages.push(-1); // -1 representa "..."
+        pages.push(-1);
         pages.push(total);
       } else if (actual >= total - 2) {
         pages.push(1);

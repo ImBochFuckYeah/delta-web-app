@@ -9,7 +9,8 @@ import { RoleOpcionesService, RoleOpcionDto } from '../services/role-opciones.se
   selector: 'app-roles-crear',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './roles-crear.component.html'
+  templateUrl: './roles-crear.component.html',
+  styleUrls: ['./roles-form.component.css']
 })
 export class RolesCrearComponent implements OnInit {
   loading = false;

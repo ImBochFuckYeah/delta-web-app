@@ -42,8 +42,9 @@ import { TiposMovCCFormComponent } from './tipos-movimiento-cxc-list/tipos-movim
 import { TiposCuentaComponent } from './tipos-cuenta/tipos-cuenta.component';
 import { TiposDocumentoComponent } from './tipos-documento/tipos-documento.component';
 import { StatusCuentaComponent } from './status-cuenta/status-cuenta.component';
-
-
+import { TiposCuentaFormComponent } from './tipos-cuenta/tipos-cuenta-form.component';
+import { TiposDocumentoFormComponent } from './tipos-documento/tipos-documento-form.component';
+import { StatusCuentaFormComponent } from './status-cuenta/status-cuenta-form.component';
 
 
 export const routes: Routes = [
@@ -131,12 +132,18 @@ export const routes: Routes = [
 
       // tipos de cuenta
       { path: 'tipo-saldo-cuenta', component: TiposCuentaComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+      { path: 'tipo-saldo-cuenta/crear', component: TiposCuentaFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+      { path: 'tipo-saldo-cuenta/editar/:id', component: TiposCuentaFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
 
       // tipos de documento
       { path: 'tipos-documento', component: TiposDocumentoComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+      { path: 'tipos-documento/crear', component: TiposDocumentoFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+      { path: 'tipos-documento/editar/:id', component: TiposDocumentoFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
 
       // status de cuenta
       { path: 'status-cuenta', component: StatusCuentaComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+      { path: 'status-cuenta/crear', component: StatusCuentaFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+      { path: 'status-cuenta/editar/:id', component: StatusCuentaFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
 
 
     ]

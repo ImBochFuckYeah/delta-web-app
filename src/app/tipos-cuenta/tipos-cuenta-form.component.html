@@ -1,18 +1,18 @@
-<div class="container-fluid mt-4">
-  <h2>{{ isEdit ? 'Editar' : 'Crear' }} Género</h2>
+<div class="container-fluid mt-4 ">
+  <h2>{{ isEdit ? 'Editar' : 'Crear' }} Tipo de Cuenta</h2>
 
-  <form (ngSubmit)="onSubmit()" #generoForm="ngForm">
+  <form (ngSubmit)="onSubmit()" #tipoCuentaForm="ngForm">
     <div class="row">
       <div class="col-md-6">
         <div class="mb-3">
-          <label class="form-label">Nombre del Género *</label>
+          <label class="form-label">Nombre del Tipo de Cuenta *</label>
           <input
             type="text"
             class="form-control"
             [(ngModel)]="formData.Nombre"
             name="Nombre"
             required
-            maxlength="100"
+            maxlength="50"
             [disabled]="loading">
         </div>
       </div>
@@ -23,9 +23,9 @@
         <button
           type="submit"
           class="btn btn-primary"
-          [disabled]="loading || !generoForm.form.valid">
+          [disabled]="loading || !tipoCuentaForm.form.valid">
           <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
-          {{ isEdit ? 'Actualizar' : 'Crear' }} Género
+          {{ isEdit ? 'Actualizar' : 'Crear' }} Tipo de Cuenta
         </button>
         <button
           type="button"
