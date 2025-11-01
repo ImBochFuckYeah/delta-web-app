@@ -146,7 +146,7 @@ export class PersonaFormComponent implements OnInit {
       next: (r) => {
         this.loading = false;
         alert(r?.Mensaje ?? 'Guardado correctamente.');
-        this.router.navigate(['/app/persona.php']);
+        this.router.navigate(['/app/personas']);
       },
       error: (e) => {
         this.loading = false;
