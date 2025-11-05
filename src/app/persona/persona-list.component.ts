@@ -19,6 +19,9 @@ export class PersonaListComponent implements OnInit {
   page = 1;
   pageSize = 10;
   usuarioAccion = 'Administrador'; // trae de tu AuthService
+  documentos: any[] = [];
+personaSeleccionada: PersonaDto | null = null;
+mostrandoModal = false;
 
   constructor(private api: GestionService) {}
 
@@ -48,4 +51,59 @@ export class PersonaListComponent implements OnInit {
 
   get totalPages(){ return Math.ceil(this.total / this.pageSize); }
   get pages(){ return Array.from({length: this.totalPages}, (_,i)=>i+1); }
+
+abrirDocumentos(p: PersonaDto) {
+  this.personaSeleccionada = p;
+  this.mostrandoModal = true;
+  this.documentos = [];
+
+  this.api.obtenerDocumentosPersona(this.usuarioAccion, p.IdPersona!).subscribe({
+    next: (r) => {
+      console.log('📄 Respuesta completa:', r);
+
+      if (r?.Resultado === 1 && Array.isArray(r.Documentos)) {
+        // ✅ Si el backend devuelve el arreglo Documentos
+        this.documentos = r.Documentos.map((d: any) => ({
+          TipoDocumento: d.TipoDocumento,
+          Numero: d.NoDocumento
+        }));
+      } else if (r?.Data?.DocumentosJson) {
+        // 🔁 Compatibilidad si algún día vuelve a usarse DocumentosJson
+        try {
+          const docs = JSON.parse(r.Data.DocumentosJson);
+          this.documentos = docs.map((d: any) => ({
+            TipoDocumento: this.obtenerNombreTipoDocumento(d.IdTipoDocumento),
+            Numero: d.NoDocumento
+          }));
+        } catch {
+          this.documentos = [];
+        }
+      } else {
+        console.warn('⚠️ No se encontraron documentos en la respuesta');
+      }
+    },
+    error: (e) => {
+      console.error('Error al cargar documentos:', e);
+      alert('Error al cargar documentos.');
+    }
+  });
+}
+
+obtenerNombreTipoDocumento(idTipo: number): string {
+  switch (idTipo) {
+    case 1: return 'DPI';
+    case 2: return 'Pasaporte';
+    case 3: return 'Licencia';
+    case 4: return 'Licencia de Conducir';
+    default: return `Tipo #${idTipo}`;
+  }
+}
+
+
+
+cerrarModal() {
+  this.mostrandoModal = false;
+  this.personaSeleccionada = null;
+  this.documentos = [];
+}
 }
