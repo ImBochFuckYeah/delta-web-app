@@ -38,10 +38,12 @@ export class TiposMovCCFormComponent implements OnInit {
     this.loading = true;
     this.service.obtener(this.id).subscribe({
       next: (res: BackendResponse<TipoMovDto>) => {
-        const item = res?.Items?.[0];
-        if (item) {
+        // Adaptación para respuesta con objeto directo en Data
+        const item = res.Data as any; // Usamos any para manejar la respuesta real del API
+        if (item && typeof item === 'object' && !Array.isArray(item)) {
           this.formData.Nombre = item.Nombre;
-          this.formData.Operacion = (item.OperacionCuentaCorriente === 'Cargo' ? 1 : 2) as 1 | 2;
+          // El API devuelve número (1 o 2), lo convertimos al tipo esperado
+          this.formData.Operacion = item.OperacionCuentaCorriente as 1 | 2;
         }
         this.loading = false;
       },

@@ -22,7 +22,8 @@ export interface BackendResponse<T = any> {
   error?: string;
   Mensaje?: string;      // 'OK'
   Resultado?: number;    // 1 en éxito
-  Items: T[];
+  Items?: T[];
+  Data?: T[];
   TotalItems?: number;
 }
 
@@ -58,7 +59,7 @@ export class TiposMovimientoCxcService {
     const params = new HttpParams()
       .set('IdTipoMovimientoCXC', String(id))
       .set('usuarioAccion', this.getUsuarioActual());
-    return this.http.get<BackendResponse<TipoMovDto>>(`${this.apiUrl}/ListarBusqueda`, { params });
+    return this.http.get<BackendResponse<TipoMovDto>>(`${this.apiUrl}/Listar`, { params });
   }
 
   crear(nombre: string, operacionCuentaCorriente: number) {
