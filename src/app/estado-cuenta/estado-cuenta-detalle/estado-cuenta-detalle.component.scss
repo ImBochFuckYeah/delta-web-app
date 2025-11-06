@@ -1,0 +1,408 @@
+/* Estilos para vista de impresión */
+.print-container {
+  padding: 20px;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+}
+
+.action-buttons {
+  margin-bottom: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-primary {
+  background-color: #3498db;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #2980b9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: #5a6268;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3);
+}
+
+/* Contenido imprimible */
+.print-content {
+  background-color: white;
+  padding: 40px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: 'Arial', sans-serif;
+}
+
+/* Encabezado del documento */
+.document-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.company-info h1 {
+  margin: 0;
+  color: #2c3e50;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.company-info .subtitle {
+  margin: 5px 0 0 0;
+  color: #7f8c8d;
+  font-size: 1rem;
+}
+
+.print-date {
+  text-align: right;
+  color: #7f8c8d;
+}
+
+.print-date p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+/* Separadores */
+.separator {
+  border: none;
+  border-top: 2px solid #3498db;
+  margin: 20px 0;
+}
+
+/* Secciones */
+h2 {
+  color: #2c3e50;
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 15px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #dee2e6;
+}
+
+/* Grid de información */
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.info-item {
+  display: flex;
+  padding: 8px 0;
+}
+
+.info-item .label {
+  font-weight: 600;
+  color: #2c3e50;
+  min-width: 140px;
+  margin-right: 10px;
+}
+
+.info-item .value {
+  color: #34495e;
+  flex: 1;
+}
+
+/* Badge */
+.badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  background-color: #6c757d;
+  color: white;
+}
+
+.badge-active {
+  background-color: #27ae60;
+}
+
+/* Montos */
+.amount {
+  font-weight: 600;
+}
+
+.amount.positive {
+  color: #27ae60;
+}
+
+.amount.negative {
+  color: #e74c3c;
+}
+
+.amount.saldo-acumulado {
+  font-size: 1.05em;
+}
+
+/* Tabla de movimientos */
+.movements-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+  font-size: 0.9rem;
+}
+
+.movements-table thead {
+  background-color: #2c3e50;
+  color: white;
+}
+
+.movements-table th {
+  padding: 12px 8px;
+  text-align: left;
+  font-weight: 600;
+  border: 1px solid #2c3e50;
+}
+
+.movements-table td {
+  padding: 10px 8px;
+  border: 1px solid #dee2e6;
+}
+
+.movements-table tbody tr.row-odd {
+  background-color: #f8f9fa;
+}
+
+.movements-table tbody tr:hover {
+  background-color: #e9ecef;
+}
+
+.text-right {
+  text-align: right !important;
+}
+
+.text-center {
+  text-align: center !important;
+}
+
+/* Grid de totales */
+.totals-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  margin-top: 20px;
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  border: 2px solid #dee2e6;
+}
+
+.total-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  background-color: white;
+  border-radius: 4px;
+}
+
+.total-item.final-balance {
+  grid-column: 1 / -1;
+  background-color: #2c3e50;
+  color: white;
+  font-size: 1.1rem;
+  padding: 15px;
+}
+
+.total-item.final-balance .label {
+  color: white;
+  font-size: 1.1rem;
+}
+
+.total-item.final-balance .value {
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.total-item .label {
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.total-item .value {
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+/* Pie de página */
+.document-footer {
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid #dee2e6;
+}
+
+.footer-note {
+  font-size: 0.85rem;
+  color: #7f8c8d;
+  text-align: center;
+  margin-bottom: 30px;
+  font-style: italic;
+}
+
+.signature-section {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+.signature-line {
+  width: 300px;
+  text-align: center;
+}
+
+.signature-line hr {
+  border: none;
+  border-top: 2px solid #2c3e50;
+  margin-bottom: 5px;
+}
+
+.signature-line p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #2c3e50;
+  font-weight: 500;
+}
+
+/* Utilidades */
+.me-2 {
+  margin-right: 0.5rem;
+}
+
+/* Estilos de impresión */
+@media print {
+  .print-container {
+    padding: 0;
+    background-color: white;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .print-content {
+    box-shadow: none;
+    padding: 20px;
+    max-width: 100%;
+  }
+
+  .document-header,
+  .client-section,
+  .period-section,
+  .movements-section,
+  .summary-section,
+  .document-footer {
+    page-break-inside: avoid;
+  }
+
+  .movements-table {
+    font-size: 0.85rem;
+  }
+
+  .movements-table th,
+  .movements-table td {
+    padding: 8px 6px;
+  }
+
+  /* Asegurar que los colores se impriman */
+  .amount.positive {
+    color: #27ae60 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .amount.negative {
+    color: #e74c3c !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .movements-table thead {
+    background-color: #2c3e50 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .movements-table th {
+    color: white !important;
+    background-color: #2c3e50 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .total-item.final-balance {
+    background-color: #2c3e50 !important;
+    color: white !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Saltos de página apropiados */
+  h2 {
+    page-break-after: avoid;
+  }
+
+  .movements-table tr {
+    page-break-inside: avoid;
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .print-content {
+    padding: 20px;
+  }
+
+  .info-grid,
+  .totals-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .document-header {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .print-date {
+    text-align: left;
+  }
+
+  .movements-table {
+    font-size: 0.75rem;
+  }
+
+  .movements-table th,
+  .movements-table td {
+    padding: 6px 4px;
+  }
+
+  .total-item.final-balance {
+    grid-column: 1;
+  }
+}
+
+/* FontAwesome icons */
+.fas {
+  margin-right: 0.25rem;
+}

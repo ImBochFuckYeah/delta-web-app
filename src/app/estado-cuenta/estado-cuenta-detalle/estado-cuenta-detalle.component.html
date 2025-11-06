@@ -1,0 +1,186 @@
+<div class="print-container">
+  <!-- Botones de acción (no se imprimen) -->
+  <div class="action-buttons no-print">
+    <button class="btn btn-primary me-2" (click)="imprimir()">
+      <i class="fas fa-print me-2"></i>
+      Imprimir
+    </button>
+    <button class="btn btn-secondary" (click)="volver()">
+      <i class="fas fa-arrow-left me-2"></i>
+      Volver
+    </button>
+  </div>
+
+  <!-- Documento imprimible -->
+  <div class="print-content">
+    <!-- Encabezado del documento -->
+    <div class="document-header">
+      <div class="company-info">
+        <h1>ESTADO DE CUENTA</h1>
+        <p class="subtitle">Cuenta Corriente por Cobrar</p>
+      </div>
+      <div class="print-date">
+        <p><strong>Fecha de Impresión:</strong> {{ fechaImpresion }}</p>
+      </div>
+    </div>
+
+    <hr class="separator">
+
+    <!-- Información del cliente -->
+    <div class="client-section" *ngIf="header">
+      <h2>Información del Cliente</h2>
+      <div class="info-grid">
+        <div class="info-item">
+          <span class="label">Cliente:</span>
+          <span class="value">{{ header.Nombre }} {{ header.Apellido }}</span>
+        </div>
+        <div class="info-item">
+          <span class="label">ID Cliente:</span>
+          <span class="value">{{ header.IdPersona }}</span>
+        </div>
+        <div class="info-item">
+          <span class="label">ID Cuenta:</span>
+          <span class="value">{{ header.IdSaldoCuenta }}</span>
+        </div>
+        <div class="info-item">
+          <span class="label">Tipo de Cuenta:</span>
+          <span class="value">{{ header.TipoCuenta }}</span>
+        </div>
+        <div class="info-item">
+          <span class="label">Estado:</span>
+          <span class="value badge" [class.badge-active]="header.StatusCuenta === 'Activa'">
+            {{ header.StatusCuenta }}
+          </span>
+        </div>
+        <div class="info-item" *ngIf="header.CorreoElectronico">
+          <span class="label">Correo:</span>
+          <span class="value">{{ header.CorreoElectronico }}</span>
+        </div>
+        <div class="info-item" *ngIf="header.Telefono">
+          <span class="label">Teléfono:</span>
+          <span class="value">{{ header.Telefono }}</span>
+        </div>
+      </div>
+    </div>
+
+    <hr class="separator">
+
+    <!-- Período y saldos -->
+    <div class="period-section" *ngIf="header">
+      <h2>Período del Estado de Cuenta</h2>
+      <div class="info-grid">
+        <div class="info-item">
+          <span class="label">Desde:</span>
+          <span class="value">{{ formatearFechaCorta(header.PeriodoDesde) }}</span>
+        </div>
+        <div class="info-item">
+          <span class="label">Hasta:</span>
+          <span class="value">{{ formatearFechaCorta(header.PeriodoHasta) }}</span>
+        </div>
+        <div class="info-item">
+          <span class="label">Saldo Anterior:</span>
+          <span class="value amount" [class.negative]="header.SaldoAnterior < 0">
+            {{ formatearMoneda(header.SaldoAnterior) }}
+          </span>
+        </div>
+        <div class="info-item">
+          <span class="label">Saldo Inicial:</span>
+          <span class="value amount" [class.negative]="header.SaldoInicialPeriodo < 0">
+            {{ formatearMoneda(header.SaldoInicialPeriodo) }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <hr class="separator">
+
+    <!-- Tabla de movimientos -->
+    <div class="movements-section">
+      <h2>Detalle de Movimientos</h2>
+      <table class="movements-table">
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Tipo de Movimiento</th>
+            <th>Doc. Referencia</th>
+            <th class="text-right">Cargo</th>
+            <th class="text-right">Abono</th>
+            <th class="text-right">Saldo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of items; let i = index" [class.row-odd]="i % 2 === 0">
+            <td>{{ formatearFechaLegible(item.FechaMovimiento) }}</td>
+            <td>{{ item.TipoMovimiento }}</td>
+            <td>{{ item.DocumentoRef || '-' }}</td>
+            <td class="text-right">
+              <span *ngIf="item.Cargo > 0" class="amount negative">
+                {{ formatearMoneda(item.Cargo) }}
+              </span>
+              <span *ngIf="item.Cargo === 0">-</span>
+            </td>
+            <td class="text-right">
+              <span *ngIf="item.Abono > 0" class="amount positive">
+                {{ formatearMoneda(item.Abono) }}
+              </span>
+              <span *ngIf="item.Abono === 0">-</span>
+            </td>
+            <td class="text-right">
+              <span class="amount saldo-acumulado" [class.negative]="item.SaldoAcumulado < 0">
+                {{ formatearMoneda(item.SaldoAcumulado) }}
+              </span>
+            </td>
+          </tr>
+          <tr *ngIf="items.length === 0">
+            <td colspan="6" class="text-center">No hay movimientos registrados en este período</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Resumen y totales -->
+    <div class="summary-section" *ngIf="totales">
+      <h2>Resumen del Período</h2>
+      <div class="totals-grid">
+        <div class="total-item">
+          <span class="label">Saldo Inicial:</span>
+          <span class="value amount" [class.negative]="totales.SaldoInicial < 0">
+            {{ formatearMoneda(totales.SaldoInicial) }}
+          </span>
+        </div>
+        <div class="total-item">
+          <span class="label">Total Cargos:</span>
+          <span class="value amount negative">
+            {{ formatearMoneda(totales.TotalCargos) }}
+          </span>
+        </div>
+        <div class="total-item">
+          <span class="label">Total Abonos:</span>
+          <span class="value amount positive">
+            {{ formatearMoneda(totales.TotalAbonos) }}
+          </span>
+        </div>
+        <div class="total-item final-balance">
+          <span class="label">Saldo Final:</span>
+          <span class="value amount" [class.negative]="totales.SaldoFinal < 0">
+            {{ formatearMoneda(totales.SaldoFinal) }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pie de página -->
+    <div class="document-footer">
+      <p class="footer-note">
+        Este documento es un comprobante oficial del estado de cuenta.
+        Para cualquier aclaración, favor contactar al departamento de cuentas por cobrar.
+      </p>
+      <div class="signature-section">
+        <div class="signature-line">
+          <hr>
+          <p>Firma Autorizada</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
