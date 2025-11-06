@@ -34,7 +34,6 @@ import { PersonaListComponent } from './persona/persona-list.component';
 import { PersonaFormComponent } from './persona/persona-form.component';
 import { CuentaListComponent } from './cuentas/cuenta-list.component';
 import { CuentaFormComponent } from './cuentas/cuenta-form.component';
-import { SaldoConsultaComponent } from './cuentas/saldo-consulta.component';
 import { EstadoCivilListComponent } from './estado-civil/estado-civil-list';
 import { EstadoCivilComponent } from './estado-civil/estado-civil';
 import { TiposMovCCListComponent } from './tipos-movimiento-cxc-list/tipos-movimiento-cxc-list';
@@ -45,7 +44,9 @@ import { StatusCuentaComponent } from './status-cuenta/status-cuenta.component';
 import { TiposCuentaFormComponent } from './tipos-cuenta/tipos-cuenta-form.component';
 import { TiposDocumentoFormComponent } from './tipos-documento/tipos-documento-form.component';
 import { StatusCuentaFormComponent } from './status-cuenta/status-cuenta-form.component';
-
+import { ConsultaSaldosComponent } from './saldos/consulta-saldos.component';
+import { EstadoCuentaConsultaComponent } from './estado-cuenta/estado-cuenta-consulta/estado-cuenta-consulta.component';
+import { EstadoCuentaDetalleComponent } from './estado-cuenta/estado-cuenta-detalle/estado-cuenta-detalle.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [LoginGuard] },
@@ -118,7 +119,6 @@ export const routes: Routes = [
       { path: 'saldo-cuentas', component: CuentaListComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
       { path: 'saldo-cuentas/crear', component: CuentaFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
       { path: 'saldo-cuentas/editar/:id', component: CuentaFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
-      { path: 'consulta-saldos', component: SaldoConsultaComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
 
       //estado civil
       { path: 'estado-civil', component: EstadoCivilListComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
@@ -145,7 +145,13 @@ export const routes: Routes = [
       { path: 'status-cuenta/crear', component: StatusCuentaFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
       { path: 'status-cuenta/editar/:id', component: StatusCuentaFormComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
 
+      // consulta de saldos (standalone)
+      { path: 'consulta-saldos',  component: ConsultaSaldosComponent, canActivate: [AuthGuard, RoutePermissionGuard]},
 
+      // estado de cuenta
+      //{ path: 'estado-cuentas', component: StatusCuentaComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+      { path: 'estado-cuentas', component: EstadoCuentaConsultaComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+      { path: 'estado-cuentas/detalle', component: EstadoCuentaDetalleComponent, canActivate: [AuthGuard, RoutePermissionGuard] }
     ]
   },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
