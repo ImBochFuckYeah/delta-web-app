@@ -47,6 +47,7 @@ import { StatusCuentaFormComponent } from './status-cuenta/status-cuenta-form.co
 import { ConsultaSaldosComponent } from './saldos/consulta-saldos.component';
 import { EstadoCuentaConsultaComponent } from './estado-cuenta/estado-cuenta-consulta/estado-cuenta-consulta.component';
 import { EstadoCuentaDetalleComponent } from './estado-cuenta/estado-cuenta-detalle/estado-cuenta-detalle.component';
+import { GrabacionMovimientoComponent } from './movimientos/grabacion-movimiento.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [LoginGuard] },
@@ -151,7 +152,10 @@ export const routes: Routes = [
       // estado de cuenta
       //{ path: 'estado-cuentas', component: StatusCuentaComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
       { path: 'estado-cuentas', component: EstadoCuentaConsultaComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
-      { path: 'estado-cuentas/detalle', component: EstadoCuentaDetalleComponent, canActivate: [AuthGuard, RoutePermissionGuard] }
+      { path: 'estado-cuentas/detalle', component: EstadoCuentaDetalleComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
+
+      // Grabacion de movimientos
+       { path: 'grabacion-movimientos', component: GrabacionMovimientoComponent, canActivate: [AuthGuard, RoutePermissionGuard]  },
     ]
   },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
