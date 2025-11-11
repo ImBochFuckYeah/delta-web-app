@@ -33,6 +33,7 @@ export class CuentaListComponent implements OnInit {
     }).subscribe({
       next: (r)=>{
         this.data = r?.Items ?? r?.Data ?? [];
+        console.log('Datos de cuentas:', this.data); // 👈 Agrega esto
         this.total = r?.Total ?? this.data.length ?? 0;
         this.loading=false;
       }, error: ()=> this.loading=false

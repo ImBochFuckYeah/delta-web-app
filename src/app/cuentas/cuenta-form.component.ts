@@ -14,22 +14,18 @@ import { StatusCuentaService, StatusCuenta } from '../services/status-cuenta.ser
   styleUrls: ['./cuenta-form.component.css']
 })
 export class CuentaFormComponent implements OnInit {
-  model: CuentaDto = { IdPersona: 0, IdTipoSaldoCuenta: 0, IdStatusCuenta: 0, SaldoAnterior: 0, NoCuenta: '' };
+  model: CuentaDto = { IdPersona: 0, IdTipoSaldoCuenta: 0, IdStatusCuenta: 0, SaldoAnterior: 0 };
   isEdit = false;
   loading = false;
   usuario = 'Administrador';
 
-  // 🔹 Nuevas listas
   tiposCuenta: TipoSaldoCuenta[] = [];
   statusCuentas: StatusCuenta[] = [];
 
-  // 🔹 Buscador de persona
   personas: PersonaDto[] = [];
   buscarTermino = '';
   mostrandoBuscador = false;
   cargandoPersonas = false;
-
-  // 🔹 Persona seleccionada (para control)
   personaSeleccionada: PersonaDto | null = null;
 
   constructor(
@@ -40,37 +36,18 @@ export class CuentaFormComponent implements OnInit {
     private router: Router
   ) {}
 
-  // ngOnInit(): void {
-  //   const id = this.route.snapshot.paramMap.get('id');
-  //   this.isEdit = !!id;
-
-  //   if (this.isEdit) {
-  //     // Si deseas implementar edición de cuenta
-  //     this.api.obtenerCuentaPorNo(this.usuario, '').subscribe({ next: () => {}, error: () => {} });
-  //   }
-
-  //   this.cargarTiposCuenta();
-  //   this.cargarStatusCuenta();
-  // }
-
   ngOnInit(): void {
-  const idParam = this.route.snapshot.paramMap.get('id');
-  this.isEdit = !!idParam;
+    const idParam = this.route.snapshot.paramMap.get('id');
+    this.isEdit = !!idParam;
+    this.cargarTiposCuenta();
+    this.cargarStatusCuenta();
 
-  // 🔹 Carga los combos antes (para evitar errores de binding)
-  this.cargarTiposCuenta();
-  this.cargarStatusCuenta();
-
-  // 🔹 Si estamos editando, obtener los datos del backend
-  if (this.isEdit && idParam) {
-    const id = parseInt(idParam, 10);
-    this.cargarCuenta(id);
+    if (this.isEdit && idParam) {
+      const id = parseInt(idParam, 10);
+      this.cargarCuenta(id);
+    }
   }
-}
 
-  // ================================
-  // 🔍 Buscar personas
-  // ================================
   buscarPersonas(): void {
     if (!this.buscarTermino.trim()) {
       this.mostrandoBuscador = false;
@@ -94,14 +71,11 @@ export class CuentaFormComponent implements OnInit {
 
   seleccionarPersona(p: PersonaDto): void {
     this.model.IdPersona = p.IdPersona ?? 0;
-    this.personaSeleccionada = p; // ✅ guardamos referencia
+    this.personaSeleccionada = p;
     this.buscarTermino = `${p.Nombre} ${p.Apellido}`;
     this.mostrandoBuscador = false;
   }
 
-  // ================================
-  // 🔹 Cargar combos
-  // ================================
   cargarTiposCuenta(): void {
     this.tipoSaldoCuentaService.listarBusqueda('', 1, 50).subscribe({
       next: (r) => {
@@ -120,11 +94,7 @@ export class CuentaFormComponent implements OnInit {
     });
   }
 
-  // ================================
-  // 💾 Guardar / Actualizar
-  // ================================
   save() {
-    // 🔒 refuerzo: validamos que haya persona seleccionada
     if (!this.model.IdPersona || this.model.IdPersona === 0) {
       alert('Por favor selecciona una persona antes de guardar.');
       return;
@@ -133,6 +103,10 @@ export class CuentaFormComponent implements OnInit {
       alert('Por favor completa los campos obligatorios.');
       return;
     }
+
+    // ✅ Siempre saldo 0 y sin número de cuenta
+    this.model.SaldoAnterior = 0;
+    delete (this.model as any).NoCuenta;
 
     this.loading = true;
     const req$ = this.isEdit
@@ -157,41 +131,37 @@ export class CuentaFormComponent implements OnInit {
   }
 
   private cargarCuenta(id: number): void {
-  this.loading = true;
-  this.api.obtenerCuenta(this.usuario, id).subscribe({
-    next: (r) => {
-      this.loading = false;
-      if (r?.Resultado !== 1 || !r?.Data) {
-        alert(r?.Mensaje ?? 'No se encontró la cuenta.');
-        return;
+    this.loading = true;
+    this.api.obtenerCuenta(this.usuario, id).subscribe({
+      next: (r) => {
+        this.loading = false;
+        if (r?.Resultado !== 1 || !r?.Data) {
+          alert(r?.Mensaje ?? 'No se encontró la cuenta.');
+          return;
+        }
+
+        this.model = {
+          IdSaldoCuenta: r.Data.IdSaldoCuenta,
+          IdPersona: r.Data.IdPersona,
+          IdTipoSaldoCuenta: r.Data.IdTipoSaldoCuenta,
+          IdStatusCuenta: r.Data.IdStatusCuenta,
+          SaldoAnterior: 0 // ✅ siempre 0
+        };
+
+        this.personaSeleccionada = {
+          IdPersona: r.Data.IdPersona,
+          Nombre: r.Data.NombrePersona ?? '',
+          Apellido: '',
+          CorreoElectronico: ''
+        };
+
+        this.buscarTermino = this.personaSeleccionada.Nombre;
+      },
+      error: (err) => {
+        this.loading = false;
+        console.error('Error cargando cuenta:', err);
+        alert('Error al obtener los datos de la cuenta.');
       }
-
-      // 🔹 Asignamos los valores recibidos
-      this.model = {
-        IdSaldoCuenta: r.Data.IdSaldoCuenta,
-        IdPersona: r.Data.IdPersona,
-        IdTipoSaldoCuenta: r.Data.IdTipoSaldoCuenta,
-        IdStatusCuenta: r.Data.IdStatusCuenta,
-        SaldoAnterior: r.Data.SaldoAnterior,
-        NoCuenta: r.Data.NoCuenta ?? ''
-      };
-
-      // 🔹 Para mostrar el nombre de la persona seleccionada
-      this.personaSeleccionada = {
-        IdPersona: r.Data.IdPersona,
-        Nombre: r.Data.NombrePersona ?? '',
-        Apellido: '',
-        CorreoElectronico: ''
-      };
-
-      this.buscarTermino = this.personaSeleccionada.Nombre;
-    },
-    error: (err) => {
-      this.loading = false;
-      console.error('Error cargando cuenta:', err);
-      alert('Error al obtener los datos de la cuenta.');
-    }
-  });
-}
-
+    });
+  }
 }

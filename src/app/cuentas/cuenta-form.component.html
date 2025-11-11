@@ -72,10 +72,7 @@
           required
         >
           <option [ngValue]="0">Seleccione...</option>
-          <option
-            *ngFor="let t of tiposCuenta"
-            [ngValue]="t.IdTipoSaldoCuenta"
-          >
+          <option *ngFor="let t of tiposCuenta" [ngValue]="t.IdTipoSaldoCuenta">
             {{ t.Nombre }}
           </option>
         </select>
@@ -91,44 +88,16 @@
           required
         >
           <option [ngValue]="0">Seleccione...</option>
-          <option
-            *ngFor="let s of statusCuentas"
-            [ngValue]="s.IdStatusCuenta"
-          >
+          <option *ngFor="let s of statusCuentas" [ngValue]="s.IdStatusCuenta">
             {{ s.Nombre }}
           </option>
         </select>
-      </div>
-
-      <!-- Saldo anterior -->
-      <div class="col-md-6 mb-3">
-        <label class="form-label">Saldo Anterior *</label>
-        <input
-          type="number"
-          class="form-control"
-          [(ngModel)]="model.SaldoAnterior"
-          name="SaldoAnterior"
-          required
-        />
-      </div>
-
-      <!-- NoCuenta -->
-      <div class="col-md-6 mb-3">
-        <label class="form-label">No. de Cuenta (opcional)</label>
-        <input
-          class="form-control"
-          [(ngModel)]="model.NoCuenta"
-          name="NoCuenta"
-        />
       </div>
     </div>
 
     <!-- Botones -->
     <button class="btn btn-primary" [disabled]="loading">
-      <span
-        *ngIf="loading"
-        class="spinner-border spinner-border-sm me-2"
-      ></span>
+      <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
       Guardar
     </button>
 
