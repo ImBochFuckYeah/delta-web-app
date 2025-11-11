@@ -115,9 +115,20 @@ export class GestionService {
     return this.http.post(`${this.cuentasBase}/crear`, { ...model, Usuario: usuario });
   }
 
+  // actualizarCuenta(model: CuentaDto & { IdSaldoCuenta: number }, usuario: string): Observable<any> {
+  //   return this.http.post(`${this.cuentasBase}/Actualizar`, { ...model, Usuario: usuario });
+  // }
+
   actualizarCuenta(model: CuentaDto & { IdSaldoCuenta: number }, usuario: string): Observable<any> {
-    return this.http.post(`${this.cuentasBase}/Actualizar`, { ...model, Usuario: usuario });
-  }
+  const params = new HttpParams()
+    .set('IdSaldoCuenta', model.IdSaldoCuenta.toString())
+    .set('Usuario', usuario)
+    .set('IdStatusCuenta', model.IdStatusCuenta?.toString() || '')
+    .set('SaldoAnterior', model.SaldoAnterior?.toString() || '');
+
+  return this.http.post(`${this.cuentasBase}/Actualizar`, null, { params });
+}
+
 
   listarMovimientos(usuarioAccion: string, idSaldoCuenta: number,
                     desde?: string, hasta?: string, pagina = 1, tamano = 50, ordenDir: 'ASC'|'DESC' = 'DESC'): Observable<any> {

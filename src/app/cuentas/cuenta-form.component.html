@@ -4,63 +4,68 @@
   <form (ngSubmit)="save()">
     <div class="row">
       <!-- 🔍 Buscar Persona -->
-      <div class="col-md-6 mb-3">
-        <label class="form-label">Persona *</label>
-        <div class="input-group">
-          <input
-            class="form-control"
-            [(ngModel)]="buscarTermino"
-            name="buscarTermino"
-            placeholder="Buscar persona..."
-            (keyup.enter)="buscarPersonas()"
-            autocomplete="off"
-          />
-          <button
-            class="btn btn-outline-primary"
-            type="button"
-            (click)="buscarPersonas()"
-            [disabled]="cargandoPersonas"
-          >
-            <span *ngIf="cargandoPersonas" class="spinner-border spinner-border-sm me-1"></span>
-            Buscar
-          </button>
-        </div>
+     <div class="col-md-6 mb-3">
+  <label class="form-label">Persona *</label>
 
-        <!-- 🔽 Panel de resultados -->
-        <div *ngIf="mostrandoBuscador" class="border rounded p-2 mt-2 bg-light">
-          <div *ngIf="cargandoPersonas">Cargando...</div>
+  <!-- CREAR: buscador -->
+  <ng-container *ngIf="!isEdit; else editPersonaField">
+    <div class="input-group">
+      <input
+        class="form-control"
+        [(ngModel)]="buscarTermino"
+        name="buscarTermino"
+        placeholder="Buscar persona..."
+        (keyup.enter)="buscarPersonas()"
+        autocomplete="off"
+        id="buscarPersona"
+      />
+      <button
+        class="btn btn-outline-primary"
+        type="button"
+        (click)="buscarPersonas()"
+        [disabled]="cargandoPersonas"
+      >
+        <span *ngIf="cargandoPersonas" class="spinner-border spinner-border-sm me-1"></span>
+        Buscar
+      </button>
+    </div>
 
-          <div
-            *ngFor="let p of personas"
-            class="d-flex justify-content-between align-items-center mb-1"
-          >
-            <span>{{ p.Nombre }} {{ p.Apellido }}</span>
-            <button
-              type="button"
-              class="btn btn-sm btn-success"
-              (click)="seleccionarPersona(p)"
-            >
-              Seleccionar
-            </button>
-          </div>
+    <!-- Resultados -->
+    <div *ngIf="mostrandoBuscador" class="border rounded p-2 mt-2 bg-light">
+      <div *ngIf="cargandoPersonas">Cargando...</div>
 
-          <div
-            *ngIf="!personas.length && !cargandoPersonas"
-            class="text-muted small"
-          >
-            No se encontraron resultados.
-          </div>
-        </div>
-
-        <!-- ✅ Persona seleccionada -->
-        <div *ngIf="personaSeleccionada" class="text-success small mt-1">
-          Persona seleccionada:
-          <strong>
-            {{ personaSeleccionada.Nombre }} {{ personaSeleccionada.Apellido }}
-          </strong>
-          <span class="text-muted">(ID: {{ personaSeleccionada.IdPersona }})</span>
-        </div>
+      <div *ngFor="let p of personas" class="d-flex justify-content-between align-items-center mb-1">
+        <span>{{ p.Nombre }} {{ p.Apellido }}</span>
+        <button type="button" class="btn btn-sm btn-success" (click)="seleccionarPersona(p)">
+          Seleccionar
+        </button>
       </div>
+
+      <div *ngIf="!personas.length && !cargandoPersonas" class="text-muted small">
+        No se encontraron resultados.
+      </div>
+    </div>
+
+    <div *ngIf="personaSeleccionada" class="text-success small mt-1">
+      Persona seleccionada:
+      <strong>{{ personaSeleccionada.Nombre }} {{ personaSeleccionada.Apellido }}</strong>
+      <span class="text-muted">(ID: {{ personaSeleccionada.IdPersona }})</span>
+    </div>
+  </ng-container>
+
+  <!-- EDITAR: solo lectura -->
+  <ng-template #editPersonaField>
+  <!-- <label class="form-label">Persona *</label> -->
+  <input
+    class="form-control"
+    [(ngModel)]="displayNombrePersona"
+    name="displayNombrePersona"
+    placeholder="Editar nombre..."
+    id="personaEditable"
+  />
+  <small class="text-muted">ID: {{ model.IdPersona }}</small>
+  </ng-template>
+</div>
 
       <!-- Tipo de cuenta -->
       <div class="col-md-6 mb-3">
