@@ -138,6 +138,13 @@ export class GestionService {
   return this.http.get(`${this.cuentasBase}/Obtener`, { params });
 }
 
+obtenerDocumentosPersona(usuarioAccion: string, idPersona: number): Observable<any> {
+  const params = new HttpParams()
+    .set('usuarioAccion', usuarioAccion)
+    .set('IdPersona', idPersona)
+    .set('IncluirDocumentos', true);
+  return this.http.get(`${this.personasBase}/Obtener`, { params });
+}
 
 
 }

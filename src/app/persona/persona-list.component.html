@@ -33,6 +33,9 @@
         <td>
           <a class="btn btn-sm btn-primary me-2" [routerLink]="['/app/personas/editar', p.IdPersona]">Editar</a>
           <button class="btn btn-sm btn-danger" (click)="eliminar(p.IdPersona!)">Eliminar</button>
+            <button class="btn btn-sm btn-outline-info" (click)="abrirDocumentos(p)">
+    Ver Documentos
+  </button>
         </td>
       </tr>
       <tr *ngIf="!loading && personas.length===0"><td colspan="6" class="text-center">Sin resultados</td></tr>
@@ -47,4 +50,44 @@
       <li class="page-item" [class.disabled]="page===totalPages"><a class="page-link" (click)="onPageChange(page+1)">Siguiente</a></li>
     </ul>
   </nav>
+
+</div>
+<!-- =======================
+  🟢 Modal de Documentos
+======================= -->
+<div class="modal fade show d-block" *ngIf="mostrandoModal" style="background:rgba(0,0,0,0.5)">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title">
+          Documentos de {{ personaSeleccionada?.Nombre }} {{ personaSeleccionada?.Apellido }}
+        </h5>
+        <button type="button" class="btn-close" (click)="cerrarModal()"></button>
+      </div>
+
+      <div class="modal-body">
+        <table class="table table-sm table-bordered">
+          <thead>
+            <tr>
+              <th>Tipo de Documento</th>
+              <th>Número</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let d of documentos">
+              <td>{{ d.TipoDocumento }}</td>
+              <td>{{ d.Numero }}</td>
+            </tr>
+            <tr *ngIf="!documentos.length">
+              <td colspan="2" class="text-center text-muted">Sin documentos registrados</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="cerrarModal()">Cerrar</button>
+      </div>
+    </div>
+  </div>
 </div>
