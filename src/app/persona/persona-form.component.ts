@@ -55,19 +55,34 @@ export class PersonaFormComponent implements OnInit {
           this.loading = false;
           if (r?.Data) {
             this.model = { ...r.Data };
-            try {
-              this.documentos = JSON.parse(this.model.DocumentosJson || '[]');
-            } catch {
+
+            // ✅ Convertir fecha a formato aceptado por <input type="date">
+            if (this.model.FechaNacimiento) {
+              this.model.FechaNacimiento = this.model.FechaNacimiento.split('T')[0];
+            }
+
+            // ✅ Leer documentos desde r.Documentos
+            if (Array.isArray(r.Documentos)) {
+              this.documentos = r.Documentos.map((d: any) => ({
+                IdTipoDocumento: d.IdTipoDocumento,
+                NoDocumento: d.NoDocumento
+              }));
+            } else {
               this.documentos = [];
             }
           }
         },
-        error: () => (this.loading = false),
+        error: (err) => {
+          this.loading = false;
+          console.error('Error cargando persona:', err);
+        }
       });
     }
   }
 
-  // 🔹 Cargar géneros
+  // ===============================
+  // 🔹 Cargar catálogos
+  // ===============================
   cargarGeneros(): void {
     this.generoService.listar({ BuscarNombre: '', Pagina: 1, TamanoPagina: 50 }).subscribe({
       next: (resp: any) => {
@@ -82,7 +97,6 @@ export class PersonaFormComponent implements OnInit {
     });
   }
 
-  // 🔹 Cargar estados civiles
   cargarEstadosCiviles(): void {
     this.estadoCivilService.listar({ BuscarNombre: '', Pagina: 1, TamanoPagina: 50 }).subscribe({
       next: (resp: any) => {
@@ -97,7 +111,6 @@ export class PersonaFormComponent implements OnInit {
     });
   }
 
-  // 🔹 Cargar tipos de documento
   cargarTiposDocumento(): void {
     this.tipoDocumentoService.listarBusqueda('', 1, 50).subscribe({
       next: (r) => {
@@ -107,7 +120,9 @@ export class PersonaFormComponent implements OnInit {
     });
   }
 
-  // 🔹 Agregar o eliminar documentos
+  // ===============================
+  // 🔹 Documentos
+  // ===============================
   agregarDocumento(): void {
     this.documentos.push({ IdTipoDocumento: null, NoDocumento: '' });
   }
@@ -116,9 +131,10 @@ export class PersonaFormComponent implements OnInit {
     this.documentos.splice(i, 1);
   }
 
-  // 🔹 Guardar persona
+  // ===============================
+  // 💾 Guardar persona
+  // ===============================
   save(): void {
-    // Validaciones mínimas
     if (!this.model.Nombre || !this.model.Apellido || !this.model.IdGenero || !this.model.IdEstadoCivil) {
       alert('Por favor, completa todos los campos obligatorios.');
       return;
@@ -129,9 +145,7 @@ export class PersonaFormComponent implements OnInit {
       return;
     }
 
-    // Convertir documentos a JSON
     this.model.DocumentosJson = JSON.stringify(this.documentos);
-
     this.loading = true;
 
     const req$ = this.isEdit
@@ -156,7 +170,7 @@ export class PersonaFormComponent implements OnInit {
     });
   }
 
-    cancel(): void {
+  cancel(): void {
     this.router.navigate(['/app/personas']);
   }
 }
