@@ -115,9 +115,20 @@ export class GestionService {
     return this.http.post(`${this.cuentasBase}/crear`, { ...model, Usuario: usuario });
   }
 
+  // actualizarCuenta(model: CuentaDto & { IdSaldoCuenta: number }, usuario: string): Observable<any> {
+  //   return this.http.post(`${this.cuentasBase}/Actualizar`, { ...model, Usuario: usuario });
+  // }
+
   actualizarCuenta(model: CuentaDto & { IdSaldoCuenta: number }, usuario: string): Observable<any> {
-    return this.http.post(`${this.cuentasBase}/Actualizar`, { ...model, Usuario: usuario });
-  }
+  const params = new HttpParams()
+    .set('IdSaldoCuenta', model.IdSaldoCuenta.toString())
+    .set('Usuario', usuario)
+    .set('IdStatusCuenta', model.IdStatusCuenta?.toString() || '')
+    .set('SaldoAnterior', model.SaldoAnterior?.toString() || '');
+
+  return this.http.post(`${this.cuentasBase}/Actualizar`, null, { params });
+}
+
 
   listarMovimientos(usuarioAccion: string, idSaldoCuenta: number,
                     desde?: string, hasta?: string, pagina = 1, tamano = 50, ordenDir: 'ASC'|'DESC' = 'DESC'): Observable<any> {
@@ -144,6 +155,15 @@ obtenerDocumentosPersona(usuarioAccion: string, idPersona: number): Observable<a
     .set('IdPersona', idPersona)
     .set('IncluirDocumentos', true);
   return this.http.get(`${this.personasBase}/Obtener`, { params });
+}
+
+obtenerCuentaPorPersonaTipo(usuarioAccion: string, idPersona: number, idTipoSaldoCuenta: number): Observable<any> {
+  const params = new HttpParams()
+    .set('usuarioAccion', usuarioAccion)
+    .set('IdPersona', idPersona)
+    .set('IdTipoSaldoCuenta', idTipoSaldoCuenta);
+
+  return this.http.get(`${this.cuentasBase}/Obtener`, { params });
 }
 
 

@@ -67,13 +67,18 @@
               Editar
             </a>
 
+            <!-- <a class="btn btn-sm btn-primary me-2"
+   [routerLink]="['/app/saldo-cuentas/editar', c.IdPersona, c.IdTipoSaldoCuenta]">
+  Editar
+</a> -->
+
             <!-- Consultar saldo -->
-            <a
+            <!-- <a
               class="btn btn-sm btn-outline-secondary"
               [routerLink]="['/app/consulta-saldos']"
               [queryParams]="{ id: c.IdSaldoCuenta }">
               Saldo / Movs
-            </a>
+            </a> -->
           </td>
         </tr>
         <tr *ngIf="!loading && data.length === 0">
