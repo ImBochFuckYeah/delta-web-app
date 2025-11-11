@@ -1,0 +1,67 @@
+<div class="card">
+  <div class="card-header">
+    <h3>Grabación de Movimiento CxC</h3>
+  </div>
+
+  <div class="card-body">
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <div class="grid">
+        <div class="col-12 md:col-6">
+          <label>Usuario</label>
+          <input class="input" formControlName="usuario" />
+        </div>
+
+        <div class="col-12 md:col-3">
+          <label>Id Saldo Cuenta</label>
+          <input type="number" class="input" formControlName="idSaldoCuenta" />
+          <small *ngIf="cuentaActiva === true" class="ok">Cuenta ACTIVA</small>
+          <small *ngIf="cuentaActiva === false" class="warn">Cuenta INACTIVA</small>
+        </div>
+
+        <div class="col-12 md:col-3">
+          <label>Tipo de Movimiento</label>
+          <select class="input" formControlName="idTipoMovimientoCXC">
+            <option [ngValue]="null">-- Seleccione --</option>
+            <option *ngFor="let t of tipos" [ngValue]="t.id">
+              {{t.nombre}} ({{t.operacion === 1 ? 'Cargo' : 'Abono'}})
+            </option>
+          </select>
+        </div>
+
+        <div class="col-12 md:col-4">
+          <label>Fecha Movimiento</label>
+          <input type="datetime-local" class="input" formControlName="fechaMovimiento" />
+        </div>
+
+        <div class="col-12 md:col-4">
+          <label>Valor</label>
+          <input type="number" step="0.01" class="input" formControlName="valorMovimiento" />
+        </div>
+
+        <div class="col-12 md:col-4">
+          <label>Documento Ref</label>
+          <input class="input" formControlName="documentoRef" />
+        </div>
+
+        <div class="col-12">
+          <label>Descripción</label>
+          <textarea class="input" rows="2" formControlName="descripcion"></textarea>
+        </div>
+      </div>
+
+      <button class="btn" type="submit" [disabled]="enviando">Guardar</button>
+      <span *ngIf="enviando">Procesando…</span>
+      <div class="msg" *ngIf="mensaje">{{mensaje}}</div>
+    </form>
+
+    <div *ngIf="resultado?.mov" class="mt">
+      <h4>Movimiento creado</h4>
+      <pre>{{ resultado?.mov | json }}</pre>
+    </div>
+
+    <div *ngIf="resultado?.saldo" class="mt">
+      <h4>Saldo actualizado</h4>
+      <pre>{{ resultado?.saldo | json }}</pre>
+    </div>
+  </div>
+</div>
