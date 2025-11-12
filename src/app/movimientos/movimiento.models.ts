@@ -39,8 +39,14 @@ export interface SaldoResumen {
 }
 
 // DTO que devuelve /GrabacionMovimiento/Tipos
+// export interface TipoMovimientoDto {
+//   IdTipoMovimientoCXC: number;
+//   Nombre: string;
+//   Operacion: number; // 1 = Cargo, 2 = Abono
+// }
+
 export interface TipoMovimientoDto {
   IdTipoMovimientoCXC: number;
   Nombre: string;
-  Operacion: number; // 1 = Cargo, 2 = Abono
+  OperacionCuentaCorriente: number; // 👈 propiedad correcta del backend (1 = Cargo, 2 = Abono)
 }

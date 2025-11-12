@@ -6,22 +6,33 @@ import { ApiResp, CrearMovimientoVm, TipoMovimientoDto } from '../movimientos/mo
 
 @Injectable({ providedIn: 'root' })
 export class GrabacionMovimientoService {
-  private base = '/api/GrabacionMovimiento';
+  private baseUrl = 'http://localhost:54409';
 
   constructor(private http: HttpClient) {}
 
+  /** 🔹 Listar tipos de movimiento desde TiposMovimientoCXC/ListarBusqueda */
   obtenerTipos(): Observable<TipoMovimientoDto[]> {
+    let params = new HttpParams()
+      .set('usuarioAccion', 'Administrador')
+      .set('Buscar', '')
+      .set('Pagina', '1')
+      .set('TamanoPagina', '50')
+      .set('OrdenPor', 'Nombre')
+      .set('OrdenDir', 'ASC');
+
     return this.http
-      .get<ApiResp<TipoMovimientoDto>>(`${this.base}/Tipos`)
-      .pipe(map(r => (r.items ?? []) as TipoMovimientoDto[]));
+      .get<any>(`${this.baseUrl}/TiposMovimientoCXC/ListarBusqueda`, { params })
+      .pipe(map((r) => (r.Items ?? []) as TipoMovimientoDto[]));
   }
 
+  /** 🔹 Verifica si una cuenta está activa */
   cuentaActiva(idSaldoCuenta: number): Observable<ApiResp> {
     const params = new HttpParams().set('idSaldoCuenta', String(idSaldoCuenta));
-    return this.http.get<ApiResp>(`${this.base}/CuentaActiva`, { params });
+    return this.http.get<ApiResp>(`${this.baseUrl}/GrabacionMovimiento/CuentaActiva`, { params });
   }
 
+  /** 🔹 Crear movimiento en la API real */
   crear(data: CrearMovimientoVm): Observable<ApiResp> {
-    return this.http.post<ApiResp>(`${this.base}/Crear`, data);
+    return this.http.post<ApiResp>(`${this.baseUrl}/GrabacionMovimiento/Crear`, data);
   }
 }
