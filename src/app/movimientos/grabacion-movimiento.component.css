@@ -1,0 +1,62 @@
+.container-fluid {
+  font-family: "Segoe UI", sans-serif;
+  color: #333;
+}
+
+h2 {
+  font-weight: 600;
+  color: #1e3a8a;
+}
+
+hr {
+  border-top: 2px solid #2563eb;
+  margin-bottom: 1rem;
+}
+
+label.form-label {
+  font-weight: 500;
+  color: #374151;
+}
+
+.form-control,
+.form-select {
+  border-radius: 0.5rem;
+  border: 1px solid #d1d5db;
+  transition: all 0.2s;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 0.15rem rgba(37, 99, 235, 0.2);
+}
+
+textarea.form-control {
+  resize: vertical;
+}
+
+.btn-primary {
+  background-color: #2563eb;
+  border-color: #2563eb;
+  border-radius: 0.5rem;
+}
+
+.btn-primary:hover {
+  background-color: #1e40af;
+  border-color: #1e40af;
+}
+
+.btn-outline-secondary {
+  border-radius: 0.5rem;
+}
+
+.alert {
+  border-radius: 0.75rem;
+}
+
+pre {
+  font-size: 0.85rem;
+  background: #f8fafc;
+  border-radius: 0.5rem;
+  border: 1px solid #e5e7eb;
+}
