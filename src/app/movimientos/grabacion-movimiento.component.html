@@ -1,67 +1,191 @@
-<div class="card">
-  <div class="card-header">
-    <h3>Grabación de Movimiento CxC</h3>
-  </div>
+<div class="container-fluid mt-4">
+  <h2>Grabación de Movimiento CxC</h2>
 
-  <div class="card-body">
-    <form [formGroup]="form" (ngSubmit)="submit()">
-      <div class="grid">
-        <div class="col-12 md:col-6">
-          <label>Usuario</label>
-          <input class="input" formControlName="usuario" />
-        </div>
-
-        <div class="col-12 md:col-3">
-          <label>Id Saldo Cuenta</label>
-          <input type="number" class="input" formControlName="idSaldoCuenta" />
-          <small *ngIf="cuentaActiva === true" class="ok">Cuenta ACTIVA</small>
-          <small *ngIf="cuentaActiva === false" class="warn">Cuenta INACTIVA</small>
-        </div>
-
-        <div class="col-12 md:col-3">
-          <label>Tipo de Movimiento</label>
-          <select class="input" formControlName="idTipoMovimientoCXC">
-            <option [ngValue]="null">-- Seleccione --</option>
-            <option *ngFor="let t of tipos" [ngValue]="t.id">
-              {{t.nombre}} ({{t.operacion === 1 ? 'Cargo' : 'Abono'}})
-            </option>
-          </select>
-        </div>
-
-        <div class="col-12 md:col-4">
-          <label>Fecha Movimiento</label>
-          <input type="datetime-local" class="input" formControlName="fechaMovimiento" />
-        </div>
-
-        <div class="col-12 md:col-4">
-          <label>Valor</label>
-          <input type="number" step="0.01" class="input" formControlName="valorMovimiento" />
-        </div>
-
-        <div class="col-12 md:col-4">
-          <label>Documento Ref</label>
-          <input class="input" formControlName="documentoRef" />
-        </div>
-
-        <div class="col-12">
-          <label>Descripción</label>
-          <textarea class="input" rows="2" formControlName="descripcion"></textarea>
+  <form (ngSubmit)="onSubmit()" #movimientoForm="ngForm">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="mb-3">
+          <label class="form-label">Usuario *</label>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="movimiento.usuario"
+            name="usuario"
+            required
+            [disabled]="true">
         </div>
       </div>
 
-      <button class="btn" type="submit" [disabled]="enviando">Guardar</button>
-      <span *ngIf="enviando">Procesando…</span>
-      <div class="msg" *ngIf="mensaje">{{mensaje}}</div>
-    </form>
-
-    <div *ngIf="resultado?.mov" class="mt">
-      <h4>Movimiento creado</h4>
-      <pre>{{ resultado?.mov | json }}</pre>
+      <div class="col-md-6">
+        <div class="mb-3">
+          <label class="form-label">ID Saldo Cuenta *</label>
+          <input
+            type="number"
+            class="form-control"
+            [(ngModel)]="movimiento.idSaldoCuenta"
+            name="idSaldoCuenta"
+            required
+            min="1"
+            (ngModelChange)="onCuentaChange()"
+            [disabled]="loading">
+          <small *ngIf="verificandoCuenta" class="text-muted">
+            Verificando cuenta...
+          </small>
+          <small *ngIf="cuentaActiva === true && !verificandoCuenta" class="text-success">
+            ✓ Cuenta ACTIVA
+          </small>
+          <small *ngIf="cuentaActiva === false && !verificandoCuenta" class="text-danger">
+            ✗ Cuenta INACTIVA
+          </small>
+        </div>
+      </div>
     </div>
 
-    <div *ngIf="resultado?.saldo" class="mt">
-      <h4>Saldo actualizado</h4>
-      <pre>{{ resultado?.saldo | json }}</pre>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="mb-3">
+          <label class="form-label">Tipo de Movimiento *</label>
+          <select
+            class="form-control"
+            [(ngModel)]="movimiento.idTipoMovimientoCXC"
+            name="idTipoMovimientoCXC"
+            required
+            [disabled]="loading">
+            <option [ngValue]="null">-- Seleccione un tipo --</option>
+            <option *ngFor="let tipo of tipos" [ngValue]="tipo.id">
+              {{ tipo.nombre }} ({{ tipo.operacion === 1 ? 'Cargo' : 'Abono' }})
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="mb-3">
+          <label class="form-label">Fecha y Hora del Movimiento *</label>
+          <input
+            type="datetime-local"
+            class="form-control"
+            [(ngModel)]="movimiento.fechaMovimiento"
+            name="fechaMovimiento"
+            required
+            [disabled]="loading">
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="mb-3">
+          <label class="form-label">Valor del Movimiento *</label>
+          <input
+            type="number"
+            class="form-control"
+            [(ngModel)]="movimiento.valorMovimiento"
+            name="valorMovimiento"
+            required
+            min="0.01"
+            step="0.01"
+            [disabled]="loading">
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="mb-3">
+          <label class="form-label">Documento de Referencia</label>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="movimiento.documentoRef"
+            name="documentoRef"
+            [disabled]="loading">
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <div class="mb-3">
+          <label class="form-label">Descripción</label>
+          <textarea
+            class="form-control"
+            [(ngModel)]="movimiento.descripcion"
+            name="descripcion"
+            rows="3"
+            [disabled]="loading"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="loading || !movimientoForm.form.valid || cuentaActiva === false">
+          <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+          Registrar Movimiento
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary ms-2"
+          (click)="movimiento.valorMovimiento = null; movimiento.documentoRef = ''; movimiento.descripcion = ''"
+          [disabled]="loading">
+          Limpiar
+        </button>
+      </div>
+    </div>
+  </form>
+
+  <div *ngIf="error" class="alert alert-danger mt-3">{{ error }}</div>
+  <div *ngIf="success" class="alert alert-success mt-3">{{ success }}</div>
+
+  <!-- Resultados del movimiento creado -->
+  <div *ngIf="movimientoCreado" class="card mt-4">
+    <div class="card-header bg-success text-white">
+      <h5 class="mb-0">Movimiento Creado Exitosamente</h5>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-6">
+          <p><strong>ID Movimiento:</strong> {{ movimientoCreado.idMovimientoCuenta }}</p>
+          <p><strong>ID Saldo Cuenta:</strong> {{ movimientoCreado.idSaldoCuenta }}</p>
+          <p><strong>Tipo:</strong> {{ getTipoNombre(movimientoCreado.idTipoMovimientoCXC) }}</p>
+          <p><strong>Fecha:</strong> {{ movimientoCreado.fechaMovimiento | date:'dd/MM/yyyy HH:mm' }}</p>
+        </div>
+        <div class="col-md-6">
+          <p><strong>Valor:</strong> {{ movimientoCreado.valorMovimiento | currency:'GTQ':'symbol':'1.2-2' }}</p>
+          <p><strong>Usuario:</strong> {{ movimientoCreado.usuarioCreacion }}</p>
+          <p><strong>Fecha Creación:</strong> {{ movimientoCreado.fechaCreacion | date:'dd/MM/yyyy HH:mm:ss' }}</p>
+          <p *ngIf="movimientoCreado.descripcion"><strong>Descripción:</strong> {{ movimientoCreado.descripcion }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Resumen de saldo actualizado -->
+  <div *ngIf="saldoActualizado" class="card mt-3">
+    <div class="card-header bg-info text-white">
+      <h5 class="mb-0">Saldo Actualizado</h5>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-3">
+          <p><strong>Saldo Anterior:</strong></p>
+          <p class="h5">{{ saldoActualizado.saldoAnterior | currency:'GTQ':'symbol':'1.2-2' }}</p>
+        </div>
+        <div class="col-md-3">
+          <p><strong>Débitos:</strong></p>
+          <p class="h5 text-danger">{{ saldoActualizado.debitos | currency:'GTQ':'symbol':'1.2-2' }}</p>
+        </div>
+        <div class="col-md-3">
+          <p><strong>Créditos:</strong></p>
+          <p class="h5 text-success">{{ saldoActualizado.creditos | currency:'GTQ':'symbol':'1.2-2' }}</p>
+        </div>
+        <div class="col-md-3">
+          <p><strong>Saldo Actual:</strong></p>
+          <p class="h5 text-primary">{{ saldoActualizado.saldoActual | currency:'GTQ':'symbol':'1.2-2' }}</p>
+        </div>
+      </div>
     </div>
   </div>
 </div>
