@@ -1,0 +1,180 @@
+<div class="container-fluid mt-4">
+  <h2><i ></i>Cierre de Mes</h2>
+
+  <!-- Indicador de carga inicial -->
+  <div *ngIf="loading" class="text-center mt-5">
+    <div class="spinner-border text-primary">
+      <span class="visually-hidden">Cargando...</span>
+    </div>
+    <p class="mt-3">Cargando períodos pendientes...</p>
+  </div>
+
+  <!-- Contenido principal -->
+  <div *ngIf="!loading" class="row mt-4">
+    <!-- Columna izquierda: Selección de período -->
+    <div class="col-md-5">
+      <div class="card">
+        <div class="card-header">
+          <h5><i class="fa fa-list me-2"></i>Períodos Pendientes de Cierre</h5>
+        </div>
+        <div class="card-body">
+          <div *ngIf="periodosPendientes.length === 0 && !error" class="alert alert-info">
+            <i class="fa fa-info-circle me-2"></i>No hay períodos pendientes de cierre
+          </div>
+
+          <div class="list-group">
+            <button
+              *ngFor="let periodo of periodosPendientes"
+              type="button"
+              class="list-group-item list-group-item-action"
+              [class.active]="periodoSeleccionado?.Anio === periodo.Anio && periodoSeleccionado?.Mes === periodo.Mes"
+              (click)="seleccionarPeriodo(periodo)"
+              [disabled]="loadingProceso">
+              <div class="d-flex w-100 justify-content-between align-items-center">
+                <div>
+                  <h6 class="mb-1">
+                    <i class="fa fa-calendar me-2"></i>
+                    {{ getNombreMes(periodo.Mes) }} {{ periodo.Anio }}
+                  </h6>
+                  <small>Año: {{ periodo.Anio }} - Mes: {{ periodo.Mes }}</small>
+                </div>
+                <i class="fa fa-chevron-right"></i>
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Columna derecha: Detalle y acción -->
+    <div class="col-md-7">
+      <div class="card">
+        <div class="card-header">
+          <h5><i class="fa fa-cog me-2"></i>Detalle del Proceso</h5>
+        </div>
+        <div class="card-body">
+          <div *ngIf="!periodoSeleccionado && !detalleResultado" class="text-center text-muted py-5">
+            <i class="fa fa-hand-pointer fa-3x mb-3"></i>
+            <p>Seleccione un período de la lista para continuar</p>
+          </div>
+
+          <!-- Información del período seleccionado -->
+          <div *ngIf="periodoSeleccionado && !detalleResultado">
+            <div class="alert alert-primary">
+              <h5><i class="fa fa-info-circle me-2"></i>Período Seleccionado</h5>
+              <div class="row mt-3">
+                <div class="col-6">
+                  <strong>Año:</strong> {{ periodoSeleccionado.Anio }}
+                </div>
+                <div class="col-6">
+                  <strong>Mes:</strong> {{ getNombreMes(periodoSeleccionado.Mes) }}
+                </div>
+              </div>
+            </div>
+
+            <div class="alert alert-warning">
+              <h6><i class="fa fa-exclamation-triangle me-2"></i>Proceso de Cierre</h6>
+              <p class="mb-2">Al ejecutar el cierre de mes se realizarán las siguientes acciones:</p>
+              <ul class="mb-0">
+                <li>Se generarán saldos históricos (copia de SALDO_CUENTA a SALDO_CUENTA_HIST)</li>
+                <li>Se actualizará el campo SaldoAnterior con el Saldo Actual</li>
+                <li>Los campos Débitos y Créditos se establecerán en 0.00</li>
+                <li>Se registrará la FechaCierre en PERIODO_CIERRE_MES</li>
+              </ul>
+            </div>
+
+            <div class="d-grid gap-2">
+              <button
+                type="button"
+                class="btn btn-primary btn-lg"
+                (click)="abrirConfirmacion()"
+                [disabled]="loadingProceso">
+                <span *ngIf="loadingProceso" class="spinner-border spinner-border-sm me-2"></span>
+                <i *ngIf="!loadingProceso" class="fa fa-play-circle me-2"></i>
+                {{ loadingProceso ? 'Procesando...' : 'Ejecutar Cierre de Mes' }}
+              </button>
+            </div>
+          </div>
+
+          <!-- Resultado del proceso -->
+          <div *ngIf="detalleResultado" class="alert alert-success">
+            <h5><i class="fa fa-check-circle me-2"></i>Proceso Completado</h5>
+            <div class="row mt-3">
+              <div class="col-6">
+                <strong>Período:</strong>
+                {{ getNombreMes(detalleResultado.PeriodoMes || 0) }} {{ detalleResultado.PeriodoAnio }}
+              </div>
+              <div class="col-6">
+                <strong>Históricos Insertados:</strong>
+                {{ detalleResultado.HistoricosInsertados }}
+              </div>
+              <div class="col-6 mt-2">
+                <strong>Cuentas Procesadas:</strong>
+                {{ detalleResultado.CuentasProcesadas }}
+              </div>
+            </div>
+            <div class="d-grid gap-2 mt-3">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                (click)="reiniciar()">
+                <i class="fa fa-refresh me-2"></i>Procesar Otro Período
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mensajes de error y éxito -->
+  <div *ngIf="error" class="alert alert-danger mt-3">
+    <i class="fa fa-exclamation-circle me-2"></i>{{ error }}
+  </div>
+  <div *ngIf="success" class="alert alert-success mt-3">
+    <i class="fa fa-check-circle me-2"></i>{{ success }}
+  </div>
+</div>
+
+<!-- Modal de Confirmación -->
+<div class="modal" [class.show]="mostrarConfirmacion" [style.display]="mostrarConfirmacion ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          <i class="fa fa-exclamation-triangle me-2 text-warning"></i>
+          Confirmar Cierre de Mes
+        </h5>
+        <button type="button" class="btn-close" (click)="cerrarConfirmacion()" [disabled]="loadingProceso"></button>
+      </div>
+      <div class="modal-body">
+        <p><strong>¿Está seguro que desea ejecutar el cierre de mes?</strong></p>
+        <p *ngIf="periodoSeleccionado" class="mb-0">
+          Período: <strong>{{ getNombreMes(periodoSeleccionado.Mes) }} {{ periodoSeleccionado.Anio }}</strong>
+        </p>
+        <div class="alert alert-warning mt-3 mb-0">
+          <small><i class="fa fa-info-circle me-1"></i>Esta acción no se puede deshacer</small>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="cerrarConfirmacion()"
+          [disabled]="loadingProceso">
+          <i class="fa fa-times me-2"></i>Cancelar
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="ejecutarCierre()"
+          [disabled]="loadingProceso">
+          <span *ngIf="loadingProceso" class="spinner-border spinner-border-sm me-2"></span>
+          <i *ngIf="!loadingProceso" class="fa fa-check me-2"></i>
+          Confirmar Cierre
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop" [class.show]="mostrarConfirmacion" *ngIf="mostrarConfirmacion"></div>
