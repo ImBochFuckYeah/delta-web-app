@@ -155,7 +155,9 @@ export const routes: Routes = [
       { path: 'estado-cuentas/detalle', component: EstadoCuentaDetalleComponent, canActivate: [AuthGuard, RoutePermissionGuard] },
 
       // Grabacion de movimientos
-       { path: 'grabacion-movimientos', component: GrabacionMovimientoComponent, canActivate: [AuthGuard, RoutePermissionGuard]  },
+       { path: 'grabacion-movimientos', component: GrabacionMovimientoComponent, canActivate: [AuthGuard, RoutePermissionGuard]  },
+      // cierre de mes
+      { path: 'cierre-mes', component: CierreMesProcesComponent, canActivate: [AuthGuard, RoutePermissionGuard] }
     ]
   },
   { path: '', redirectTo: '/login', pathMatch: 'full' },

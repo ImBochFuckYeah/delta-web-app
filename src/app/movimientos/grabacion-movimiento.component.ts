@@ -1,26 +1,36 @@
 // src/app/movimientos/grabacion-movimiento.component.ts
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, ReactiveFormsModule, Validators, FormsModule } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
 import { GrabacionMovimientoService } from '../services/grabacion-movimiento.service';
-import { TipoMovimientoDto, CrearMovimientoVm, MovimientoCreado, SaldoResumen } from './movimiento.models';
 
 @Component({
   selector: 'app-grabacion-movimiento',
-  standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './grabacion-movimiento.component.html',
   styleUrls: ['./grabacion-movimiento.component.css']
 })
 export class GrabacionMovimientoComponent implements OnInit {
-  private fb = inject(FormBuilder);
-  private api = inject(GrabacionMovimientoService);
+  movimiento: MovimientoForm = {
+    usuario: '',
+    idSaldoCuenta: null,
+    idTipoMovimientoCXC: null,
+    fechaMovimiento: '',
+    valorMovimiento: null,
+    documentoRef: '',
+    descripcion: ''
+  };
 
   tipos: TipoMovimientoDto[] = [];
   enviando = false;
   mensaje = '';
   resultado: { mov?: MovimientoCreado; saldo?: SaldoResumen } | null = null;
   cuentaActiva: boolean | null = null;
+  verificandoCuenta = false;
+  movimientoCreado: any = null;
+  saldoActualizado: any = null;
 
   // 🔒 Usuario quemado
   private usuario = 'Administrador';
@@ -35,7 +45,10 @@ export class GrabacionMovimientoComponent implements OnInit {
   });
 
   ngOnInit(): void {
+    this.cargarUsuarioActual();
     this.cargarTipos();
+    this.movimiento.fechaMovimiento = this.obtenerFechaActual();
+  }
 
     // Al cambiar cuenta, verifica si está activa
     this.form.get('idSaldoCuenta')!.valueChanges.subscribe((v) => {
@@ -49,10 +62,12 @@ export class GrabacionMovimientoComponent implements OnInit {
           });
         }
       }
-    });
+    } else {
+      this.movimiento.usuario = 'Desconocido';
+    }
   }
 
-  private hoyISO(): string {
+  private obtenerFechaActual(): string {
     const d = new Date();
     const pad = (n: number) => n.toString().padStart(2, '0');
     return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(
@@ -79,7 +94,13 @@ export class GrabacionMovimientoComponent implements OnInit {
     }
 
     if (this.cuentaActiva === false) {
-      this.mensaje = 'La cuenta no está activa.';
+      this.error = 'No se puede crear el movimiento. La cuenta no está activa.';
+      return;
+    }
+
+    if (!this.movimiento.idSaldoCuenta || !this.movimiento.idTipoMovimientoCXC ||
+        !this.movimiento.valorMovimiento || this.movimiento.valorMovimiento <= 0) {
+      this.error = 'Por favor complete todos los campos requeridos correctamente';
       return;
     }
 
@@ -94,9 +115,12 @@ export class GrabacionMovimientoComponent implements OnInit {
       descripcion: v.descripcion ? v.descripcion.trim() : null
     };
 
-    this.enviando = true;
-    this.mensaje = '';
-    this.resultado = null;
+    this.grabacionService.crear(payload).subscribe({
+      next: (resp) => {
+        if (resp.resultado === 1) {
+          this.success = resp.mensaje || 'Movimiento registrado correctamente';
+          this.movimientoCreado = resp['movimiento'];
+          this.saldoActualizado = resp['saldo'];
 
     this.api.crear(payload).subscribe({
       next: (r) => {
@@ -114,5 +138,10 @@ export class GrabacionMovimientoComponent implements OnInit {
         this.mensaje = (err?.error?.mensaje) || 'Error de red o servidor.';
       }
     });
+  }
+
+  getTipoNombre(id: number): string {
+    const tipo = this.tipos.find(t => t.id === id);
+    return tipo ? `${tipo.nombre} (${tipo.operacion === 1 ? 'Cargo' : 'Abono'})` : '';
   }
 }

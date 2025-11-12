@@ -1,4 +1,3 @@
-// src/app/services/grabacion-movimiento.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
