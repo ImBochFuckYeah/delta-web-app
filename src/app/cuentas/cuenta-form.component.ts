@@ -105,6 +105,13 @@ export class CuentaFormComponent implements OnInit {
     });
   }
 
+
+  get nombreTipoCuenta(): string {
+  const tipo = this.tiposCuenta.find(t => t.IdTipoSaldoCuenta === this.model.IdTipoSaldoCuenta);
+  return tipo ? tipo.Nombre : '';
+}
+
+
   save() {
   if (!this.model.IdPersona || this.model.IdPersona === 0) {
     alert('Por favor selecciona una persona antes de guardar.');
@@ -186,54 +193,108 @@ export class CuentaFormComponent implements OnInit {
     this.router.navigate(['/app/saldo-cuentas']);
   }
 
-  private cargarCuenta(id: number): void {
-    this.loading = true;
-    this.api.obtenerCuenta(this.usuario, id).subscribe({
-      next: (r) => {
-        this.loading = false;
-        if (r?.Resultado !== 1 || !r?.Data) {
-          alert(r?.Mensaje ?? 'No se encontró la cuenta.');
-          return;
-        }
+  // private cargarCuenta(id: number): void {
+  //   this.loading = true;
+  //   this.api.obtenerCuenta(this.usuario, id).subscribe({
+  //     next: (r) => {
+  //       this.loading = false;
+  //       if (r?.Resultado !== 1 || !r?.Data) {
+  //         alert(r?.Mensaje ?? 'No se encontró la cuenta.');
+  //         return;
+  //       }
 
-        this.model = {
-          IdSaldoCuenta: r.Data.IdSaldoCuenta,
-          IdPersona: r.Data.IdPersona,
-          IdTipoSaldoCuenta: r.Data.IdTipoSaldoCuenta,
-          IdStatusCuenta: r.Data.IdStatusCuenta,
-          SaldoAnterior: 0
-        };
+  //       this.model = {
+  //         IdSaldoCuenta: r.Data.IdSaldoCuenta,
+  //         IdPersona: r.Data.IdPersona,
+  //         IdTipoSaldoCuenta: r.Data.IdTipoSaldoCuenta,
+  //         IdStatusCuenta: r.Data.IdStatusCuenta,
+  //         SaldoAnterior: 0
+  //       };
 
-        // ⚡ Si no viene NombrePersona, hacemos una llamada extra
-        if (!r.Data.NombrePersona && this.model.IdPersona) {
-          this.api.obtenerPersona(this.usuario, this.model.IdPersona).subscribe({
-            next: (res) => {
-              if (res?.Resultado === 1 && res?.Data) {
-                this.personaSeleccionada = res.Data;
-                const nombreCompleto = `${res.Data.Nombre ?? ''} ${res.Data.Apellido ?? ''}`.trim();
-                this.buscarTermino = nombreCompleto;
-                this.displayNombrePersona = nombreCompleto;
-              }
-            },
-            error: () => console.error('Error obteniendo nombre de persona')
-          });
-        } else {
-          const nombre = r.Data.NombrePersona ?? '';
-          this.personaSeleccionada = {
-            IdPersona: r.Data.IdPersona,
-            Nombre: nombre,
-            Apellido: '',
-            CorreoElectronico: ''
-          };
-          this.buscarTermino = nombre;
-          this.displayNombrePersona = nombre;
-        }
-      },
-      error: (err) => {
-        this.loading = false;
-        console.error('Error cargando cuenta:', err);
-        alert('Error al obtener los datos de la cuenta.');
+  //       // ⚡ Si no viene NombrePersona, hacemos una llamada extra
+  //       if (!r.Data.NombrePersona && this.model.IdPersona) {
+  //         this.api.obtenerPersona(this.usuario, this.model.IdPersona).subscribe({
+  //           next: (res) => {
+  //             if (res?.Resultado === 1 && res?.Data) {
+  //               this.personaSeleccionada = res.Data;
+  //               const nombreCompleto = `${res.Data.Nombre ?? ''} ${res.Data.Apellido ?? ''}`.trim();
+  //               this.buscarTermino = nombreCompleto;
+  //               this.displayNombrePersona = nombreCompleto;
+  //             }
+  //           },
+  //           error: () => console.error('Error obteniendo nombre de persona')
+  //         });
+  //       } else {
+  //         const nombre = r.Data.NombrePersona ?? '';
+  //         this.personaSeleccionada = {
+  //           IdPersona: r.Data.IdPersona,
+  //           Nombre: nombre,
+  //           Apellido: '',
+  //           CorreoElectronico: ''
+  //         };
+  //         this.buscarTermino = nombre;
+  //         this.displayNombrePersona = nombre;
+  //       }
+  //     },
+  //     error: (err) => {
+  //       this.loading = false;
+  //       console.error('Error cargando cuenta:', err);
+  //       alert('Error al obtener los datos de la cuenta.');
+  //     }
+  //   });
+  // }
+
+private cargarCuenta(id: number): void {
+  this.loading = true;
+  this.api.obtenerCuenta(this.usuario, id).subscribe({
+    next: (r) => {
+      this.loading = false;
+      if (r?.Resultado !== 1 || !r?.Data) {
+        alert(r?.Mensaje ?? 'No se encontró la cuenta.');
+        return;
       }
-    });
-  }
+
+      this.model = {
+        IdSaldoCuenta: r.Data.IdSaldoCuenta,
+        IdPersona: r.Data.IdPersona,
+        IdTipoSaldoCuenta: r.Data.IdTipoSaldoCuenta,
+        IdStatusCuenta: r.Data.IdStatusCuenta,
+        SaldoAnterior: 0
+      };
+
+      // ⚡ Si NO viene NombrePersona, consulta Personas/Obtener
+      if (!r.Data.NombrePersona && this.model.IdPersona) {
+        this.api.obtenerPersona(this.usuario, this.model.IdPersona).subscribe({
+          next: (res) => {
+            if (res?.Resultado === 1 && res?.Data) {
+              this.personaSeleccionada = res.Data;
+              const nombreCompleto = `${res.Data.Nombre ?? ''} ${res.Data.Apellido ?? ''}`.trim();
+              this.buscarTermino = nombreCompleto;
+              this.displayNombrePersona = nombreCompleto;        // <-- ✅ AQUÍ
+            }
+          },
+          error: () => console.error('Error obteniendo nombre de persona')
+        });
+      } else {
+        // Si SÍ viene el nombre desde Cuentas/Obtener
+        const nombre = r.Data.NombrePersona ?? '';
+        this.personaSeleccionada = {
+          IdPersona: r.Data.IdPersona,
+          Nombre: nombre,
+          Apellido: '',
+          CorreoElectronico: ''
+        };
+        this.buscarTermino = nombre;
+        this.displayNombrePersona = nombre;                     // <-- ✅ Y AQUÍ
+      }
+    },
+    error: (err) => {
+      this.loading = false;
+      console.error('Error cargando cuenta:', err);
+      alert('Error al obtener los datos de la cuenta.');
+    }
+  });
+}
+
+
 }

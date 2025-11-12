@@ -4,7 +4,8 @@
   <form (ngSubmit)="save()">
     <div class="row">
       <!-- 🔍 Buscar Persona -->
-     <div class="col-md-6 mb-3">
+
+      <div class="col-md-6 mb-3">
   <label class="form-label">Persona *</label>
 
   <!-- CREAR: buscador -->
@@ -55,33 +56,43 @@
 
   <!-- EDITAR: solo lectura -->
   <ng-template #editPersonaField>
-  <!-- <label class="form-label">Persona *</label> -->
-  <input
-    class="form-control"
-    [(ngModel)]="displayNombrePersona"
-    name="displayNombrePersona"
-    placeholder="Editar nombre..."
-    id="personaEditable"
-  />
-  <small class="text-muted">ID: {{ model.IdPersona }}</small>
+    <input class="form-control" [value]="displayNombrePersona" readonly id="personaReadonly" />
+    <small class="text-muted">ID: {{ model.IdPersona }}</small>
   </ng-template>
 </div>
 
-      <!-- Tipo de cuenta -->
-      <div class="col-md-6 mb-3">
-        <label class="form-label">Tipo de Cuenta *</label>
-        <select
-          class="form-select"
-          [(ngModel)]="model.IdTipoSaldoCuenta"
-          name="IdTipoSaldoCuenta"
-          required
-        >
-          <option [ngValue]="0">Seleccione...</option>
-          <option *ngFor="let t of tiposCuenta" [ngValue]="t.IdTipoSaldoCuenta">
-            {{ t.Nombre }}
-          </option>
-        </select>
-      </div>
+<!-- Tipo de cuenta -->
+<div class="col-md-6 mb-3">
+  <label class="form-label">Tipo de Cuenta *</label>
+
+  <!-- 🔹 Si es edición, mostrar solo lectura -->
+  <ng-container *ngIf="isEdit; else selectTipoCuenta">
+    <input
+      type="text"
+      class="form-control"
+      [value]="nombreTipoCuenta"
+      readonly
+    />
+    <small class="text-muted">No se puede modificar al editar una cuenta existente.</small>
+  </ng-container>
+
+  <!-- 🔹 Si es creación, permitir seleccionar -->
+  <ng-template #selectTipoCuenta>
+    <select
+      class="form-select"
+      [(ngModel)]="model.IdTipoSaldoCuenta"
+      name="IdTipoSaldoCuenta"
+      required
+    >
+      <option [ngValue]="0">Seleccione...</option>
+      <option *ngFor="let t of tiposCuenta" [ngValue]="t.IdTipoSaldoCuenta">
+        {{ t.Nombre }}
+      </option>
+    </select>
+  </ng-template>
+</div>
+
+
 
       <!-- Estado de cuenta -->
       <div class="col-md-6 mb-3">
